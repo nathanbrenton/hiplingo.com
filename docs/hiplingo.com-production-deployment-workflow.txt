@@ -1,0 +1,482 @@
+HIPLINGO.COM FRONTEND PRODUCTION DEPLOYMENT WORKFLOW
+=====================================================
+Created: 2026-08-24
+Local source: ~/Desktop/record-label/hiplingo.com
+Build command: npm run build
+Build output: ~/Desktop/record-label/hiplingo.com/dist/
+Production host: web-prod-01
+Deployment user: deploy-hiplingo-app
+
+PURPOSE
+-------
+This document defines the frontend-only Hiplingo production deployment and
+rollback lifecycle.
+
+It is intentionally separate from metadata-editor's persistent public-media
+deployment.
+
+FRONTEND:
+
+    local source:
+        ~/Desktop/record-label/hiplingo.com/
+
+    build:
+        npm run build
+
+    deployment source:
+        ~/Desktop/record-label/hiplingo.com/dist/
+
+    production:
+        /var/www/hiplingo.com/app/releases/<UTC_TIMESTAMP>/
+        /var/www/hiplingo.com/app/current
+            -> releases/<UTC_TIMESTAMP>/
+
+PUBLIC MEDIA:
+
+    local sanitized package:
+        ~/Desktop/record-label/published-media/
+
+    production:
+        /var/www/hiplingo.com/published-media/
+
+    public URL:
+        /media/
+
+CORE RULE
+---------
+A frontend deployment or rollback MUST NOT modify, erase, replace, or roll back:
+
+    /var/www/hiplingo.com/published-media/
+
+Frontend and media are independent lifecycles.
+
+
+======================================================================
+0. SSH ALIAS
+======================================================================
+
+The current source material establishes the production user:
+
+    deploy-hiplingo-app
+
+but does not establish one universally authoritative local SSH alias for the
+frontend deployment.
+
+Define the alias explicitly for the workstation before following the manual
+workflow:
+
+    export HIPLINGO_APP_REMOTE='<SSH_ALIAS_FOR_DEPLOY_HIPLINGO_APP>'
+
+Validate that it resolves to the correct user:
+
+    ssh -G "$HIPLINGO_APP_REMOTE" |
+      grep -E '^(hostname|user|identityfile|identitiesonly) '
+
+Required user:
+
+    deploy-hiplingo-app
+
+Test:
+
+    ssh "$HIPLINGO_APP_REMOTE" '
+      echo "ssh_verified=yes"
+      hostname
+      whoami
+    '
+
+Expected:
+
+    ssh_verified=yes
+    web-prod-01
+    deploy-hiplingo-app
+
+
+======================================================================
+1. LOCAL BUILD
+======================================================================
+
+    cd "$HOME/Desktop/record-label/hiplingo.com"
+
+    npm run build
+
+Expected deployment source:
+
+    ./dist/
+
+Do not deploy source files directly when the production contract is the Vite
+build output.
+
+Confirm:
+
+    test -f dist/index.html &&
+      echo "build_output=present"
+
+
+======================================================================
+2. PUBLICATION BOUNDARY
+======================================================================
+
+The frontend build is a READ-ONLY CONSUMER of metadata-editor's publication
+contract.
+
+metadata-editor owns:
+    - HLS/audio derivatives
+    - browser artwork derivatives
+    - waveform generation
+    - sanitized release/track/artist JSON
+    - publication manifests
+    - published-media/catalog.json
+    - public-media deployment
+
+Hiplingo frontend owns:
+    - public app shell
+    - routes/views
+    - catalog/package consumption
+    - playback UI/state
+    - frontend static assets
+
+Do NOT package any private media-library into dist/.
+
+Do NOT make a frontend deployment an implicit media deployment.
+
+
+======================================================================
+3. SERVER FILESYSTEM CONTRACT
+======================================================================
+
+Frontend root:
+
+    /var/www/hiplingo.com/app
+
+Expected server boundary:
+
+    /var/www/hiplingo.com
+        root:hiplingo-media-deploy
+        mode 3775
+
+    /var/www/hiplingo.com/app
+        root:hiplingo-app-deploy
+        mode 2775
+
+    /var/www/hiplingo.com/app/releases
+        root:hiplingo-app-deploy
+        mode 2775
+
+    /var/www/hiplingo.com/published-media
+        separate persistent media tree
+
+Public frontend release contract:
+
+    release root/directories    0755
+    files                       0644
+
+nginx/www-data remains read-only and is NOT added to deployment groups.
+
+
+======================================================================
+4. VERIFY CURRENT RELEASE
+======================================================================
+
+    REMOTE="$HIPLINGO_APP_REMOTE"
+    ROOT="/var/www/hiplingo.com/app"
+
+    CURRENT="$(ssh "$REMOTE" "readlink '$ROOT/current'")"
+
+    echo "current=$CURRENT"
+
+    ssh "$REMOTE" \
+      "test -d '$ROOT/$CURRENT' && echo 'current_target_exists=yes'"
+
+
+======================================================================
+5. PREPARE RELEASE
+======================================================================
+
+    cd "$HOME/Desktop/record-label/hiplingo.com"
+
+    REMOTE="$HIPLINGO_APP_REMOTE"
+    ROOT="/var/www/hiplingo.com/app"
+    CURRENT="$(ssh "$REMOTE" "readlink '$ROOT/current'")"
+    LINK_DEST="$ROOT/$CURRENT"
+    RELEASE="$(date -u +%Y%m%dT%H%M%SZ)"
+
+    echo "current=$CURRENT"
+    echo "link_dest=$LINK_DEST"
+    echo "new_release=$RELEASE"
+
+    ssh "$REMOTE" \
+      "test -d '$LINK_DEST' && echo 'link_dest_exists=yes'"
+
+
+======================================================================
+6. DRY-RUN THE BUILT FRONTEND
+======================================================================
+
+Run from the repository root after a successful build.
+
+    rsync -a \
+      --no-owner \
+      --no-group \
+      --delete \
+      --itemize-changes \
+      --dry-run \
+      --link-dest="$LINK_DEST" \
+      dist/ \
+      "$REMOTE:$ROOT/releases/$RELEASE/"
+
+Review the payload.
+
+Expected:
+    Vite production output such as index.html and assets/.
+
+Unexpected:
+    source-only/private files or any media-library tree.
+
+
+======================================================================
+7. UPLOAD STAGED IMMUTABLE RELEASE
+======================================================================
+
+    rsync -a \
+      --no-owner \
+      --no-group \
+      --delete \
+      --itemize-changes \
+      --stats \
+      --link-dest="$LINK_DEST" \
+      dist/ \
+      "$REMOTE:$ROOT/releases/$RELEASE/"
+
+This MUST NOT change:
+
+    /var/www/hiplingo.com/app/current
+
+Verify:
+
+    ssh "$REMOTE" \
+      "printf 'current='; readlink '$ROOT/current'"
+
+
+======================================================================
+8. VALIDATE STAGED RELEASE
+======================================================================
+
+8A. Exists
+
+    ssh "$REMOTE" \
+      "test -d '$ROOT/releases/$RELEASE' &&
+       echo 'release_exists=yes'"
+
+8B. Required entrypoint
+
+    ssh "$REMOTE" \
+      "test -f '$ROOT/releases/$RELEASE/index.html' &&
+       echo 'index_present=yes'"
+
+8C. No symlinks inside immutable release
+
+    ssh "$REMOTE" "
+      if find '$ROOT/releases/$RELEASE' -type l -print -quit | grep -q .; then
+        echo 'release_symlinks=FOUND'
+      else
+        echo 'release_symlinks=none'
+      fi
+    "
+
+8D. Permission contract
+
+    ssh "$REMOTE" "
+      R='$ROOT/releases/$RELEASE'
+      printf 'root_mode='
+      stat -c '%a' \"\$R\"
+      find \"\$R\" \
+        \( -type d ! -perm 0755 -o -type f ! -perm 0644 \) \
+        -printf '%m %y %P\n' |
+        sort
+    "
+
+Expected:
+
+    root_mode=755
+
+and no violation lines.
+
+If rsync preserved a non-public source-root mode, correct the deployment
+process before promotion. Do not normalize by weakening nginx or adding
+www-data to a deploy group.
+
+8E. Byte-for-byte built-output comparison
+
+    rsync -a \
+      --checksum \
+      --delete \
+      --itemize-changes \
+      --dry-run \
+      --no-owner \
+      --no-group \
+      dist/ \
+      "$REMOTE:$ROOT/releases/$RELEASE/"
+
+Expected:
+    no change lines.
+
+8F. Ensure media tree was not touched
+
+    ssh "$REMOTE" '
+      test -d /var/www/hiplingo.com/published-media &&
+      echo "published_media=present"
+    '
+
+
+======================================================================
+9. ATOMIC PROMOTION
+======================================================================
+
+Only after the staged release passes all checks:
+
+    ssh "$REMOTE" '
+      ROOT=/var/www/hiplingo.com/app
+      RELEASE='"$RELEASE"'
+      OLD=$(readlink "$ROOT/current") &&
+      rm -f "$ROOT/.current-$RELEASE" &&
+      ln -s "releases/$RELEASE" "$ROOT/.current-$RELEASE" &&
+      mv -Tf "$ROOT/.current-$RELEASE" "$ROOT/current" &&
+      printf "previous=%s\ncurrent=%s\n" \
+        "$OLD" \
+        "$(readlink "$ROOT/current")"
+    '
+
+No nginx reload is required merely to switch the frontend release symlink.
+
+
+======================================================================
+10. LIVE VALIDATION
+======================================================================
+
+HTTP:
+
+    for url in \
+      https://hiplingo.com/ \
+      https://www.hiplingo.com/ \
+      https://hiplingo.com/media/catalog.json
+    do
+      printf '%-48s ' "$url"
+      curl -L -fsS -o /dev/null -w '%{http_code}\n' "$url" || echo FAILED
+    done
+
+Hidden-path regression:
+
+    for path in /.git/config /.env; do
+      curl -sS \
+        -o /dev/null \
+        -w "$path -> %{http_code}\n" \
+        "https://hiplingo.com$path"
+    done
+
+Expected:
+    404 for hidden probes.
+
+Confirm active frontend:
+
+    ssh "$REMOTE" \
+      "printf 'current='; readlink '$ROOT/current'"
+
+Browser smoke test:
+    - homepage loads
+    - Listen experience loads
+    - Releases/Artists routes load
+    - public catalog hydrates
+    - artwork loads
+    - HLS playback starts
+    - compact/persistent player works
+    - responsive desktop/mobile behavior is correct
+
+
+======================================================================
+11. ROLLBACK
+======================================================================
+
+List frontend releases:
+
+    ssh "$REMOTE" '
+      find /var/www/hiplingo.com/app/releases \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -printf "%f\n" |
+        sort
+    '
+
+Set:
+
+    TARGET="<PREVIOUS_GOOD_TIMESTAMP>"
+
+Validate:
+
+    ssh "$REMOTE" \
+      "test -d '$ROOT/releases/$TARGET' &&
+       echo 'rollback_target=present'"
+
+Atomic rollback:
+
+    ssh "$REMOTE" '
+      ROOT=/var/www/hiplingo.com/app
+      TARGET='"$TARGET"'
+      rm -f "$ROOT/.rollback-$TARGET" &&
+      ln -s "releases/$TARGET" "$ROOT/.rollback-$TARGET" &&
+      mv -Tf "$ROOT/.rollback-$TARGET" "$ROOT/current" &&
+      printf "current=%s\n" "$(readlink "$ROOT/current")"
+    '
+
+Validate:
+
+    curl -fsS \
+      -o /dev/null \
+      -w 'rollback_https=%{http_code}\n' \
+      https://hiplingo.com/
+
+Media invariant after rollback:
+
+    ssh "$REMOTE" '
+      test -d /var/www/hiplingo.com/published-media &&
+      echo "published_media=present"
+    '
+
+Rollback changes app/current only.
+
+
+======================================================================
+12. NORMAL FUTURE FRONTEND DEPLOYMENT
+======================================================================
+
+    1. Modify Hiplingo frontend locally.
+    2. Run tests/build.
+    3. Generate fresh dist/.
+    4. Inspect current production release.
+    5. Create a new immutable UTC release.
+    6. Dry-run dist/ against the new release.
+    7. Upload with --link-dest.
+    8. Validate staged index, symlink absence, 0755/0644 modes and checksum.
+    9. Confirm published-media remains independent.
+   10. Atomically promote app/current.
+   11. Validate HTTPS/routes/catalog/playback.
+   12. Keep previous known-good frontend release for rollback.
+
+
+======================================================================
+13. DO NOT
+======================================================================
+
+Do NOT:
+    - deploy source tree instead of dist/;
+    - edit an existing frontend release in place;
+    - rsync directly into app/current;
+    - include media-library in a frontend release;
+    - overwrite /var/www/hiplingo.com/published-media;
+    - couple media rollback to frontend rollback;
+    - promote bad file/directory modes;
+    - add www-data to deployment groups;
+    - reload nginx merely to change current.
+
+
+END OF WORKFLOW
