@@ -1,6 +1,10 @@
 import { hiplingoLogoUrl } from "@hiplingo/brand";
 import { useEffect, useRef, useState } from "react";
-import type { ReactNode, RefObject } from "react";
+import type {
+  PointerEvent as ReactPointerEvent,
+  ReactNode,
+  RefObject,
+} from "react";
 
 import ArtistCatalog from "./components/ArtistCatalog";
 import ArtistDetail from "./components/ArtistDetail";
@@ -16,7 +20,7 @@ import {
   fetchMediaCatalog,
 } from "./lib/mediaCatalog";
 import { getArtistSlug } from "./lib/publicArtists";
-import { HIPLINGO_CONTACT_MAILTO } from "./siteConfig";
+import { HIPLINGO_CONTACT_MAILTO, HIPLINGO_LICENSING_MAILTO } from "./siteConfig";
 import type { MediaCatalog } from "./types/MediaCatalog";
 
 type SiteRoute =
@@ -27,6 +31,8 @@ type SiteRoute =
   | "/licensing"
   | "/licensing/inquiry"
   | "/licensing/jam"
+  | "/licensing/jam/existing"
+  | "/licensing/jam/future"
   | "/about";
 
 type ParsedRoute = {
@@ -34,6 +40,8 @@ type ParsedRoute = {
   releaseId: string | null;
   artistSlug: string | null;
 };
+
+const PLAYBACK_DIAGNOSTICS_HOLD_MS = 6000;
 
 const SITE_ROUTES = new Set<SiteRoute>([
   "/",
@@ -43,6 +51,8 @@ const SITE_ROUTES = new Set<SiteRoute>([
   "/licensing",
   "/licensing/inquiry",
   "/licensing/jam",
+  "/licensing/jam/existing",
+  "/licensing/jam/future",
   "/about",
 ]);
 
@@ -158,13 +168,95 @@ function SiteLink({
 function SiteHeader({
   currentRoute,
   onTogglePlayerMenu,
+  onOpenPlaybackDiagnostics,
   playerMenuButtonRef,
 }: {
   currentRoute: SiteRoute;
   onTogglePlayerMenu: () => void;
+  onOpenPlaybackDiagnostics: () => void;
   playerMenuButtonRef: RefObject<HTMLButtonElement | null>;
 }) {
   const headerRef = useRef<HTMLElement | null>(null);
+  const menuHoldTimerRef = useRef<number | null>(null);
+  const menuHoldPointerRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const suppressMenuClickRef = useRef(false);
+
+  function clearMenuHoldTimer() {
+    if (menuHoldTimerRef.current !== null) {
+      window.clearTimeout(menuHoldTimerRef.current);
+      menuHoldTimerRef.current = null;
+    }
+  }
+
+  function handleMenuPointerDown(
+    event: ReactPointerEvent<HTMLButtonElement>,
+  ) {
+    event.stopPropagation();
+    clearMenuHoldTimer();
+    suppressMenuClickRef.current = false;
+    menuHoldPointerRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+    };
+
+    menuHoldTimerRef.current = window.setTimeout(() => {
+      const heldPointer = menuHoldPointerRef.current;
+
+      if (
+        !heldPointer ||
+        heldPointer.pointerId !== event.pointerId
+      ) {
+        return;
+      }
+
+      suppressMenuClickRef.current = true;
+      menuHoldPointerRef.current = null;
+      clearMenuHoldTimer();
+      onOpenPlaybackDiagnostics();
+    }, PLAYBACK_DIAGNOSTICS_HOLD_MS);
+  }
+
+  function handleMenuPointerMove(
+    event: ReactPointerEvent<HTMLButtonElement>,
+  ) {
+    const heldPointer = menuHoldPointerRef.current;
+
+    if (
+      !heldPointer ||
+      heldPointer.pointerId !== event.pointerId
+    ) {
+      return;
+    }
+
+    const movedX = Math.abs(event.clientX - heldPointer.startX);
+    const movedY = Math.abs(event.clientY - heldPointer.startY);
+
+    if (movedX > 10 || movedY > 10) {
+      menuHoldPointerRef.current = null;
+      clearMenuHoldTimer();
+    }
+  }
+
+  function finishMenuPointer(
+    event: ReactPointerEvent<HTMLButtonElement>,
+  ) {
+    if (
+      menuHoldPointerRef.current?.pointerId === event.pointerId
+    ) {
+      menuHoldPointerRef.current = null;
+    }
+
+    clearMenuHoldTimer();
+  }
+
+  useEffect(() => {
+    return () => clearMenuHoldTimer();
+  }, []);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -230,8 +322,26 @@ function SiteHeader({
           ref={playerMenuButtonRef}
           type="button"
           className="hiplingo-site-menu"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={onTogglePlayerMenu}
+          onPointerDown={handleMenuPointerDown}
+          onPointerMove={handleMenuPointerMove}
+          onPointerUp={finishMenuPointer}
+          onPointerCancel={finishMenuPointer}
+          onPointerLeave={(event) => {
+            if (event.pointerType === "mouse") {
+              finishMenuPointer(event);
+            }
+          }}
+          onContextMenu={(event) => event.preventDefault()}
+          onClick={(event) => {
+            if (suppressMenuClickRef.current) {
+              event.preventDefault();
+              event.stopPropagation();
+              suppressMenuClickRef.current = false;
+              return;
+            }
+
+            onTogglePlayerMenu();
+          }}
           aria-label="Open player settings"
           aria-haspopup="dialog"
           aria-controls="app-menu-panel"
@@ -372,6 +482,47 @@ function LicensingPage() {
   );
 }
 
+function JamParticipantPage() {
+  return (
+    <main className="hiplingo-page hiplingo-placeholder-page">
+      <section className="hiplingo-placeholder-card">
+        <span className="hiplingo-kicker">Participants</span>
+        <h1>Jam agreements</h1>
+        <div className="hiplingo-placeholder-copy">
+          <p>
+            Hiplingo uses different paperwork for historical recordings and for
+            jams happening now or in the future. Participant access is
+            invitation-based; this public page does not expose private rights
+            records or accept signatures.
+          </p>
+        </div>
+
+        <div className="hiplingo-feature-grid" aria-label="Jam agreement workflows">
+          <SiteLink route="/licensing/jam/existing" className="hiplingo-feature-card">
+            <span>Existing recordings</span>
+            <strong>Retroactive catalog ratification</strong>
+            <p>
+              Identify the historical recording, confirm contributions and
+              splits, disclose third-party material, and document a present
+              rights grant for that specific material.
+            </p>
+          </SiteLink>
+
+          <SiteLink route="/licensing/jam/future" className="hiplingo-feature-card">
+            <span>Upcoming / current jams</span>
+            <strong>Prospective participant joinder</strong>
+            <p>
+              Join the current Master Jam Agreement before participating, then
+              confirm asset-specific credits, ownership, and revenue splits
+              after material is created.
+            </p>
+          </SiteLink>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function PlaceholderPage({
   eyebrow,
   title,
@@ -431,6 +582,8 @@ export default function App() {
   const requestedTrackKey = currentLocation.searchParams.get(
     "track",
   );
+  const playbackDiagnosticsRequested =
+    currentLocation.searchParams.get("diagnostics") === "playback";
 
   useEffect(() => {
     const handleNavigation = () => {
@@ -501,6 +654,10 @@ export default function App() {
 
   function requestTogglePlayerMenu() {
     audioPlayerRef.current?.toggleSettings();
+  }
+
+  function requestOpenPlaybackDiagnostics() {
+    audioPlayerRef.current?.openPlaybackDiagnostics();
   }
 
   let content: ReactNode;
@@ -592,15 +749,64 @@ export default function App() {
       break;
 
     case "/licensing/jam":
+      content = <JamParticipantPage />;
+      break;
+
+    case "/licensing/jam/existing":
       content = (
         <PlaceholderPage
-          eyebrow="Participants"
-          title="Jam participant agreement"
+          eyebrow="Existing recordings"
+          title="Retroactive catalog ratification"
+          action={
+            <a
+              className="hiplingo-button hiplingo-button--primary"
+              href={HIPLINGO_LICENSING_MAILTO}
+            >
+              Contact Hiplingo Licensing
+            </a>
+          }
         >
           <p>
-            Coming soon. The participant flow will present the applicable
-            published Master Jam Agreement and record acceptance against that
-            exact version without exposing private licensing administration.
+            This workflow is for recordings or compositions created before a
+            complete written Hiplingo agreement was in place. Hiplingo identifies
+            the exact historical assets, records each participant's contribution,
+            separates master ownership from royalty participation and composition
+            ownership, and documents any third-party material before commercial
+            clearance.
+          </p>
+          <p>
+            Signing is not available from this public page. Participants receive
+            a private, asset-specific agreement package once the catalog record is
+            prepared.
+          </p>
+        </PlaceholderPage>
+      );
+      break;
+
+    case "/licensing/jam/future":
+      content = (
+        <PlaceholderPage
+          eyebrow="Upcoming / current jams"
+          title="Prospective participant joinder"
+          action={
+            <a
+              className="hiplingo-button hiplingo-button--primary"
+              href={HIPLINGO_LICENSING_MAILTO}
+            >
+              Contact Hiplingo Licensing
+            </a>
+          }
+        >
+          <p>
+            Before participating, a creator reviews and joins an exact published
+            version of Hiplingo's Master Jam Agreement. Being present at a session
+            does not by itself create ownership or a royalty share.
+          </p>
+          <p>
+            After a recording or composition is created, the actual contributors
+            confirm an asset-specific split sheet covering master ownership, Master
+            Net Receipts participation, composition ownership, credits, and any
+            publishing-administration authority.
           </p>
         </PlaceholderPage>
       );
@@ -643,6 +849,7 @@ export default function App() {
       <SiteHeader
         currentRoute={route.section}
         onTogglePlayerMenu={requestTogglePlayerMenu}
+        onOpenPlaybackDiagnostics={requestOpenPlaybackDiagnostics}
         playerMenuButtonRef={playerMenuButtonRef}
       />
 
@@ -672,6 +879,7 @@ export default function App() {
           onPlaybackStateChange={setPlaybackState}
           releaseWaveformHost={releaseWaveformHost}
           menuToggleButtonRef={playerMenuButtonRef}
+          playbackDiagnosticsRequested={playbackDiagnosticsRequested}
         />
       </div>
 

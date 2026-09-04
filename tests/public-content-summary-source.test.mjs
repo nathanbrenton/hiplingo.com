@@ -43,12 +43,18 @@ test("Journal is removed and Licensing is the public rights entry point", async 
   assert.doesNotMatch(app, /["']\/journal["']/);
   assert.doesNotMatch(readme, /\/journal/);
   assert.doesNotMatch(app, />\s*Journal\s*</);
-  assert.doesNotMatch(app, /route="\/jam"/);
+
   assert.match(app, /route="\/licensing"/);
-  assert.match(app, /route="\/licensing\/inquiry"/);
-  assert.match(app, /route="\/licensing\/jam"/);
-  assert.match(app, /title="General licensing inquiry"/);
-  assert.match(app, /title="Jam participant agreement"/);
+  assert.match(app, /function JamParticipantPage\(\)/);
+  assert.match(app, /<h1>Jam agreements<\/h1>/);
+  assert.match(app, /route="\/licensing\/jam\/existing"/);
+  assert.match(app, /route="\/licensing\/jam\/future"/);
+  assert.match(app, /title="Retroactive catalog ratification"/);
+  assert.match(app, /title="Prospective participant joinder"/);
+  assert.match(app, /HIPLINGO_LICENSING_MAILTO/);
+
+  assert.doesNotMatch(app, /title="Jam participant agreement"/);
+  assert.doesNotMatch(app, /Coming soon\. The participant flow/);
 });
 
 test("compact site player uses the shared Now Playing visual layout", async () => {

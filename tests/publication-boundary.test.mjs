@@ -719,37 +719,34 @@ test("toggles release playback from the release artwork", async () => {
 });
 
 
-test("v1 licensing uses static public contact while Jam remains explicitly coming soon", async () => {
+test("v1 licensing uses static public contacts and bounded Jam workflow routes", async () => {
   const appSource = await readFile(
     path.join(projectRoot, "src/App.tsx"),
     "utf8",
   );
-
-  const inquiryStart = appSource.indexOf(
-    'case "/licensing/inquiry":',
-  );
-  const jamStart = appSource.indexOf(
-    'case "/licensing/jam":',
-  );
-  const aboutStart = appSource.indexOf(
-    'case "/about":',
+  const siteConfigSource = await readFile(
+    path.join(projectRoot, "src/siteConfig.ts"),
+    "utf8",
   );
 
-  assert.notEqual(inquiryStart, -1);
-  assert.notEqual(jamStart, -1);
-  assert.notEqual(aboutStart, -1);
-
-  const inquirySource = appSource.slice(
-    inquiryStart,
-    jamStart,
+  assert.match(
+    siteConfigSource,
+    /HIPLINGO_CONTACT_EMAIL\s*=\s*"info@hiplingo\.com"/,
   );
-  const jamSource = appSource.slice(
-    jamStart,
-    aboutStart,
+  assert.match(
+    siteConfigSource,
+    /HIPLINGO_LICENSING_EMAIL\s*=\s*"licensing@hiplingo\.com"/,
   );
+  assert.doesNotMatch(siteConfigSource, /import\.meta\.env|process\.env/);
 
-  assert.match(inquirySource, /HIPLINGO_CONTACT_MAILTO/);
-  assert.match(inquirySource, />\s*Contact Hiplingo\s*</);
-  assert.doesNotMatch(inquirySource, /form is being prepared/);
-  assert.match(jamSource, /Coming soon\./);
+  assert.match(
+    appSource,
+    /case "\/licensing\/jam":[\s\S]*?content = <JamParticipantPage \/>;/,
+  );
+  assert.match(appSource, /route="\/licensing\/jam\/existing"/);
+  assert.match(appSource, /route="\/licensing\/jam\/future"/);
+  assert.match(appSource, /title="Retroactive catalog ratification"/);
+  assert.match(appSource, /title="Prospective participant joinder"/);
+  assert.match(appSource, /href=\{HIPLINGO_LICENSING_MAILTO\}/);
+  assert.doesNotMatch(appSource, /Coming soon\. The participant flow/);
 });

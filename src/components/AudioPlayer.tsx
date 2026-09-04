@@ -47,6 +47,7 @@ import ListenTrackQueue from "./ListenTrackQueue";
 import MetadataViewer, {
   type MetadataVerbosity,
 } from "./MetadataViewer";
+import PlaybackDiagnostics from "./PlaybackDiagnostics";
 
 import { HIPLINGO_CONTACT_MAILTO } from "../siteConfig";
 
@@ -146,6 +147,7 @@ export type AudioPlayerHandle = {
   shuffleLibrary: () => void;
   togglePlayback: () => void;
   toggleSettings: () => void;
+  openPlaybackDiagnostics: () => void;
 };
 
 type AudioPlayerDisplayMode = "full" | "compact";
@@ -161,6 +163,7 @@ type AudioPlayerProps = {
   onPlaybackStateChange?: (state: PlaybackStateSnapshot) => void;
   releaseWaveformHost?: HTMLDivElement | null;
   menuToggleButtonRef?: RefObject<HTMLButtonElement | null>;
+  playbackDiagnosticsRequested?: boolean;
 };
 
 const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
@@ -176,6 +179,7 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
       onPlaybackStateChange,
       releaseWaveformHost = null,
       menuToggleButtonRef,
+      playbackDiagnosticsRequested = false,
     },
     ref,
   ) {
@@ -214,6 +218,16 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
    * can be hidden while the application menu is open.
    */
   const [isAppMenuOpen, setIsAppMenuOpen] =
+    useState(false);
+
+  /*
+   * Playback diagnostics are listener-facing troubleshooting tools.
+   * They remain separate from Developer Mode and collect data only
+   * inside the browser until the listener explicitly copies a report.
+   */
+  const [isPlaybackDiagnosticsOpen, setIsPlaybackDiagnosticsOpen] =
+    useState(false);
+  const [diagnosticsReduceVisualLoad, setDiagnosticsReduceVisualLoad] =
     useState(false);
 
   /*
@@ -742,6 +756,34 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
   const audioSource =
     selectedTrack?.source.url ?? null;
 
+  function getPlaybackDiagnosticsEngine() {
+    if (!selectedTrack?.source.url) {
+      return "none";
+    }
+
+    const isHls =
+      selectedTrack.source.protocol?.toLowerCase() === "hls" ||
+      selectedTrack.source.url.toLowerCase().includes(".m3u8");
+
+    if (!isHls) {
+      return "direct-media";
+    }
+
+    if (hlsRef.current) {
+      return "hls.js";
+    }
+
+    if (
+      audioRef.current?.canPlayType(
+        "application/vnd.apple.mpegurl",
+      )
+    ) {
+      return "native-hls";
+    }
+
+    return "hls-pending";
+  }
+
   function destroyHlsPlayback() {
     hlsAutoplayTrackKeyRef.current = null;
 
@@ -1013,7 +1055,18 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
     toggleSettings: () => {
       setIsAppMenuOpen((isOpen) => !isOpen);
     },
+    openPlaybackDiagnostics: () => {
+      setIsAppMenuOpen(false);
+      setIsPlaybackDiagnosticsOpen(true);
+    },
   }));
+
+  useEffect(() => {
+    if (playbackDiagnosticsRequested) {
+      setIsAppMenuOpen(false);
+      setIsPlaybackDiagnosticsOpen(true);
+    }
+  }, [playbackDiagnosticsRequested]);
 
   useEffect(() => {
     onPlaybackStateChange?.({
@@ -1897,7 +1950,7 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
         isAppMenuOpen ? "true" : "false"
       }
     >
-      {displayMode === "full" ? (
+      {displayMode === "full" && !diagnosticsReduceVisualLoad ? (
         <AudioReactiveListenBackground
           audioRef={audioRef}
           analyser={analyserNode}
@@ -2442,6 +2495,31 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
         }}
       />
 
+      {isPlaybackDiagnosticsOpen ? (
+        <PlaybackDiagnostics
+          audioRef={audioRef}
+          appVersion={APP_VERSION}
+          track={
+            selectedTrack
+              ? {
+                  key: selectedTrack.key,
+                  title: selectedTrack.title,
+                  artist: selectedTrack.artist ?? "",
+                  releaseTitle: selectedTrack.release.title,
+                  sourceUrl: selectedTrack.source.url,
+                  protocol: selectedTrack.source.protocol ?? null,
+                }
+              : null
+          }
+          getPlaybackEngine={getPlaybackDiagnosticsEngine}
+          reduceVisualLoad={diagnosticsReduceVisualLoad}
+          onReduceVisualLoadChange={setDiagnosticsReduceVisualLoad}
+          onClose={() => {
+            setDiagnosticsReduceVisualLoad(false);
+            setIsPlaybackDiagnosticsOpen(false);
+          }}
+        />
+      ) : null}
 
       {releaseWaveformHost &&
       displayMode === "compact" &&

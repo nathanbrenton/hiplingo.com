@@ -28,7 +28,9 @@ test("hamburger remains the menu toggle while the settings panel clears the stic
   assert.match(appSource, /new ResizeObserver\(syncHeaderBottom\)/);
   assert.match(appSource, /const playerMenuButtonRef = useRef<HTMLButtonElement \| null>\(null\)/);
   assert.match(appSource, /ref=\{playerMenuButtonRef\}/);
-  assert.match(appSource, /onPointerDown=\{\(event\) => event\.stopPropagation\(\)\}/);
+  assert.match(appSource, /onPointerDown=\{handleMenuPointerDown\}/);
+  assert.match(appSource, /const PLAYBACK_DIAGNOSTICS_HOLD_MS = 6000;/);
+  assert.match(appSource, /onOpenPlaybackDiagnostics=\{requestOpenPlaybackDiagnostics\}/);
   assert.match(appSource, /aria-controls="app-menu-panel"/);
   assert.match(appSource, /menuToggleButtonRef=\{playerMenuButtonRef\}/);
 
