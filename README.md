@@ -535,3 +535,13 @@ Hiplingo's Track information modal delegates to the shared
 `@hiplingo/media-player` listener metadata viewer. Metadata-editor consumes the
 same presentation component for its public-style Library preview so tab order,
 credit grouping, labels, and listener-facing layout remain synchronized.
+
+## M1.19 native public agreement signer
+
+`hiplingo.com` now owns the public signing surface at `/sign/<opaque-token>`. The route is intercepted before the normal listener application mounts, so a legal-signing session does not initialize the persistent audio player, catalog UI, or private Rights Console.
+
+The public signer uses only the deliberately anonymous Rights API surface under `/api/public/signer/...`. In local Vite development, `VITE_RIGHTS_API_BASE_URL` may override the API origin; otherwise development targets `http://127.0.0.1:4175/api` and production uses same-origin `/api`. No administrator or mothership-sync credential belongs in the public frontend bundle.
+
+The signer is mobile-first and dark by default. Purple is the default appearance, with Gray and Blue alternatives. `?theme=purple`, `?theme=gray`/`grey`, and `?theme=blue` are supported; the selection is remembered locally under the shared `hiplingo-theme` key. The signer continues to mirror the legacy local Rights-signer key during transition so local testing remains visually consistent.
+
+Production still requires the restricted nginx/API boundary documented by `record-label/licensing/docs/PRODUCTION_SECURITY_BOUNDARY.md`; adding this route to the public frontend does not make the private Rights Console deployable.

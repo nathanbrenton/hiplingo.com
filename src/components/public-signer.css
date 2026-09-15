@@ -1,0 +1,592 @@
+.hiplingo-public-signer {
+  --signer-accent: var(--hiplingo-purple, #a98cff);
+  --signer-accent-rgb: 169, 140, 255;
+  --signer-accent-soft: #eee8ff;
+  --signer-accent-ink: #130d21;
+  --signer-canvas: var(--hiplingo-canvas, #090810);
+  --signer-surface: var(--hiplingo-surface-2, #171421);
+  --signer-surface-2: var(--hiplingo-surface-1, #100e18);
+  --signer-surface-3: var(--hiplingo-surface-3, #211b2e);
+  --signer-border: var(--hiplingo-border-strong, rgba(219, 200, 255, 0.24));
+  --signer-border-soft: var(--hiplingo-border, rgba(219, 200, 255, 0.12));
+  --signer-text: var(--hiplingo-text, #f7f4fb);
+  --signer-text-soft: var(--hiplingo-text-soft, #e2d8f1);
+  --signer-muted: var(--hiplingo-muted, #aaa1b5);
+  --signer-muted-2: var(--hiplingo-muted-deep, #81778c);
+  min-height: 100dvh;
+  color: var(--signer-text);
+  background:
+    radial-gradient(circle at 14% -8%, rgba(var(--signer-accent-rgb), 0.18), transparent 31rem),
+    radial-gradient(circle at 90% 8%, rgba(var(--signer-accent-rgb), 0.08), transparent 27rem),
+    var(--signer-canvas);
+}
+
+.hiplingo-public-signer[data-theme="gray"] {
+  --signer-accent: #aab5bf;
+  --signer-accent-rgb: 170, 181, 191;
+  --signer-accent-soft: #e3e8ec;
+  --signer-accent-ink: #11171b;
+  --signer-canvas: #0a0d0f;
+  --signer-surface: #171c21;
+  --signer-surface-2: #0f1418;
+  --signer-surface-3: #20272d;
+  --signer-border: #35404a;
+  --signer-border-soft: rgba(170, 181, 191, 0.14);
+  --signer-text: #f4f7f9;
+  --signer-text-soft: #d8e0e5;
+  --signer-muted: #a4b0ba;
+  --signer-muted-2: #788691;
+}
+
+.hiplingo-public-signer[data-theme="blue"] {
+  --signer-accent: #79bfe4;
+  --signer-accent-rgb: 121, 191, 228;
+  --signer-accent-soft: #d3f0ff;
+  --signer-accent-ink: #081820;
+  --signer-canvas: #071017;
+  --signer-surface: #121a22;
+  --signer-surface-2: #0b1218;
+  --signer-surface-3: #182631;
+  --signer-border: #2a3b49;
+  --signer-border-soft: rgba(121, 191, 228, 0.14);
+  --signer-text: #f3f9fc;
+  --signer-text-soft: #d7e8f1;
+  --signer-muted: #9eafbb;
+  --signer-muted-2: #728795;
+}
+
+body.hiplingo-public-signer-mode {
+  margin: 0;
+  overflow-x: hidden;
+  background: #090810;
+}
+
+.public-signer-shell {
+  width: min(100%, 78rem);
+  margin: 0 auto;
+  padding:
+    max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(2.5rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+}
+
+.public-signer-brand-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0 1.1rem;
+}
+
+.public-signer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
+  color: var(--signer-text);
+  text-decoration: none;
+}
+
+.public-signer-brand img {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.65rem;
+  box-shadow: 0 0 0 1px var(--signer-border-soft);
+}
+
+.public-signer-brand span {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.public-signer-brand strong {
+  font-size: 1rem;
+  letter-spacing: 0.13em;
+}
+
+.public-signer-brand small {
+  color: var(--signer-muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+}
+
+.public-signer-theme-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.28rem;
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--signer-surface-2) 94%, transparent);
+}
+
+.public-signer-theme-picker button {
+  min-height: 2.45rem;
+  border: 0;
+  border-radius: 0.68rem;
+  color: var(--signer-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.public-signer-theme-picker button:hover,
+.public-signer-theme-picker button:focus-visible,
+.public-signer-theme-picker button.is-active {
+  color: var(--signer-text);
+  background: rgba(var(--signer-accent-rgb), 0.14);
+}
+
+.public-signer-theme-picker button:focus-visible,
+.public-signer-brand:focus-visible,
+.public-signer-home-link:focus-visible,
+.public-signer-download:focus-visible,
+.public-signer-card button:focus-visible,
+.public-signer-card input:focus-visible {
+  outline: 2px solid var(--signer-accent);
+  outline-offset: 2px;
+}
+
+.public-signer-progress {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.8rem;
+}
+
+.public-signer-progress span {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.58rem 0.35rem;
+  overflow: hidden;
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 0.7rem;
+  color: var(--signer-muted-2);
+  background: rgba(255, 255, 255, 0.018);
+  font-size: 0.69rem;
+  font-weight: 700;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-signer-progress span.is-active {
+  color: var(--signer-accent-soft);
+  border-color: rgba(var(--signer-accent-rgb), 0.4);
+  background: rgba(var(--signer-accent-rgb), 0.1);
+}
+
+.public-signer-hero,
+.public-signer-card {
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 1.05rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 55%),
+    color-mix(in srgb, var(--signer-surface) 97%, transparent);
+  box-shadow: 0 1.1rem 3.4rem rgba(0, 0, 0, 0.19);
+}
+
+.public-signer-hero {
+  margin-bottom: 0.8rem;
+  padding: 1.2rem;
+}
+
+.public-signer-hero h1,
+.public-signer-card h1,
+.public-signer-card h2,
+.public-signer-card h3 {
+  color: var(--signer-text);
+}
+
+.public-signer-hero h1 {
+  margin: 0.32rem 0 0.55rem;
+  font-size: clamp(1.7rem, 7vw, 2.65rem);
+  line-height: 1.03;
+}
+
+.public-signer-hero > p:not(.public-signer-eyebrow) {
+  margin: 0;
+  color: var(--signer-text-soft);
+  line-height: 1.6;
+}
+
+.public-signer-eyebrow {
+  margin: 0;
+  color: var(--signer-accent);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.public-signer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+}
+
+.public-signer-meta span,
+.public-signer-hash-badge {
+  padding: 0.38rem 0.58rem;
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 999px;
+  color: var(--signer-muted);
+  background: var(--signer-surface-2);
+  font-size: 0.72rem;
+}
+
+.public-signer-card {
+  margin-bottom: 0.8rem;
+  padding: 1.1rem;
+}
+
+.public-signer-card h2 {
+  margin: 0.35rem 0 0.75rem;
+  font-size: clamp(1.12rem, 5vw, 1.5rem);
+}
+
+.public-signer-card p {
+  color: var(--signer-text-soft);
+  line-height: 1.62;
+}
+
+.public-signer-agreement-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.public-signer-hash-badge {
+  width: fit-content;
+  color: var(--signer-accent-soft);
+  border-color: rgba(var(--signer-accent-rgb), 0.35);
+  background: rgba(var(--signer-accent-rgb), 0.09);
+}
+
+.public-signer-agreement-text {
+  max-height: min(58dvh, 38rem);
+  overflow: auto;
+  padding: 0.25rem 0.18rem 0.75rem 0;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(var(--signer-accent-rgb), 0.32) transparent;
+}
+
+.public-signer-agreement-text h1,
+.public-signer-agreement-text h2,
+.public-signer-agreement-text h3 {
+  margin: 1.35rem 0 0.65rem;
+  line-height: 1.25;
+}
+
+.public-signer-agreement-text h1:first-child,
+.public-signer-agreement-text h2:first-child,
+.public-signer-agreement-text h3:first-child {
+  margin-top: 0;
+}
+
+.public-signer-agreement-text p {
+  margin: 0.55rem 0;
+  font-size: 0.93rem;
+}
+
+.public-signer-agreement-bullet {
+  padding-left: 0.65rem;
+}
+
+.public-signer-agreement-space {
+  height: 0.45rem;
+}
+
+.public-signer-hash-block {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.72rem;
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 0.7rem;
+  background: var(--signer-surface-2);
+}
+
+.public-signer-hash-block span {
+  color: var(--signer-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.public-signer-hash-block code {
+  overflow-wrap: anywhere;
+  color: var(--signer-text-soft);
+  font-size: 0.7rem;
+}
+
+.public-signer-share-grid {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.public-signer-share-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.8rem;
+  border: 1px solid var(--signer-border-soft);
+  border-radius: 0.78rem;
+  background: var(--signer-surface-2);
+}
+
+.public-signer-share-card strong {
+  margin-bottom: 0.2rem;
+}
+
+.public-signer-share-card span {
+  color: var(--signer-muted);
+  font-size: 0.8rem;
+}
+
+.public-signer-note,
+.public-signer-lock-notice,
+.public-signer-status,
+.public-signer-inline-error {
+  margin-top: 0.8rem;
+  padding: 0.78rem;
+  border-radius: 0.78rem;
+}
+
+.public-signer-note,
+.public-signer-status {
+  border: 1px solid rgba(var(--signer-accent-rgb), 0.3);
+  background: rgba(var(--signer-accent-rgb), 0.08);
+}
+
+.public-signer-lock-notice {
+  border: 1px solid rgba(246, 190, 90, 0.26);
+  color: #f3d596;
+  background: rgba(246, 190, 90, 0.07);
+}
+
+.public-signer-inline-error,
+.public-signer-error-card {
+  border-color: rgba(242, 119, 119, 0.34);
+  color: #ffc1c1;
+  background: rgba(106, 29, 29, 0.18);
+}
+
+.public-signer-otp-actions {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.public-signer-otp-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.public-signer-card button,
+.public-signer-card input,
+.public-signer-download {
+  min-height: 2.9rem;
+  border-radius: 0.78rem;
+  font: inherit;
+}
+
+.public-signer-card button {
+  border: 1px solid var(--signer-border);
+  color: var(--signer-text);
+  background: var(--signer-surface-3);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.public-signer-card button:hover:not(:disabled),
+.public-signer-card button.is-primary,
+.public-signer-submit,
+.public-signer-download {
+  border-color: rgba(var(--signer-accent-rgb), 0.58);
+  color: var(--signer-accent-ink);
+  background: var(--signer-accent);
+}
+
+.public-signer-card button:disabled,
+.public-signer-card input:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.public-signer-card input {
+  width: 100%;
+  border: 1px solid var(--signer-border);
+  color: var(--signer-text);
+  background: var(--signer-surface-2);
+}
+
+.public-signer-otp-entry input {
+  padding: 0 0.8rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.public-signer-check-row {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: start;
+  margin: 0.72rem 0;
+  color: var(--signer-text-soft);
+  line-height: 1.5;
+}
+
+.public-signer-check-row input {
+  width: 1.16rem;
+  height: 1.16rem;
+  min-height: 0;
+  margin-top: 0.12rem;
+  accent-color: var(--signer-accent);
+}
+
+.public-signer-signature-field {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+
+.public-signer-signature-field > span {
+  color: var(--signer-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.public-signer-signature-field input {
+  padding: 0 0.82rem;
+}
+
+.public-signer-submit {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.public-signer-confirm-card.is-locked {
+  opacity: 0.8;
+}
+
+.public-signer-fine {
+  color: var(--signer-muted) !important;
+  font-size: 0.76rem;
+}
+
+.public-signer-download,
+.public-signer-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.public-signer-download {
+  width: 100%;
+  margin: 0.75rem 0 0.35rem;
+}
+
+.public-signer-home-link {
+  margin-top: 0.5rem;
+  color: var(--signer-accent-soft);
+}
+
+.public-signer-complete-card {
+  text-align: center;
+}
+
+.public-signer-success-mark {
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: 0 auto 0.9rem;
+  border: 1px solid rgba(var(--signer-accent-rgb), 0.4);
+  border-radius: 50%;
+  color: var(--signer-accent-soft);
+  background: rgba(var(--signer-accent-rgb), 0.12);
+  font-size: 1.55rem;
+}
+
+.public-signer-loading-card {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  min-height: 7rem;
+}
+
+.public-signer-loading-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--signer-accent);
+  box-shadow: 0 0 0 0 rgba(var(--signer-accent-rgb), 0.45);
+  animation: public-signer-pulse 1.5s ease-out infinite;
+}
+
+@keyframes public-signer-pulse {
+  70% {
+    box-shadow: 0 0 0 0.65rem rgba(var(--signer-accent-rgb), 0);
+  }
+}
+
+@media (min-width: 44rem) {
+  .public-signer-shell {
+    padding-top: max(1.5rem, env(safe-area-inset-top));
+  }
+
+  .public-signer-brand-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .public-signer-theme-picker {
+    min-width: 16rem;
+  }
+
+  .public-signer-hero,
+  .public-signer-card {
+    padding: 1.35rem 1.45rem;
+  }
+
+  .public-signer-agreement-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .public-signer-share-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .public-signer-shell {
+    width: min(100%, 70rem);
+    padding-top: 2rem;
+  }
+
+  .public-signer-hero,
+  .public-signer-card {
+    border-radius: 1.2rem;
+  }
+
+  .public-signer-agreement-text {
+    padding-right: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-signer-loading-dot {
+    animation: none;
+  }
+}
