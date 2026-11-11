@@ -3,11 +3,14 @@ import {
   useState,
 } from "react";
 
+import { ProvenanceBadge } from "@hiplingo/media-player";
+
 import {
   getMediaUrl,
   formatPublicDate,
   getReleaseArtworkPath,
   getReleaseDate,
+  getReleaseProvenance,
   getReleaseType,
 } from "../lib/mediaCatalog";
 import {
@@ -313,6 +316,11 @@ export default function ArtistDetail({
                   <ArtistReleaseArtwork
                     catalog={catalog}
                     release={release}
+                  />
+                  <ProvenanceBadge
+                    provenance={getReleaseProvenance(release)}
+                    surface="artwork"
+                    className="hiplingo-card-provenance"
                   />
 
                   <span className="hiplingo-artist-release__copy">

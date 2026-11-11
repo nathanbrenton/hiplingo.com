@@ -1,3 +1,9 @@
+import {
+  resolveReleaseProvenance,
+  resolveTrackProvenance,
+  type ResolvedProvenance,
+} from "@hiplingo/media-player";
+
 import type {
   CatalogRelease,
   CatalogTrack,
@@ -861,6 +867,33 @@ export function getReleaseDescription(
 ): string | null {
   return getStringValue(
     release.metadata.resolved.release?.description,
+  );
+}
+
+/*
+ * Creative provenance (Human / Some AI / AI) is authored in metadata-editor
+ * as `provenance.origin` on the release and optionally on each track. The
+ * shared resolver owns inheritance and the release summary rule; untagged
+ * media resolves to null and shows no bubble.
+ */
+export function getTrackProvenance(
+  release: CatalogRelease,
+  track: CatalogTrack,
+): ResolvedProvenance | null {
+  return resolveTrackProvenance(
+    track.metadata.resolved.track,
+    release.metadata.resolved.release,
+  );
+}
+
+export function getReleaseProvenance(
+  release: CatalogRelease,
+): ResolvedProvenance | null {
+  return resolveReleaseProvenance(
+    release.metadata.resolved.release,
+    release.tracks.map(
+      (track) => track.metadata.resolved.track,
+    ),
   );
 }
 

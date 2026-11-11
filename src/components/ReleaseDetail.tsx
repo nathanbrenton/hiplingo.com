@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ProvenanceBadge } from "@hiplingo/media-player";
 import type { PlaybackStateSnapshot } from "./AudioPlayer";
 import type { CatalogRelease, MediaCatalog } from "../types/MediaCatalog";
 import {
@@ -10,9 +11,11 @@ import {
   getReleaseArtworkPath,
   getReleaseDate,
   getReleaseDescription,
+  getReleaseProvenance,
   getReleaseType,
   getTrackArtist,
   getTrackKey,
+  getTrackProvenance,
 } from "../lib/mediaCatalog";
 
 type ReleaseDetailProps = {
@@ -198,6 +201,7 @@ export default function ReleaseDetail({
   const date = formatPublicDate(getReleaseDate(release));
   const type = getReleaseType(release);
   const description = getReleaseDescription(release);
+  const releaseProvenance = getReleaseProvenance(release);
   const playableTracks = release.tracks.filter(
     (track) => track.playable,
   );
@@ -286,6 +290,20 @@ export default function ReleaseDetail({
                 .join(" · ")}
             </p>
 
+            {releaseProvenance ? (
+              <p className="hiplingo-release-detail__provenance">
+                <ProvenanceBadge
+                  provenance={releaseProvenance}
+                  variant="full"
+                  surface="artwork"
+                />
+                <span>
+                  {releaseProvenance.note ??
+                    releaseProvenance.description}
+                </span>
+              </p>
+            ) : null}
+
             {playableTrackKeys.length === 0 ? (
               <span className="hiplingo-release-detail__unavailable">No playable tracks published.</span>
             ) : null}
@@ -322,6 +340,11 @@ export default function ReleaseDetail({
                     <strong>{track.title}</strong>
                     {trackArtist !== artist ? <small>{trackArtist}</small> : null}
                   </span>
+                  <ProvenanceBadge
+                    provenance={getTrackProvenance(release, track)}
+                    surface="artwork"
+                    className="hiplingo-release-track__provenance"
+                  />
                   <span className="hiplingo-release-track__status">Unavailable</span>
                 </div>
               );
@@ -407,6 +430,11 @@ export default function ReleaseDetail({
                   <strong>{track.title}</strong>
                   {trackArtist !== artist ? <small>{trackArtist}</small> : null}
                 </button>
+                <ProvenanceBadge
+                  provenance={getTrackProvenance(release, track)}
+                  surface="artwork"
+                  className="hiplingo-release-track__provenance"
+                />
                 <span className="hiplingo-release-track__runtime">
                   {formatPublicRuntime(
                     trackDurationSecondsById[track.id],

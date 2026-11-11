@@ -5,6 +5,7 @@ import App from "./App";
 import PublicSigner from "./components/PublicSigner";
 import "./index.css";
 import "@hiplingo/media-player/compact-now-playing-bar.css";
+import "@hiplingo/media-player/provenance-badge.css";
 import "./components/compact-now-playing-host.css";
 
 const rootElement = document.getElementById("root");

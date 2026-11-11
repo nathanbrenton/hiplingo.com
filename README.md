@@ -545,3 +545,13 @@ The public signer uses only the deliberately anonymous Rights API surface under 
 The signer is mobile-first and dark by default. Purple is the default appearance, with Gray and Blue alternatives. `?theme=purple`, `?theme=gray`/`grey`, and `?theme=blue` are supported; the selection is remembered locally under the shared `hiplingo-theme` key. The signer continues to mirror the legacy local Rights-signer key during transition so local testing remains visually consistent.
 
 Production still requires the restricted nginx/API boundary documented by `record-label/licensing/docs/PRODUCTION_SECURITY_BOUNDARY.md`; adding this route to the public frontend does not make the private Rights Console deployable.
+
+## Creative provenance bubbles
+
+Release cards, Artist release cards, release pages, track rows, and the
+Now Playing dock show a **Human**, **Some AI**, or **AI** bubble when
+metadata-editor has published `metadata.provenance.origin` for the release or
+track. `getTrackProvenance()` / `getReleaseProvenance()` in
+`src/lib/mediaCatalog.ts` delegate to the shared resolver in
+`@hiplingo/media-player`; the site holds no provenance vocabulary of its own.
+Untagged media shows no bubble.

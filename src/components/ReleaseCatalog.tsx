@@ -1,3 +1,5 @@
+import { ProvenanceBadge } from "@hiplingo/media-player";
+
 import type { CatalogRelease, MediaCatalog } from "../types/MediaCatalog";
 import {
   getMediaUrl,
@@ -5,6 +7,7 @@ import {
   getReleaseArtist,
   getReleaseArtworkPath,
   getReleaseDate,
+  getReleaseProvenance,
   getReleaseType,
 } from "../lib/mediaCatalog";
 
@@ -96,6 +99,11 @@ export default function ReleaseCatalog({
                 onClick={() => onOpenRelease(release.id)}
               >
                 <ReleaseArtwork release={release} catalog={catalog} />
+                <ProvenanceBadge
+                  provenance={getReleaseProvenance(release)}
+                  surface="artwork"
+                  className="hiplingo-card-provenance"
+                />
 
                 <span className="hiplingo-release-card__copy">
                   <strong>{release.title}</strong>

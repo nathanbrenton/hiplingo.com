@@ -39,6 +39,7 @@ import {
   useMediaElementPlaybackEvents,
   useMediaSourceSession,
   usePersistentMediaElement,
+  ProvenanceBadge,
 } from "@hiplingo/media-player";
 
 import CompactWaveformCanvas from "./CompactWaveformCanvas";
@@ -65,6 +66,7 @@ import {
   getTrackKey,
   getTrackPlaybackPath,
   getTrackPlaybackProtocol,
+  getTrackProvenance,
 } from "../lib/mediaCatalog";
 
 let hlsModulePromise: Promise<typeof import("hls.js")> | null = null;
@@ -2790,10 +2792,21 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
           ) : undefined
         }
         detail={
-          selectedTrack
-            ? getReleaseDate(selectedTrack.release)
-                ?.match(/^\d{4}/)?.[0] ?? ""
-            : ""
+          selectedTrack ? (
+            <>
+              {getReleaseDate(selectedTrack.release)
+                ?.match(/^\d{4}/)?.[0] ?? ""}
+              <ProvenanceBadge
+                provenance={getTrackProvenance(
+                  selectedTrack.release,
+                  selectedTrack.track,
+                )}
+                className="hiplingo-now-playing-dock__provenance"
+              />
+            </>
+          ) : (
+            ""
+          )
         }
         controller={{
           transport: {
