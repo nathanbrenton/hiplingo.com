@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 async function source(relativePath) {
@@ -56,7 +58,7 @@ test("Artist detail keeps only the Discography kicker", async () => {
 });
 
 test("Artist information cards are neutral and highly translucent", async () => {
-  const css = await source("src/index.css");
+  const css = await readSiteStyles();
   const start = css.indexOf("Mobile / Artist / compact-footer polish v2");
   assert.notEqual(start, -1);
   const contract = css.slice(start);

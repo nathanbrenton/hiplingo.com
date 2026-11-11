@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -30,10 +32,7 @@ test("hidden Developer Mode gesture is not disclosed by a tooltip", async () => 
 });
 
 test("Waveform Color card keeps one surface while a child control has focus", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Settings preview focus stability + hidden developer gesture",

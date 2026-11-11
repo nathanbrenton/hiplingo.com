@@ -4,8 +4,9 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const cssPath = path.join(projectRoot, "src/index.css");
 const assets = [
   "hiplingo-listen-background-desktop.webp",
   "hiplingo-listen-background-mobile-landscape.webp",
@@ -13,7 +14,7 @@ const assets = [
 ];
 
 test("selects dedicated Listen background assets for desktop and both mobile orientations", async () => {
-  const css = await readFile(cssPath, "utf8");
+  const css = await readSiteStyles();
   for (const asset of assets) {
     const info = await stat(path.join(projectRoot, "public/brand", asset));
     assert.ok(info.isFile());
@@ -28,7 +29,7 @@ test("selects dedicated Listen background assets for desktop and both mobile ori
 });
 
 test("keeps mobile background compositor work to the moving backplate", async () => {
-  const css = await readFile(cssPath, "utf8");
+  const css = await readSiteStyles();
   const mobileStart = css.indexOf("Responsive Listen backgrounds");
   const reducedMotionStart = css.indexOf("@media (prefers-reduced-motion: reduce)", mobileStart);
   assert.ok(mobileStart >= 0);

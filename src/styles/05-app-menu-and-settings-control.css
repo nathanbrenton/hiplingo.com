@@ -1,0 +1,907 @@
+/*
+ * The Waveform Color card itself remains visually static. Hover
+ * feedback belongs exclusively to the select bubble.
+ */
+.settings-control:has(
+  .settings-control__waveform-preview
+),
+.settings-control:has(
+  .settings-control__waveform-preview
+):hover,
+.settings-control:has(
+  .settings-control__waveform-preview
+):focus-within {
+  border-color: #303030;
+  background: #181818;
+  box-shadow: none;
+}
+
+/* Only the actual dropdown receives hover feedback. */
+.settings-control:has(
+  .settings-control__waveform-preview
+) select {
+  border-color: #454545;
+  background-color: #202020;
+}
+
+.settings-control:has(
+  .settings-control__waveform-preview
+) select:hover {
+  border-color: #5b5b5b;
+  background-color: #252525;
+}
+
+/*
+ * Waveform dragging keeps the select in its normal non-hover state,
+ * regardless of where the captured pointer moves.
+ */
+
+/* ---------------------------------------------------------
+   Exact menu icon and landscape column separation
+   --------------------------------------------------------- */
+
+/*
+ * Draw the hamburger instead of relying on a font glyph. The middle
+ * line sits exactly on the button's vertical centerline.
+ */
+.app-menu > summary::before,
+.app-menu > summary::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  margin: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.app-menu > summary::before {
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow:
+    0 -7px 0 currentColor,
+    0 7px 0 currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.app-menu > summary::after {
+  display: none;
+}
+
+/*
+ * The open-state X uses two centered bars. Its intersection sits on
+ * the same geometric centerline as the hamburger's middle bar.
+ */
+.app-menu[open] > summary::before,
+.app-menu[open] > summary::after {
+  display: block;
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: none;
+}
+
+.app-menu[open] > summary::before {
+  transform:
+    translate(-50%, -50%)
+    rotate(45deg);
+}
+
+.app-menu[open] > summary::after {
+  transform:
+    translate(-50%, -50%)
+    rotate(-45deg);
+}
+
+/*
+ * The card is no longer a label. Only the dedicated text label and
+ * select participate in the dropdown's hover/focus relationship.
+ */
+.settings-control--waveform-color > label {
+  color: #cfcfcf;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: default;
+}
+
+.settings-control--waveform-color,
+.settings-control--waveform-color:hover,
+.settings-control--waveform-color:focus-within {
+  border-color: #303030;
+  background: #181818;
+  box-shadow: none;
+}
+
+.settings-control--waveform-color select {
+  border-color: #454545;
+  background-color: #202020;
+}
+
+.settings-control--waveform-color select:hover {
+  border-color: #5b5b5b;
+  background-color: #252525;
+}
+
+/*
+ * During playhead positioning, keep the dropdown completely neutral.
+ */
+
+
+/*
+ * Reserve real grid space between the artwork carousel and the main
+ * waveform column. Avoid visual transforms that allow their
+ * painted areas to overlap despite separate grid columns.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .player-layout {
+    grid-template-columns:
+      minmax(175px, 34vw)
+      minmax(0, 1fr);
+    column-gap: 22px;
+    padding-top: 14px;
+    padding-left:
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .artwork-panel {
+    width: 100%;
+    margin: 0;
+    transform: none;
+  }
+
+  /*
+   * Slightly narrow and right-align the waveform column,
+   * creating visible clearance beside the artwork and its controls.
+   */
+  .player-layout__main {
+    width: 94%;
+    min-width: 0;
+    justify-self: end;
+    transform: none;
+  }
+
+
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    grid-template-columns:
+      minmax(155px, 31vw)
+      minmax(0, 1fr);
+    column-gap: 18px;
+    padding-left:
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .artwork-panel {
+    transform: none;
+  }
+
+  .player-layout__main {
+    width: 93%;
+    transform: none;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Hamburger tail and landscape artwork containment
+   --------------------------------------------------------- */
+
+/* Hide the native details disclosure marker. */
+.app-menu > summary {
+  list-style: none;
+}
+
+.app-menu > summary::marker {
+  content: "";
+}
+
+.app-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+/*
+ * Reserve actual space at the mobile-landscape left edge without
+ * shifting the artwork outside its grid column.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .player-layout {
+    box-sizing: border-box;
+    padding-left:
+      max(
+        18px,
+        calc(env(safe-area-inset-left) + 10px)
+      );
+    padding-right:
+      max(
+        10px,
+        env(safe-area-inset-right)
+      );
+  }
+
+  .artwork-panel {
+    box-sizing: border-box;
+    width: calc(100% - 8px);
+    min-width: 0;
+    margin-left: 8px;
+    transform: none;
+  }
+
+  .player-layout__main {
+    min-width: 0;
+  }
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    padding-left:
+      max(
+        15px,
+        calc(env(safe-area-inset-left) + 8px)
+      );
+  }
+
+  .artwork-panel {
+    width: calc(100% - 6px);
+    margin-left: 6px;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Header status, Now Playing, and open-menu isolation
+   --------------------------------------------------------- */
+
+/*
+ * The literal + belongs to the underlying main-waveform zoom control.
+ * Hide the complete zoom layer while the hamburger is open so it
+ * cannot bleed through or appear beside the menu.
+ */
+.audio-player[data-menu-open="true"]
+  .waveform-panel__zoom-controls {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Ensure only the custom hamburger/X drawing is rendered. */
+.app-menu > summary > span {
+  display: none !important;
+}
+
+.app-menu > summary::marker {
+  content: "" !important;
+  font-size: 0 !important;
+}
+
+.app-menu > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+/*
+ * The header now communicates global player state instead of
+ * duplicating track metadata.
+ */
+
+/* Audiophile output status inherits the established warm palette. */
+
+/*
+ * Dynamic track metadata has one dedicated home immediately above
+ * the stable application footer.
+ */
+
+/*
+ * The footer remains the final stable row. Its auto margin still
+ * anchors the combined Now Playing/footer area on short pages.
+ */
+
+/* ---------------------------------------------------------
+   Playback-state and compact landscape repair
+   --------------------------------------------------------- */
+
+/*
+ * Remove all text and native marker rendering from the summary. The
+ * centered hamburger/X remains supplied by its CSS bars.
+ */
+.app-menu > summary {
+  overflow: hidden;
+  color: #f5f5f5;
+  font-size: 0;
+  text-indent: -9999px;
+  list-style-type: none !important;
+}
+
+.app-menu > summary::marker {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+  content: "" !important;
+  font-size: 0;
+}
+
+.app-menu > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+/*
+ * Use native details state as the definitive open-menu selector.
+ * This works even if React's mirrored state is one render behind.
+ */
+body:has(.app-menu[open])
+  .waveform-panel__zoom-controls,
+body:has(.app-menu[open])
+  .waveform-panel__zoom-button {
+  display: none !important;
+}
+
+/*
+ * Prevent other generic details/summary pseudo-elements from drawing
+ * disclosure symbols inside the application menu.
+ */
+.app-menu summary:not(.app-menu > summary)::before,
+.app-menu summary:not(.app-menu > summary)::after {
+  content: none;
+}
+
+/*
+ * Keep the current hamburger and X drawing box visible after hiding
+ * all textual and native summary content.
+ */
+.app-menu > summary::before,
+.app-menu > summary::after {
+  text-indent: 0;
+}
+
+/*
+ * The Now Playing region and footer are regular semantic regions.
+ * On short landscape screens they become one compact bottom stack so
+ * the complete player can remain visible without page scrolling.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .audio-player {
+    min-height:
+      calc(
+        100dvh -
+        max(16px, env(safe-area-inset-top)) -
+        max(16px, env(safe-area-inset-bottom))
+      );
+  }
+
+  .player-layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-top: 6px;
+  }
+
+}
+
+/*
+ * Extra-short landscape removes secondary Now Playing labels while
+ * retaining the actual track, artist, release, and footer information.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+
+  .audio-player__footer {
+    padding-top: 2px;
+  }
+}
+
+/*
+ * On desktop and portrait, the Now Playing region consumes remaining
+ * space above the footer rather than forcing the footer downward.
+ */
+
+/* ---------------------------------------------------------
+   Controlled menu and compact player actions
+   --------------------------------------------------------- */
+
+/*
+ * A regular button replaces details/summary, removing every native
+ * disclosure marker and its unexplained open-state plus glyph.
+ */
+
+/* Center the middle hamburger bar on the button centerline. */
+
+/*
+ * Undo the earlier temporary hiding rule. Zoom controls retain their
+ * previous appearance while the menu is open.
+ */
+.audio-player[data-menu-open="true"]
+  .waveform-panel__zoom-controls,
+.audio-player[data-menu-open="true"]
+  .waveform-panel__zoom-button {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Place track information beside the waveform current-time readout. */
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 899px) {
+
+
+  .player-layout {
+    padding-top: 3px;
+  }
+
+}
+
+/* ---------------------------------------------------------
+   Stable scrub status and centered landscape player
+   --------------------------------------------------------- */
+
+/*
+ * Metadata is a global track action, so place it in the header after
+ * the Player/Audio Output status rather than inside the waveform.
+ */
+
+/* The old waveform-overlay positioning must no longer apply. */
+
+/*
+ * Align the centerlines of the artwork carousel and waveform region.
+ * Both columns now center themselves on the same horizontal axis.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 899px) {
+  #root {
+    padding-top:
+      max(4px, env(safe-area-inset-top));
+    padding-bottom:
+      max(4px, env(safe-area-inset-bottom));
+  }
+
+  .player-layout {
+    align-items: center;
+    min-height: 0;
+    padding-top: 0;
+    row-gap: 2px;
+  }
+
+  /*
+   * Restore a predictable compact artwork size rather than filling
+   * the complete landscape grid column.
+   */
+  .artwork-panel {
+    position: static;
+    align-self: center;
+    justify-self: center;
+    width: min(82%, 168px);
+    max-width: 168px;
+    margin: 0;
+    transform: none;
+  }
+
+  .player-layout__main {
+    align-self: center;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .waveform-panel {
+    align-self: center;
+    justify-self: end;
+    width: 88%;
+    margin: 0;
+    --waveform-canvas-height: 132px;
+  }
+
+}
+
+/* Extra-short landscape uses an even smaller shared centerline. */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 899px) {
+  .artwork-panel {
+    width: min(78%, 148px);
+    max-width: 148px;
+  }
+
+  .waveform-panel {
+    width: 86%;
+    --waveform-canvas-height: 116px;
+  }
+
+
+}
+
+/* Desktop retains a compact metadata action beside Player status. */
+
+/* ---------------------------------------------------------
+   Now Playing metadata action and landscape balance
+   --------------------------------------------------------- */
+
+/*
+ * The metadata action replaces the former provenance/state bubble in
+ * the Now Playing region.
+ */
+
+/* Retire the former state-bubble layout completely. */
+
+
+/*
+ * The eyebrow alone identifies the metadata dialog. Removing the
+ * duplicate track title makes the modal header shorter.
+ */
+.metadata-viewer__header {
+  align-items: center;
+}
+
+.metadata-viewer__header > div {
+  display: flex;
+  align-items: center;
+}
+
+/*
+ * Increase landscape artwork halfway between the recently reduced
+ * size and its earlier oversized version. Portrait remains untouched.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 899px) {
+
+  .artwork-panel {
+    width: min(86%, 180px);
+    max-width: 180px;
+  }
+
+
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 899px) {
+  .artwork-panel {
+    width: min(82%, 158px);
+    max-width: 158px;
+  }
+}
+
+/* Narrow portrait keeps the validated portrait geometry. */
+
+
+/* Desktop can retain its established deferred layout behavior. */
+
+/* ---------------------------------------------------------
+   Pre-milestone responsive player balance
+   --------------------------------------------------------- */
+
+/*
+ * Mobile portrait keeps its validated artwork dimensions while making
+ * the waveform approximately ten percent shallower.
+ */
+@media (
+  orientation: portrait
+) and (max-width: 899px) {
+  .waveform-panel {
+    --waveform-canvas-height: 90%;
+  }
+}
+
+/*
+ * Some waveform implementations expect a concrete length rather than
+ * a percentage custom property. Use a viewport-aware cap as the final
+ * portrait value while retaining enough room for zoom and time overlays.
+ */
+@media (
+  orientation: portrait
+) and (max-width: 639px) {
+  .waveform-panel {
+    --waveform-canvas-height:
+      clamp(
+        144px,
+        28dvh,
+        198px
+      );
+  }
+}
+
+@media (
+  orientation: portrait
+) and (min-width: 640px) and (max-width: 899px) {
+  .waveform-panel {
+    --waveform-canvas-height:
+      clamp(
+        162px,
+        27dvh,
+        216px
+      );
+  }
+}
+
+/*
+ * In mobile landscape, size the artwork from the available column
+ * rather than applying another visual translation.
+ *
+ * Responsive inline cushions:
+ * - prevent the side artwork and controls from touching the viewport
+ * - preserve the validated gap beside the waveform
+ * - allow the center artwork to grow when sufficient room exists
+ *
+ * The maximum width prevents the carousel from consuming the vertical
+ * room reserved for Now Playing and the footer.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 899px) {
+  .artwork-panel {
+    width:
+      min(
+        calc(
+          100% -
+          clamp(10px, 3vw, 22px) -
+          clamp(6px, 1.5vw, 14px)
+        ),
+        204px
+      );
+    max-width: 204px;
+    margin-left:
+      clamp(10px, 3vw, 22px);
+    margin-right:
+      clamp(6px, 1.5vw, 14px);
+  }
+
+  /*
+   * The artwork stack remains square. Raising this cap increases the
+   * complete artwork/slider region without changing swipe geometry.
+   */
+  .artwork-stack {
+    width: 100%;
+    max-width: 204px;
+  }
+}
+
+/*
+ * Very short landscape screens receive a smaller cap so the artwork
+ * can grow relative to the previous build without forcing the footer
+ * below the viewport.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 899px) {
+  .artwork-panel {
+    width:
+      min(
+        calc(
+          100% -
+          clamp(9px, 2.5vw, 18px) -
+          clamp(5px, 1vw, 10px)
+        ),
+        178px
+      );
+    max-width: 178px;
+    margin-left:
+      clamp(9px, 2.5vw, 18px);
+    margin-right:
+      clamp(5px, 1vw, 10px);
+  }
+
+  .artwork-stack {
+    max-width: 178px;
+  }
+}
+
+/*
+ * Restore breathing room to the Now Playing region without returning
+ * to the original tall layout.
+ */
+
+/*
+ * Separate dynamic Now Playing information from the stable application
+ * footer so the two regions do not read as one compressed block.
+ */
+
+
+/* Portrait gets slightly more breathing room than before. */
+
+
+/*
+ * Landscape stays compact enough for the viewport, but no longer uses
+ * the highly compressed typography from the prior refinement.
+ */
+
+
+/*
+ * Extra-short landscape keeps the content readable but trims only the
+ * least important spacing.
+ */
+
+
+/* ---------------------------------------------------------
+   Desktop full-width Now Playing waveform
+   --------------------------------------------------------- */
+
+/*
+ * The waveform is desktop-only for this layout pass. Mobile retains
+ * its established compact Now Playing presentation.
+ */
+
+
+/*
+ * Break the bottom region out of the centered 1000px player column
+ * while preserving the root's 20px desktop viewport gutters.
+ */
+
+
+/* Desktop Now Playing transport controls */
+
+/* Keep every desktop Now Playing grid item on one aligned row. */
+
+
+/* Keep every desktop Now Playing grid item on one aligned row. */
+
+
+/* Keep all desktop Now Playing sections in one grid row. */
+
+
+/* Final desktop Now Playing six-column layout */
+
+/* Responsive desktop current-track bar */
+
+
+/*
+ * Narrow desktop keeps every essential grid item in one row.
+ * Only the optional full-track waveform is removed.
+ */
+
+
+/* ---------------------------------------------------------
+   Final responsive Now Playing layout states
+   --------------------------------------------------------- */
+
+/*
+ * These rules intentionally appear last so they override temporary
+ * layout experiments without altering playback or seek behavior.
+ */
+
+/* Shared desktop presentation for the newly added grid items. */
+
+
+/*
+ * Wide Desktop and Standard Desktop:
+ * Artwork | Identity | Time | Waveform | Transport | Metadata
+ */
+
+
+/* Wide Desktop receives additional waveform and identity space. */
+
+
+/*
+ * Compact Desktop:
+ *
+ * Row 1: Waveform
+ * Row 2: Artwork | Identity | Time | Transport | Metadata
+ */
+
+
+/*
+ * Narrow Viewport on a desktop-class pointing device:
+ *
+ * Row 1: Previous | Play | Waveform | Next
+ * Row 2: Artwork | Identity | Time | Metadata
+ *
+ * Existing touch/mobile layouts remain unchanged.
+ */
+
+/* Keep compact and narrow Now Playing artwork intentionally small. */
+
+/* ---------------------------------------------------------
+   Consistent Now Playing transport appearance
+   --------------------------------------------------------- */
+
+/*
+ * Apply the same compact circular transport treatment in:
+ * - wide desktop
+ * - standard desktop
+ * - compact desktop
+ * - narrow desktop viewport
+ */
+
+
+/* Let the narrow-layout waveform consume all space between controls. */
+
+
+/* ---------------------------------------------------------
+   Now Playing perceptual volume control
+   --------------------------------------------------------- */
+
+/*
+ * The narrow desktop layout splits transport around the waveform.
+ * Volume joins Next in the right-side partial transport cluster.
+ */
+
+/* Keep the rotated volume slider inside its popup card. */
+
+/* Full-height volume popup slider */
+
+
+/*
+ * The rotated range uses nearly the complete inner height while its
+ * horizontal layout box remains centered inside the popup.
+ */
+
+
+/* The spacer used by the earlier grid layout is no longer needed. */
+
+/* Use a native vertical range so the track fills the popup height. */
+
+/* Firefox vertical-range sizing. */
+
+
+/* Cross-browser full-height volume slider */
+
+
+/*
+ * The wrapper owns the full vertical travel area. The ordinary
+ * horizontal range is rotated inside it for consistent browser support.
+ */
+
+/*
+ * The global input max-width rule would shrink this horizontal range
+ * before rotation. Preserve its full length inside the vertical popup.
+ */
+
+
+/* ---------------------------------------------------------
+   Preserve track-identity space in compact desktop layouts
+   --------------------------------------------------------- */
+
+/*
+ * Compact Desktop:
+ * Keep artwork, time, transport, and metadata intrinsic while the
+ * identity block consumes the remaining width.
+ */
+
+
+/*
+ * Narrow desktop viewport:
+ *
+ * Row 1:
+ * Previous | Play | Waveform | Next | Volume
+ *
+ * Row 2:
+ * Artwork | Identity spanning two columns | Time | Metadata
+ *
+ * Spanning the identity across the former Play and Waveform columns
+ * prevents it from being constrained to a transport-button width.
+ */
+
+
+/* ---------------------------------------------------------
+   Mobile Now Playing responsive layout states
+   --------------------------------------------------------- */
+
+/*
+ * Shared mobile presentation:
+ * expose the artwork, time, waveform, transport, volume, and metadata
+ * items that were introduced for the desktop Now Playing region.
+ */
+
+
+/*
+ * Mobile portrait mirrors the Narrow Viewport desktop state.
+ *
+ * Row 1:
+ * Previous | Play | Waveform | Next | Volume
+ *
+ * Row 2:
+ * Artwork | Track Identity | Elapsed / Total | Metadata
+ */
+

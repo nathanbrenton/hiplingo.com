@@ -359,7 +359,7 @@ src/components/LibraryBrowser.tsx
 ../packages/media-player/src/OscilloscopeCanvas.tsx
 ../packages/media-player/src/useMediaElementAnalyser.ts
 src/components/MetadataViewer.tsx
-src/index.css
+src/index.css        (ordered @imports of src/styles/*.css)
 vite.config.mjs
 src/lib/mediaCatalog.ts
 docs/runbooks/start-app.md
@@ -565,3 +565,11 @@ one request; entries without `documents` (older catalogs) fall back to the
 per-release files. `tests/media-catalog-behaviour.test.mjs` runs the real
 loader against an in-memory published-media tree — prefer that style over
 source-text assertions for new tests.
+
+## Stylesheet layout
+
+`src/index.css` is an ordered list of `@import`s for the parts in
+`src/styles/`. The parts are the original stylesheet cut at section
+boundaries, so import order is cascade order: later parts override earlier
+ones. The built CSS is byte-identical to the single-file version. Tests read
+the combined stylesheet through `tests/support/site-styles.mjs`.

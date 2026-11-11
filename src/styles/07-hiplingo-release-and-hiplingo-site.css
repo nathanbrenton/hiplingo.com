@@ -1,0 +1,1092 @@
+/* ---------------------------------------------------------
+   Stable late-Standard artwork transition
+   --------------------------------------------------------- */
+
+/*
+ * Standard Desktop keeps the established artwork geometry.
+ * Neutralize earlier experiments that resized the grid, padded the
+ * artwork panel, or moved individual carousel layers independently.
+ */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .player-layout {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0;
+
+    grid-template-columns:
+      minmax(280px, 360px)
+      minmax(0, 1fr);
+
+    gap: 64px;
+  }
+
+  .artwork-panel {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    transform: none !important;
+  }
+
+  .artwork-stack {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+
+    /*
+     * Restore the normal desktop resting displacement. Do not alter
+     * one side of the stack independently during responsive resizing.
+     */
+    --standard-side-displacement: 48%;
+  }
+
+  .artwork-stack
+    .artwork-stack__item--previous {
+    transform:
+      translate(
+        calc(
+          -50% -
+          (
+            (1 - var(--artwork-previous-progress)) *
+            48%
+          )
+        ),
+        -50%
+      )
+      rotate(
+        calc(
+          (var(--artwork-previous-progress) - 1) *
+          5deg
+        )
+      )
+      scale(
+        calc(
+          0.82 +
+          (var(--artwork-previous-progress) * 0.18)
+        )
+      ) !important;
+  }
+
+  .artwork-stack
+    .artwork-stack__item--next {
+    transform:
+      translate(
+        calc(
+          -50% +
+          (
+            (1 - var(--artwork-next-progress)) *
+            48%
+          )
+        ),
+        -50%
+      )
+      rotate(
+        calc(
+          (1 - var(--artwork-next-progress)) *
+          5deg
+        )
+      )
+      scale(
+        calc(
+          0.82 +
+          (var(--artwork-next-progress) * 0.18)
+        )
+      ) !important;
+  }
+
+  .artwork-stack__item--far-previous {
+    transform:
+      translate(-22%, -50%)
+      rotate(-8deg)
+      scale(0.68) !important;
+  }
+
+  .artwork-stack__item--far-next {
+    transform:
+      translate(22%, -50%)
+      rotate(8deg)
+      scale(0.68) !important;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 88% !important;
+    left: auto !important;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto !important;
+    left: 88% !important;
+  }
+}
+
+/*
+ * Only the final portion of Standard needs additional viewport
+ * clearance. Move the complete carousel—not its individual covers.
+ *
+ * 1280px and wider: no movement.
+ * 1200px: 28px inward, matching the existing Compact layout.
+ */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .artwork-panel {
+    transform:
+      translateX(
+        calc(
+          (1280px - 100vw) * 0.35
+        )
+      ) !important;
+  }
+}
+
+/*
+ * Lock the endpoints to prevent rounding or scrollbar-width effects
+ * from creating a one-frame breakpoint jump.
+ */
+@media (min-width: 1280px) and (max-width: 1399px) {
+  .artwork-panel {
+    transform: none !important;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1200px) {
+  .artwork-panel {
+    transform: translateX(28px) !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Final pre-reflow desktop artwork clearance
+   --------------------------------------------------------- */
+
+/*
+ * The desktop player remains two columns through 900px. During the
+ * final 100px before the layout reflows, progressively increase the
+ * complete artwork panel's inward offset.
+ *
+ * 1000px: established 28px offset
+ * 900px:  52px offset
+ *
+ * The individual covers retain their normal relative positions.
+ */
+@media (min-width: 900px) and (max-width: 999px) {
+  .artwork-panel {
+    transform:
+      translateX(
+        calc(
+          28px +
+          ((1000px - 100vw) * 0.24)
+        )
+      ) !important;
+  }
+}
+
+/*
+ * Prevent earlier Standard experiments from affecting this final
+ * pre-reflow interval.
+ */
+@media (min-width: 900px) and (max-width: 999px) {
+  .player-layout {
+    padding-left: 0;
+  }
+
+  .artwork-panel {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artwork-stack {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 88% !important;
+    left: auto !important;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto !important;
+    left: 88% !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Unified Compact Desktop artwork and waveform layout
+   --------------------------------------------------------- */
+
+/*
+ * Use one stable responsive layout throughout 900–1199px.
+ *
+ * Earlier rules combined a large artwork column with visual
+ * translations. Since transforms do not affect grid calculations,
+ * the carousel could move over the waveform before the final reflow.
+ *
+ * This version reserves real layout space instead.
+ */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .player-layout {
+    /*
+     * Preserve increasing left-side carousel clearance as the
+     * viewport approaches the narrow-desktop reflow.
+     */
+    --compact-artwork-gutter:
+      clamp(
+        28px,
+        calc(
+          28px +
+          ((1200px - 100vw) * 0.08)
+        ),
+        52px
+      );
+
+    /*
+     * Keep the smaller artwork size for this complete range.
+     * The waveform receives every remaining pixel.
+     */
+    grid-template-columns:
+      minmax(
+        210px,
+        clamp(
+          210px,
+          25vw,
+          280px
+        )
+      )
+      minmax(0, 1fr);
+
+    gap:
+      clamp(
+        38px,
+        5vw,
+        64px
+      );
+
+    width: 100%;
+    max-width: 100%;
+    padding-right: 0;
+    padding-left: var(--compact-artwork-gutter);
+    align-items: start;
+  }
+
+  /*
+   * Grid padding—not translation—moves the entire artwork region.
+   * This ensures the waveform can never occupy the same space.
+   */
+  .artwork-panel {
+    position: sticky;
+    top: 20px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    transform: none !important;
+  }
+
+  .artwork-stack {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .player-layout__main {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .waveform-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  /*
+   * Restore the established carousel relationship. Individual covers
+   * do not move independently during responsive resizing.
+   */
+  .artwork-stack
+    .artwork-stack__item--previous {
+    transform:
+      translate(
+        calc(
+          -50% -
+          (
+            (1 - var(--artwork-previous-progress)) *
+            48%
+          )
+        ),
+        -50%
+      )
+      rotate(
+        calc(
+          (var(--artwork-previous-progress) - 1) *
+          5deg
+        )
+      )
+      scale(
+        calc(
+          0.82 +
+          (var(--artwork-previous-progress) * 0.18)
+        )
+      ) !important;
+  }
+
+  .artwork-stack
+    .artwork-stack__item--next {
+    transform:
+      translate(
+        calc(
+          -50% +
+          (
+            (1 - var(--artwork-next-progress)) *
+            48%
+          )
+        ),
+        -50%
+      )
+      rotate(
+        calc(
+          (1 - var(--artwork-next-progress)) *
+          5deg
+        )
+      )
+      scale(
+        calc(
+          0.82 +
+          (var(--artwork-next-progress) * 0.18)
+        )
+      ) !important;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 88% !important;
+    left: auto !important;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto !important;
+    left: 88% !important;
+  }
+}
+
+
+/* Disable browser-level pinch zoom while preserving panning. */
+html,
+body,
+#root {
+  touch-action: pan-x pan-y;
+}
+
+/*
+ * The interactive waveform owns gestures that begin on its surface.
+ * Existing waveform pointer handling continues to manage scrubbing.
+ */
+.waveform-panel,
+.waveform-panel canvas {
+  touch-action: none;
+}
+
+
+/* =========================================================
+   Hiplingo public web application shell
+   ========================================================= */
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(72, 111, 132, 0.12), transparent 34rem),
+    #0d0d0d;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.hiplingo-site-shell {
+  min-height: 100vh;
+}
+
+.hiplingo-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(13, 13, 13, 0.94);
+  backdrop-filter: blur(16px);
+}
+
+.hiplingo-site-brand {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 9px;
+  color: #f4f4f4;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.hiplingo-site-brand img {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.hiplingo-site-nav {
+  display: flex;
+  gap: 4px;
+  margin-inline: -4px;
+  padding: 0 4px 2px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.hiplingo-site-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.hiplingo-site-nav a {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border-radius: 999px;
+  color: #8c8c8c;
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hiplingo-site-nav a:hover,
+.hiplingo-site-nav a:focus-visible,
+.hiplingo-site-nav a[aria-current="page"] {
+  color: #edf8fe;
+  background: rgba(83, 134, 160, 0.16);
+}
+
+.hiplingo-site-nav a:focus-visible,
+.hiplingo-site-brand:focus-visible,
+.hiplingo-feature-card:focus-visible,
+.hiplingo-button:focus-visible,
+.hiplingo-site-footer a:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 2px;
+}
+
+.hiplingo-page {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: clamp(36px, 9vw, 96px) 16px 56px;
+}
+
+.hiplingo-player-page {
+  padding: 16px 12px 0;
+}
+
+.hiplingo-player-page .audio-player {
+  width: min(100%, 1000px);
+}
+
+.hiplingo-kicker {
+  display: block;
+  margin-bottom: 10px;
+  color: #84a9bc;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hiplingo-hero {
+  max-width: 760px;
+  padding: clamp(24px, 7vw, 58px) 0 clamp(40px, 9vw, 86px);
+}
+
+.hiplingo-hero h1,
+.hiplingo-placeholder-card h1 {
+  margin: 0;
+  max-width: 12ch;
+  color: #f4f4f4;
+  font-size: clamp(2.6rem, 11vw, 6.2rem);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.hiplingo-hero > p {
+  max-width: 620px;
+  margin: 24px 0 0;
+  color: #a7a7a7;
+  font-size: clamp(1rem, 3.5vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.hiplingo-hero__actions,
+.hiplingo-placeholder-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.hiplingo-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #333333;
+  border-radius: 999px;
+  color: #d7d7d7;
+  background: #171717;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.hiplingo-button--primary {
+  border-color: #55788b;
+  color: #f5fbff;
+  background: #27414f;
+}
+
+.hiplingo-button:hover {
+  border-color: #627f8f;
+  background: #21313a;
+}
+
+.hiplingo-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #242424;
+  border-radius: 14px;
+  background: #242424;
+}
+
+.hiplingo-feature-card {
+  display: grid;
+  gap: 8px;
+  min-height: 168px;
+  padding: 22px;
+  color: inherit;
+  background: rgba(17, 17, 17, 0.96);
+  text-decoration: none;
+}
+
+.hiplingo-feature-card:hover {
+  background: #151a1d;
+}
+
+.hiplingo-feature-card > span {
+  color: #718692;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hiplingo-feature-card strong {
+  color: #e9e9e9;
+  font-size: 1rem;
+}
+
+.hiplingo-feature-card p,
+.hiplingo-placeholder-copy p {
+  margin: 0;
+  color: #8f8f8f;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.hiplingo-placeholder-page {
+  min-height: 66vh;
+}
+
+.hiplingo-placeholder-card {
+  max-width: 760px;
+  padding-top: clamp(24px, 7vw, 64px);
+}
+
+.hiplingo-placeholder-card h1 {
+  max-width: none;
+  font-size: clamp(2.4rem, 10vw, 5rem);
+}
+
+.hiplingo-placeholder-copy {
+  display: grid;
+  gap: 14px;
+  max-width: 620px;
+  margin-top: 24px;
+}
+
+.hiplingo-site-footer {
+  display: flex;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 16px 30px;
+  text-align: center;
+  border-top: 1px solid #222222;
+  color: #646464;
+  font-size: 0.7rem;
+}
+
+.hiplingo-site-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hiplingo-site-footer a {
+  color: #858585;
+  text-decoration: none;
+}
+
+.hiplingo-site-footer a:hover {
+  color: #d8d8d8;
+}
+
+/* The player already contains its own utility footer. On Hiplingo the
+ * application shell owns the public footer, so keep only player controls. */
+.hiplingo-player-page .audio-player__footer {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hiplingo-site-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    padding: 12px 20px;
+  }
+
+  .hiplingo-site-nav {
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hiplingo-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hiplingo-page {
+    padding-inline: 20px;
+  }
+
+  .hiplingo-player-page {
+    padding: 18px 20px 0;
+  }
+}
+
+@media (min-width: 980px) {
+  .hiplingo-feature-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hiplingo-site-nav a {
+    padding-inline: 11px;
+  }
+}
+
+/* Keep the player utility header below Hiplingo's public navigation when the
+ * player's desktop/narrow-desktop layouts pin that utility header. */
+.hiplingo-site-header {
+  z-index: 400;
+}
+
+/* =========================================================
+   Hiplingo H2 release discovery
+   ========================================================= */
+
+.hiplingo-catalog-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.hiplingo-catalog-heading h1 {
+  margin: 0;
+  color: #f4f4f4;
+  font-size: clamp(2.5rem, 12vw, 5.4rem);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.hiplingo-catalog-heading > p {
+  margin: 0;
+  color: #747474;
+  font-size: 0.74rem;
+}
+
+.hiplingo-catalog-state {
+  display: grid;
+  gap: 8px;
+  min-height: 180px;
+  align-content: center;
+  justify-items: start;
+  padding: 24px;
+  border: 1px solid #262626;
+  border-radius: 14px;
+  color: #8f8f8f;
+  background: rgba(17, 17, 17, 0.9);
+}
+
+.hiplingo-catalog-state strong {
+  color: #dedede;
+  font-size: 1rem;
+}
+
+.hiplingo-catalog-state span {
+  max-width: 580px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.hiplingo-catalog-state--error {
+  border-color: rgba(179, 102, 91, 0.42);
+}
+
+.hiplingo-release-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 12px;
+}
+
+.hiplingo-release-card {
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hiplingo-release-card__artwork,
+.hiplingo-release-detail__artwork {
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #272727;
+  background:
+    linear-gradient(145deg, rgba(92, 137, 159, 0.18), transparent 58%),
+    #151515;
+}
+
+.hiplingo-release-card__artwork {
+  border-radius: 10px;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+}
+
+.hiplingo-release-card:hover .hiplingo-release-card__artwork {
+  transform: translateY(-2px);
+  border-color: #4d6673;
+}
+
+.hiplingo-release-card__artwork img,
+.hiplingo-release-detail__artwork img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiplingo-release-artwork-fallback {
+  color: #66808d;
+  font-size: clamp(1.2rem, 8vw, 3rem);
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.hiplingo-release-card__copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 10px 2px 0;
+}
+
+.hiplingo-release-card__copy strong,
+.hiplingo-release-card__copy > span,
+.hiplingo-release-card__copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hiplingo-release-card__copy strong {
+  color: #ededed;
+  font-size: 0.9rem;
+}
+
+.hiplingo-release-card__copy > span {
+  color: #999999;
+  font-size: 0.76rem;
+}
+
+.hiplingo-release-card__copy small {
+  color: #626262;
+  font-size: 0.65rem;
+  text-transform: capitalize;
+}
+
+.hiplingo-release-card:focus-visible,
+.hiplingo-release-back:focus-visible,
+.hiplingo-release-track__title:focus-visible,
+.hiplingo-release-track__action:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 3px;
+}
+
+.hiplingo-release-detail-page {
+  padding-top: 26px;
+}
+
+.hiplingo-release-detail__masthead {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 20px;
+}
+
+.hiplingo-release-back {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 7px 0;
+  border: 0;
+  color: #879aa4;
+  background: transparent;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.hiplingo-release-back:hover {
+  color: #d9edf7;
+}
+
+.hiplingo-release-detail__masthead .hiplingo-release-detail__artist {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #aaa4b2;
+  font-size: 0.86rem;
+  font-weight: 680;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hiplingo-release-detail__hero {
+  display: grid;
+  gap: 26px;
+}
+
+.hiplingo-release-detail__artwork {
+  width: min(100%, 520px);
+  align-self: start;
+  border-radius: 14px;
+}
+
+button.hiplingo-release-detail__artwork--playable {
+  position: relative;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.hiplingo-release-detail__artwork-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 50%;
+  color: #ffffff;
+  background: rgba(9, 8, 14, 0.72);
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 140ms ease, background 140ms ease;
+  pointer-events: none;
+}
+
+button.hiplingo-release-detail__artwork--playable:hover
+  .hiplingo-release-detail__artwork-play,
+button.hiplingo-release-detail__artwork--playable:focus-visible
+  .hiplingo-release-detail__artwork-play {
+  opacity: 1;
+}
+
+button.hiplingo-release-detail__artwork--playable:hover
+  .hiplingo-release-detail__artwork-play {
+  background: rgba(45, 33, 65, 0.88);
+}
+
+button.hiplingo-release-detail__artwork--playable:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 3px;
+}
+
+.hiplingo-release-detail__intro {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.hiplingo-release-detail__copy {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.hiplingo-release-detail__now-playing-waveform-host {
+  display: none;
+}
+
+.hiplingo-release-detail__intro h1 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: clamp(2.4rem, 12vw, 5.2rem);
+  font-weight: 780;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
+  overflow-wrap: anywhere;
+}
+
+.hiplingo-release-detail__meta {
+  margin: 6px 0 22px;
+  color: #707070;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+.hiplingo-release-detail__unavailable {
+  color: #777777;
+  font-size: 0.76rem;
+}
+
+.hiplingo-release-detail__intro .hiplingo-button,
+.hiplingo-catalog-state .hiplingo-button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.hiplingo-release-tracklist {
+  margin-top: 42px;
+  border-top: 1px solid #252525;
+  padding-top: 24px;
+}
+
+.hiplingo-release-tracklist__heading {
+  margin-bottom: 12px;
+}
+
+.hiplingo-release-tracklist__heading h2 {
+  margin: 0;
+  color: #7fa8ba;
+  font-size: 0.68rem;
+  font-weight: 780;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hiplingo-release-tracklist__rows {
+  border-top: 1px solid #222222;
+}
+
+.hiplingo-release-track {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 8px 6px;
+  border: 0;
+  border-bottom: 1px solid #222222;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.hiplingo-release-track:not(.hiplingo-release-track--unavailable) {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hiplingo-release-track:not(.hiplingo-release-track--unavailable):hover {
+  border-bottom-color: rgba(219, 200, 255, 0.22);
+  background: rgba(169, 140, 255, 0.045);
+  box-shadow:
+    inset 0 1px 0 rgba(219, 200, 255, 0.08),
+    inset 0 -1px 0 rgba(219, 200, 255, 0.08);
+}
+
+.hiplingo-release-track[data-selected="true"] {
+  border-bottom-color: rgba(219, 200, 255, 0.25);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(169, 140, 255, 0.14),
+      rgba(97, 69, 137, 0.055)
+    );
+  box-shadow:
+    inset 3px 0 0 rgba(169, 140, 255, 0.48),
+    inset 0 1px 0 rgba(219, 200, 255, 0.12),
+    inset 0 -1px 0 rgba(219, 200, 255, 0.12);
+}
+
+.hiplingo-release-track[data-playing="true"] {
+  border-bottom-color: rgba(219, 200, 255, 0.34);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(169, 140, 255, 0.22),
+      rgba(97, 69, 137, 0.085)
+    );
+  box-shadow:
+    inset 3px 0 0 rgba(207, 191, 255, 0.72),
+    inset 0 1px 0 rgba(219, 200, 255, 0.18),
+    inset 0 -1px 0 rgba(219, 200, 255, 0.18);
+}

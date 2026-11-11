@@ -5,6 +5,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const testDirectory = path.dirname(
   fileURLToPath(import.meta.url),
 );
@@ -146,10 +148,7 @@ test("cold public routes keep the persistent player idle until explicit selectio
 
 
 test("docks the shared desktop transport to the viewport bottom on every route", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
   const hostCss = await readFile(
     path.join(
       projectRoot,
@@ -178,10 +177,7 @@ test("docks the shared desktop transport to the viewport bottom on every route",
 
 
 test("keeps compact Hiplingo routes scrollable on mobile", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -207,10 +203,7 @@ test("portals the shared audible-scrub waveform into desktop release heroes", as
     path.join(projectRoot, "src/components/ReleaseDetail.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(appSource, /releaseWaveformHost/);
   assert.match(appSource, /onNowPlayingWaveformHostChange=\{setReleaseWaveformHost\}/);
@@ -273,10 +266,7 @@ test("shares live playback state with release-page controls", async () => {
 
 
 test("puts desktop release-track transport before the track number", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -290,10 +280,7 @@ test("release track rows expose purple selected and playing interaction states",
     path.join(projectRoot, "src/components/ReleaseDetail.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(releaseSource, /useState<string \| null>\(playbackState\.trackKey\)/);
   assert.match(releaseSource, /data-selected=\{/);
@@ -345,10 +332,7 @@ test("Hiplingo site footer keeps Contact and removes the dead About link", async
     path.join(projectRoot, "src/App.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const footerStart = appSource.indexOf(
     'function SiteFooter()',
@@ -380,10 +364,7 @@ test("keeps release identity concise and emphasizes the persistent now-playing t
     path.join(projectRoot, "src/components/ReleaseDetail.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     releaseSource,
@@ -427,10 +408,7 @@ test("unifies Hiplingo navigation and player settings in one site header", async
 });
 
 test("keeps the global player dock above the metadata overlay", async () => {
-  const appStyles = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const appStyles = await readSiteStyles();
   const sharedMetadataStyles = await readFile(
     path.resolve(
       projectRoot,
@@ -543,10 +521,7 @@ test("top-anchors metadata and reserves the persistent player dock", async () =>
 });
 
 test("desktop full player keeps artwork and waveform on one centerline", async () => {
-  const styles = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const styles = await readSiteStyles();
 
   assert.match(
     styles,
@@ -563,10 +538,7 @@ test("removes Browse Library from every public header breakpoint", async () => {
     path.join(projectRoot, "src/App.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.doesNotMatch(appSource, /Browse Library|hiplingo-site-browse|onBrowseLibrary/);
   assert.doesNotMatch(css, /\.hiplingo-site-browse|\.library-sheet__/);
@@ -576,7 +548,7 @@ test("removes the retired multi-view Library implementation", async () => {
   const [playerSource, queueSource, css] = await Promise.all([
     readFile(path.join(projectRoot, "src/components/AudioPlayer.tsx"), "utf8"),
     readFile(path.join(projectRoot, "src/components/ListenTrackQueue.tsx"), "utf8"),
-    readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+    readSiteStyles(),
   ]);
 
   assert.doesNotMatch(playerSource, /LibraryBrowser|library-sheet__/);

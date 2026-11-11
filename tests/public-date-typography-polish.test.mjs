@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -73,10 +75,7 @@ test("catalog and artist roster kicker labels are removed while Artist year rang
 });
 
 test("small public metadata uses the baby-blue accent consistently", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Public small-text + date + hero-gradient polish",
@@ -108,10 +107,7 @@ test("small public metadata uses the baby-blue accent consistently", async () =>
 });
 
 test("full-bleed landing hero has a visible bottom gradient fade", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Public small-text + date + hero-gradient polish",

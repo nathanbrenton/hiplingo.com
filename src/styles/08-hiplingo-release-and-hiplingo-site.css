@@ -1,0 +1,932 @@
+/*
+ * Hover should never demote a selected or currently-playing row.
+ * Keep its state background and use hover only to brighten the row edges.
+ */
+.hiplingo-release-track[data-selected="true"]:hover {
+  border-bottom-color: rgba(219, 200, 255, 0.38);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(169, 140, 255, 0.14),
+      rgba(97, 69, 137, 0.055)
+    );
+  box-shadow:
+    inset 3px 0 0 rgba(169, 140, 255, 0.58),
+    inset 0 1px 0 rgba(231, 218, 255, 0.22),
+    inset 0 -1px 0 rgba(231, 218, 255, 0.22);
+}
+
+.hiplingo-release-track[data-playing="true"]:hover {
+  border-bottom-color: rgba(231, 218, 255, 0.48);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(169, 140, 255, 0.22),
+      rgba(97, 69, 137, 0.085)
+    );
+  box-shadow:
+    inset 3px 0 0 rgba(219, 207, 255, 0.82),
+    inset 0 1px 0 rgba(239, 229, 255, 0.3),
+    inset 0 -1px 0 rgba(239, 229, 255, 0.3);
+}
+
+.hiplingo-release-track__number {
+  color: #626262;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.hiplingo-release-track__title {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hiplingo-release-track__title strong,
+.hiplingo-release-track__title small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hiplingo-release-track__title strong {
+  color: #dcdcdc;
+  font-size: 0.82rem;
+  font-weight: 660;
+}
+
+.hiplingo-release-track__title small {
+  color: #767676;
+  font-size: 0.68rem;
+}
+
+.hiplingo-release-track__title:hover strong {
+  color: #eee8f5;
+}
+
+.hiplingo-release-track[data-selected="true"]
+  .hiplingo-release-track__number {
+  color: #b9a3ef;
+}
+
+.hiplingo-release-track[data-selected="true"]
+  .hiplingo-release-track__title strong {
+  color: #eee8fa;
+}
+
+.hiplingo-release-track[data-playing="true"]
+  .hiplingo-release-track__number {
+  color: #d0c0ff;
+}
+
+.hiplingo-release-track[data-playing="true"]
+  .hiplingo-release-track__title strong {
+  color: #fbf8ff;
+}
+
+.hiplingo-release-track[data-playing="true"]
+  .hiplingo-release-track__action {
+  border-color: rgba(207, 191, 255, 0.58);
+  background: rgba(169, 140, 255, 0.17);
+}
+
+.hiplingo-release-track__action {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  aspect-ratio: 1;
+  padding: 0;
+  place-items: center;
+  border: 1px solid #343434;
+  border-radius: 50%;
+  color: #b8d4e1;
+  background: transparent;
+  font: inherit;
+  font-size: 0.62rem;
+  cursor: pointer;
+}
+
+.hiplingo-release-track__action:hover {
+  border-color: #625579;
+  background: rgba(169, 140, 255, 0.11);
+}
+
+.hiplingo-release-track__status {
+  color: #666666;
+  font-size: 0.64rem;
+}
+
+.hiplingo-release-track--unavailable {
+  opacity: 0.58;
+}
+
+@media (min-width: 640px) {
+  .hiplingo-release-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px 18px;
+  }
+
+  .hiplingo-release-detail__hero {
+    grid-template-columns: minmax(260px, 0.86fr) minmax(0, 1.14fr);
+    align-items: stretch;
+  }
+
+  .hiplingo-release-track {
+    grid-template-columns: 46px 42px minmax(0, 1fr) auto;
+    min-height: 64px;
+    padding-inline: 10px;
+  }
+
+  .hiplingo-release-track__action {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .hiplingo-release-track__number {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .hiplingo-release-track__title {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .hiplingo-release-track__status {
+    grid-column: 4;
+    grid-row: 1;
+  }
+}
+
+@media (min-width: 980px) {
+  .hiplingo-release-detail__intro {
+    justify-content: space-between;
+    gap: 30px;
+    padding-block: 8px;
+  }
+
+  .hiplingo-release-detail__now-playing-waveform-host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hiplingo-release-now-playing {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .hiplingo-release-now-playing__identity {
+    display: flex;
+    min-width: 0;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .hiplingo-release-now-playing__identity span {
+    flex: 0 0 auto;
+    color: #7fa8ba;
+    font-size: 0.62rem;
+    font-weight: 780;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hiplingo-release-now-playing__identity strong {
+    overflow: hidden;
+    min-width: 0;
+    color: #f0edf4;
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+    font-weight: 740;
+    letter-spacing: -0.012em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hiplingo-release-now-playing__waveform {
+    --waveform-canvas-height: clamp(112px, 15vh, 150px);
+    width: 100%;
+    margin: 0;
+    border-color: #292b30;
+    background: #111116;
+  }
+
+  .hiplingo-release-now-playing__waveform-placeholder {
+    display: grid;
+    min-height: clamp(112px, 15vh, 150px);
+    place-items: center;
+    border: 1px solid #292b30;
+    border-radius: 8px;
+    color: #62646d;
+    background: #111116;
+    font-size: 0.7rem;
+  }
+
+  .hiplingo-release-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 22px;
+  }
+
+  .hiplingo-release-detail__hero {
+    gap: clamp(36px, 6vw, 74px);
+  }
+
+  .hiplingo-release-tracklist {
+    margin-top: 58px;
+  }
+}
+
+/* =========================================================
+   Hiplingo H4 persistent playback
+   ========================================================= */
+
+/* Keep the player component mounted at one stable shell position while
+ * routes switch between the expanded player and compact global transport. */
+.hiplingo-route-content {
+  display: contents;
+}
+
+.hiplingo-player-host--compact {
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* =========================================================
+   Hiplingo compact shared Now Playing host
+   ========================================================= */
+
+/* Desktop mirrors metadata-editor's flush viewport dock. Mobile keeps its
+ * existing safe-area inset treatment until the dedicated mobile milestone. */
+.audio-player[data-display-mode="compact"] {
+  position: fixed;
+  z-index: 1200;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: min(92rem, 100%);
+  max-width: none;
+  height: auto;
+  min-height: 0;
+  margin: 0 auto;
+  overflow: visible;
+  transform: none;
+}
+
+/* Keep the persistent playback engine mounted across routes while painting
+ * only the shared Now Playing dock and explicitly opened settings off /listen. */
+.audio-player[data-display-mode="compact"]
+  > :not(.hiplingo-now-playing-dock):not(.audio-player__settings-backdrop) {
+  display: none !important;
+}
+
+@media (min-width: 58.001rem) {
+  .hiplingo-site-shell:has(.hiplingo-now-playing-dock) {
+    padding-bottom:
+      max(
+        122px,
+        calc(104px + env(safe-area-inset-bottom))
+      );
+  }
+}
+
+@media (max-width: 58rem) {
+  .audio-player[data-display-mode="compact"] {
+    right: max(7px, env(safe-area-inset-right));
+    bottom: max(7px, env(safe-area-inset-bottom));
+    left: max(7px, env(safe-area-inset-left));
+    width: auto;
+    transform: none;
+  }
+
+  .hiplingo-site-shell:has(
+      .audio-player[data-display-mode="compact"]
+        .hiplingo-now-playing-dock
+    ) {
+    padding-bottom:
+      max(
+        142px,
+        calc(124px + env(safe-area-inset-bottom))
+      );
+  }
+}
+
+/* =========================================================
+   Hiplingo H5 brand + primary landing experience
+   ========================================================= */
+
+:root {
+  --hiplingo-canvas: #090810;
+  --hiplingo-surface-1: #100e18;
+  --hiplingo-surface-2: #171421;
+  --hiplingo-surface-3: #211b2e;
+  --hiplingo-surface-waveform: #0d0a16;
+  --hiplingo-surface-control: rgba(33, 27, 46, 0.92);
+  --hiplingo-surface-control-hover: rgba(52, 43, 72, 0.94);
+  --hiplingo-overlay-center: rgba(23, 17, 31, 0.5);
+  --hiplingo-overlay-edge: rgba(6, 5, 10, 0.9);
+  --hiplingo-border: rgba(219, 200, 255, 0.12);
+  --hiplingo-border-strong: rgba(219, 200, 255, 0.24);
+  --hiplingo-border-active: rgba(169, 140, 255, 0.52);
+  --hiplingo-text: #f7f4fb;
+  --hiplingo-text-soft: #e2d8f1;
+  --hiplingo-muted: #aaa1b5;
+  --hiplingo-muted-deep: #81778c;
+  --hiplingo-purple: #a98cff;
+  --hiplingo-pink: #ef8bc5;
+  --hiplingo-cyan: #78cce8;
+}
+
+body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(132, 83, 199, 0.14), transparent 30rem),
+    radial-gradient(circle at 86% 18%, rgba(58, 139, 176, 0.08), transparent 30rem),
+    var(--hiplingo-canvas);
+}
+
+.hiplingo-site-header {
+  border-bottom-color: var(--hiplingo-border);
+  background: rgba(9, 8, 16, 0.92);
+}
+
+.hiplingo-site-brand {
+  color: var(--hiplingo-text);
+}
+
+.hiplingo-site-brand img {
+  border-radius: 7px;
+}
+
+.hiplingo-site-nav a {
+  color: #9a92a3;
+}
+
+.hiplingo-site-nav a:hover,
+.hiplingo-site-nav a:focus-visible,
+.hiplingo-site-nav a[aria-current="page"] {
+  color: #fffaff;
+  background: rgba(169, 140, 255, 0.13);
+}
+
+.hiplingo-site-nav a:focus-visible,
+.hiplingo-site-brand:focus-visible,
+.hiplingo-feature-card:focus-visible,
+.hiplingo-button:focus-visible,
+.hiplingo-site-footer a:focus-visible,
+.hiplingo-home-shuffle__button:focus-visible {
+  outline-color: var(--hiplingo-cyan);
+}
+
+.hiplingo-home {
+  padding-top: 18px;
+}
+
+/* Banner stays a texture. The logo is a separate foreground asset. */
+.hiplingo-hero {
+  position: relative;
+  max-width: none;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--hiplingo-border);
+  border-radius: 18px;
+  background: var(--hiplingo-surface-1);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.hiplingo-hero__banner {
+  position: relative;
+  height: clamp(190px, 58vw, 300px);
+  background-image:
+    linear-gradient(to bottom, rgba(8, 7, 14, 0.03) 30%, rgba(8, 7, 14, 0.18) 68%, var(--hiplingo-surface-1) 100%),
+    url("/brand/hiplingo-banner-mobile.webp");
+  background-position: center 44%;
+  background-size: cover;
+}
+
+.hiplingo-hero__identity {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  padding: 0 20px 24px;
+}
+
+.hiplingo-hero__logo {
+  display: grid;
+  width: 82px;
+  height: 82px;
+  margin-top: -40px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 22px;
+  background: #17131f;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.42),
+    0 0 0 5px var(--hiplingo-surface-1);
+}
+
+.hiplingo-hero__logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hiplingo-hero__copy {
+  min-width: 0;
+}
+
+.hiplingo-hero .hiplingo-kicker {
+  color: #b9a9df;
+}
+
+.hiplingo-hero h1 {
+  max-width: 11ch;
+  color: var(--hiplingo-text);
+  font-size: clamp(2.45rem, 11vw, 5.5rem);
+}
+
+.hiplingo-hero__copy > p {
+  max-width: 640px;
+  margin: 18px 0 0;
+  color: var(--hiplingo-muted);
+  font-size: clamp(0.96rem, 3.5vw, 1.12rem);
+  line-height: 1.6;
+}
+
+.hiplingo-button {
+  border-color: var(--hiplingo-border-strong);
+  color: #ded8e5;
+  background: var(--hiplingo-surface-2);
+}
+
+.hiplingo-button--primary {
+  border-color: rgba(179, 148, 255, 0.62);
+  color: #fffaff;
+  background:
+    linear-gradient(135deg, rgba(169, 140, 255, 0.30), rgba(239, 139, 197, 0.15)),
+    #241b35;
+}
+
+.hiplingo-button:hover {
+  border-color: rgba(186, 158, 255, 0.55);
+  background: var(--hiplingo-surface-3);
+}
+
+/* Start listening is a clear invitation, not a billboard. */
+.hiplingo-home-shuffle {
+  margin-top: 18px;
+}
+
+.hiplingo-home-shuffle__button {
+  display: flex;
+  width: min(100%, 620px);
+  min-height: clamp(72px, 12vw, 92px);
+  margin-inline: auto;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 16px);
+  padding: clamp(16px, 3vw, 22px);
+  border: 1px solid rgba(179, 148, 255, 0.54);
+  border-radius: 16px;
+  color: #fffaff;
+  background:
+    linear-gradient(135deg, rgba(169, 140, 255, 0.24), rgba(239, 139, 197, 0.10)),
+    var(--hiplingo-surface-1);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.20);
+  font: inherit;
+  font-size: clamp(1.15rem, 4vw, 2rem);
+  font-weight: 720;
+  letter-spacing: -0.025em;
+  cursor: pointer;
+}
+
+.hiplingo-home-shuffle__button svg {
+  width: clamp(26px, 5vw, 36px);
+  height: clamp(26px, 5vw, 36px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hiplingo-home-shuffle__button:hover:not(:disabled) {
+  border-color: rgba(195, 174, 255, 0.82);
+  background:
+    linear-gradient(135deg, rgba(169, 140, 255, 0.38), rgba(239, 139, 197, 0.18)),
+    var(--hiplingo-surface-2);
+}
+
+.hiplingo-home-shuffle__button:disabled {
+  cursor: default;
+  opacity: 0.46;
+}
+
+.hiplingo-feature-grid {
+  grid-template-columns: 1fr;
+  margin-top: 18px;
+  border-color: var(--hiplingo-border);
+  background: var(--hiplingo-border);
+}
+
+.hiplingo-feature-card {
+  min-height: 148px;
+  background: rgba(16, 14, 24, 0.97);
+}
+
+.hiplingo-feature-card:hover {
+  background: var(--hiplingo-surface-2);
+}
+
+.hiplingo-feature-card > span {
+  color: #9585b7;
+}
+
+.hiplingo-feature-card strong {
+  color: #eee9f2;
+}
+
+.hiplingo-feature-card p {
+  color: #958e9d;
+}
+
+/* Extend the brand accents into release discovery without overpowering art. */
+.hiplingo-release-card__artwork,
+.hiplingo-release-detail__artwork {
+  border-color: var(--hiplingo-border);
+  background:
+    linear-gradient(145deg, rgba(169, 140, 255, 0.13), transparent 58%),
+    var(--hiplingo-surface-1);
+}
+
+.hiplingo-release-card:hover .hiplingo-release-card__artwork {
+  border-color: rgba(169, 140, 255, 0.46);
+}
+
+.hiplingo-release-track__action:hover {
+  background: rgba(169, 140, 255, 0.13);
+}
+
+.hiplingo-release-track__action {
+  border-color: var(--hiplingo-border-strong);
+  color: #cfbfff;
+}
+
+.hiplingo-site-footer {
+  border-top-color: var(--hiplingo-border);
+}
+
+@media (min-width: 640px) {
+  .hiplingo-home {
+    padding-top: 28px;
+  }
+
+  .hiplingo-hero__banner {
+    height: clamp(240px, 38vw, 390px);
+    background-image:
+      linear-gradient(to bottom, rgba(8, 7, 14, 0.02) 35%, rgba(8, 7, 14, 0.15) 72%, var(--hiplingo-surface-1) 100%),
+      url("/brand/hiplingo-banner-desktop.webp");
+    background-position: center 48%;
+  }
+
+  .hiplingo-hero__identity {
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 24px;
+    padding: 0 30px 32px;
+  }
+
+  .hiplingo-hero__logo {
+    width: 108px;
+    height: 108px;
+    margin-top: -54px;
+    border-radius: 27px;
+  }
+
+  .hiplingo-hero__copy {
+    padding-top: 18px;
+  }
+
+  .hiplingo-home-shuffle {
+    margin-top: 28px;
+  }
+
+  .hiplingo-home-shuffle__button {
+    min-height: 156px;
+  }
+
+  .hiplingo-feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 28px;
+  }
+}
+
+@media (min-width: 980px) {
+  .hiplingo-home {
+    padding-top: 36px;
+  }
+
+  .hiplingo-hero__banner {
+    height: min(32vw, 360px);
+  }
+
+  .hiplingo-hero__identity {
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 30px;
+    padding: 0 42px 38px;
+  }
+
+  .hiplingo-hero__logo {
+    width: 128px;
+    height: 128px;
+    margin-top: -64px;
+    border-radius: 30px;
+  }
+}
+
+/* Short phone landscape uses the wide source and a shallow texture strip. */
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
+  .hiplingo-home {
+    padding-top: 14px;
+  }
+
+  .hiplingo-hero__banner {
+    height: 132px;
+    background-image:
+      linear-gradient(to bottom, rgba(8, 7, 14, 0.02) 22%, rgba(8, 7, 14, 0.25) 70%, var(--hiplingo-surface-1) 100%),
+      url("/brand/hiplingo-banner-desktop.webp");
+    background-position: center 48%;
+  }
+
+  .hiplingo-hero__identity {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 18px;
+    padding: 0 22px 20px;
+  }
+
+  .hiplingo-hero__logo {
+    width: 78px;
+    height: 78px;
+    margin-top: -38px;
+    border-radius: 20px;
+  }
+
+  .hiplingo-hero__copy {
+    padding-top: 8px;
+  }
+
+  .hiplingo-hero h1 {
+    font-size: clamp(2rem, 7vw, 3.4rem);
+  }
+
+  .hiplingo-hero__copy > p {
+    margin-top: 10px;
+    font-size: 0.88rem;
+  }
+
+  .hiplingo-hero__actions {
+    margin-top: 14px;
+  }
+}
+
+/* =========================================================
+   Hiplingo site-route mobile scrolling repair
+   ========================================================= */
+
+/*
+ * The persistent player inherits viewport-fit sizing from the original
+ * standalone /listen interface. In compact mode it must collapse to the
+ * visible transport instead of leaving an invisible fixed, viewport-height
+ * hit target over the page.
+ */
+.audio-player[data-display-mode="compact"] {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+/*
+ * The legacy mobile-landscape player intentionally locks the document so the
+ * full player fits in one viewport. Restore an ordinary scrolling document on
+ * every Hiplingo site route where the same player is mounted in compact mode.
+ * /listen remains unaffected because it uses data-display-mode="full".
+ */
+@media (orientation: landscape) and (max-width: 899px) {
+  body:has(.audio-player[data-display-mode="compact"]) {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:has(.audio-player[data-display-mode="compact"]) #root {
+    width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    padding: 0;
+    overflow: visible;
+  }
+}
+
+/* =========================================================
+   Hiplingo H6 unified listening shell
+   ========================================================= */
+
+/* The public Hiplingo header is now the only application header. */
+.hiplingo-site-header {
+  grid-template-areas:
+    "brand actions"
+    "nav nav";
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.hiplingo-site-brand {
+  grid-area: brand;
+}
+
+.hiplingo-site-nav {
+  grid-area: nav;
+}
+
+.hiplingo-site-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.hiplingo-site-menu {
+  position: relative;
+  display: grid;
+  width: 42px;
+  min-width: 42px;
+  min-height: 40px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--hiplingo-border-strong);
+  border-radius: 9px;
+  color: var(--hiplingo-text-soft);
+  background: var(--hiplingo-surface-control);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.hiplingo-site-menu:hover {
+  border-color: var(--hiplingo-border-active);
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-control-hover);
+}
+
+.hiplingo-site-menu:focus-visible {
+  outline: 2px solid var(--hiplingo-cyan);
+  outline-offset: 2px;
+}
+
+.hiplingo-site-menu > span,
+.hiplingo-site-menu::before,
+.hiplingo-site-menu::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+}
+
+.hiplingo-site-menu > span {
+  transform: translate(-50%, -50%);
+}
+
+.hiplingo-site-menu::before {
+  transform: translate(-50%, calc(-50% - 5px));
+}
+
+.hiplingo-site-menu::after {
+  transform: translate(-50%, calc(-50% + 5px));
+}
+
+@media (min-width: 760px) {
+  .hiplingo-site-header {
+    grid-template-areas: "brand nav actions";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 18px;
+  }
+
+  .hiplingo-site-nav {
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+}
+
+
+/* Short landscape phones also get one compact header row. */
+@media (max-width: 899px) and (orientation: landscape) {
+  .hiplingo-site-header {
+    grid-template-areas: "brand nav actions";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-block: 7px;
+  }
+
+  .hiplingo-site-brand span {
+    display: none;
+  }
+
+  .hiplingo-site-nav {
+    min-width: 0;
+    padding-bottom: 0;
+  }
+
+  .hiplingo-site-nav a {
+    padding: 6px 7px;
+    font-size: 0.66rem;
+  }
+
+  .hiplingo-site-menu {
+    width: 38px;
+    min-width: 38px;
+    min-height: 36px;
+  }
+}
+
+/* The removed legacy player header no longer reserves viewport space. */
+.audio-player[data-display-mode="full"] {
+  --fixed-header-height: 0px !important;
+  padding-top: 8px !important;
+}
+
+/* Player settings now open from the single Hiplingo header. */
+.audio-player__settings-backdrop {
+  z-index: 900;
+  display: block;
+  padding: 0;
+}
+
+.audio-player__settings-panel {
+  position: fixed;
+  z-index: 910;
+  top:
+    calc(
+      var(--hiplingo-site-header-bottom, 64px) +
+      10px
+    );
+  right: max(10px, env(safe-area-inset-right));
+  width: min(calc(100vw - 20px), 420px);
+  max-height:
+    calc(
+      100dvh -
+      var(--hiplingo-site-header-bottom, 64px) -
+      max(20px, env(safe-area-inset-bottom))
+    );
+  overflow: auto;
+  padding: 10px;
+}
+
+
+.audio-player__settings-close {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  display: grid;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  margin: 0 0 8px auto;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--hiplingo-border-strong);
+  border-radius: 8px;
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-control);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.audio-player__settings-close:focus-visible {
+  outline: 2px solid #6ed7ef;
+  outline-offset: 2px;
+}

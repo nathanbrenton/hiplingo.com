@@ -1,0 +1,1157 @@
+/* =========================================================
+   Mobile portrait Listen — compact hero + title carousel
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Keep portrait as a normal scrolling document, but reserve only the
+   * compact fixed transport instead of a second waveform-heavy footer. */
+  .hiplingo-site-shell--listen .audio-player[data-display-mode="full"] {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+
+  .hiplingo-site-shell--listen .audio-player__footer {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen .player-layout {
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .hiplingo-site-shell--listen .artwork-panel {
+    width: min(56vw, 230px);
+    max-width: 230px;
+    margin-inline: auto;
+  }
+
+  .hiplingo-site-shell--listen .waveform-panel {
+    --waveform-canvas-height: clamp(118px, 16dvh, 138px);
+    margin-bottom: 0;
+  }
+
+
+  .hiplingo-site-shell--listen
+    .audio-player[data-display-mode="full"]
+    > .listen-track-queue-host {
+    display: block;
+    width: 100%;
+    margin: -2px auto 0;
+    padding: 0 10px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue {
+    display: grid;
+    width: 100%;
+    gap: 4px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__titles {
+    --listen-title-center-y: 47%;
+    --listen-title-drag-y: 0px;
+    --listen-title-visual-progress: 0;
+
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 176px;
+    margin: -4px auto 0;
+    padding: 0;
+    perspective: 620px;
+    perspective-origin: 50% 48%;
+    touch-action: pan-x;
+    user-select: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-has-previous="false"] {
+    --listen-title-center-y: 38%;
+    height: 156px;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title {
+    position: absolute;
+    top: var(--listen-title-center-y);
+    left: 50%;
+    display: grid;
+    width: min(92vw, 360px);
+    min-height: 42px;
+    padding: 0 14px;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    color: #fffaff;
+    background: transparent;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transform-origin: center;
+    transition:
+      transform 180ms ease,
+      opacity 160ms ease,
+      color 160ms ease;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title strong {
+    font-size: clamp(1.05rem, 5.4vw, 1.45rem);
+    font-weight: 730;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--far-previous {
+    z-index: 1;
+    opacity: 0.18;
+    transform:
+      translate(-50%, calc(-50% - 76px))
+      translateZ(-118px)
+      scale(0.58);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--previous {
+    z-index: 2;
+    opacity: 0.44;
+    transform:
+      translate(-50%, calc(-50% - 45px))
+      translateZ(-76px)
+      scale(0.72);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__current {
+    z-index: 5;
+    min-height: 52px;
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translateZ(34px)
+      scale(1);
+    touch-action: pan-x;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__current strong {
+    font-size: clamp(1.75rem, 8vw, 2.35rem);
+    font-weight: 780;
+    text-shadow:
+      0 0 16px rgba(255, 244, 255, 0.1),
+      0 7px 22px rgba(0, 0, 0, 0.28);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--next {
+    z-index: 3;
+    opacity: 0.78;
+    transform:
+      translate(-50%, calc(-50% + 48px))
+      translateZ(-28px)
+      scale(0.76);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--far-next {
+    z-index: 2;
+    opacity: 0.36;
+    transform:
+      translate(-50%, calc(-50% + 82px))
+      translateZ(-92px)
+      scale(0.62);
+  }
+
+  /* Same vertical artwork-style handoff, scaled for the smaller stage. */
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__current,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__current {
+    z-index: 4;
+    opacity: calc(1 - (var(--listen-title-visual-progress) * 0.4));
+    transform:
+      translate(-50%, calc(-50% + var(--listen-title-drag-y)))
+      translateZ(calc(34px - (var(--listen-title-visual-progress) * 82px)))
+      scale(calc(1 - (var(--listen-title-visual-progress) * 0.2)));
+    transition: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--next {
+    z-index: 4;
+    opacity: calc(0.78 + (var(--listen-title-visual-progress) * 0.22));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + ((1 - var(--listen-title-visual-progress)) * 48px))
+      )
+      translateZ(calc(-28px + (var(--listen-title-visual-progress) * 62px)))
+      scale(calc(0.76 + (var(--listen-title-visual-progress) * 0.24)));
+    transition: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--previous {
+    z-index: 4;
+    opacity: calc(0.44 + (var(--listen-title-visual-progress) * 0.56));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - ((1 - var(--listen-title-visual-progress)) * 45px))
+      )
+      translateZ(calc(-76px + (var(--listen-title-visual-progress) * 110px)))
+      scale(calc(0.72 + (var(--listen-title-visual-progress) * 0.28)));
+    transition: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-promoted="true"]
+    .listen-track-queue__title--next,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-promoted="true"]
+    .listen-track-queue__title--previous {
+    z-index: 6;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-committing="true"]
+    .listen-track-queue__title {
+    transition: none !important;
+  }
+
+  /* Mobile Listen keeps only Shuffle beneath the title carousel. */
+  .hiplingo-site-shell--listen .listen-track-queue__filters {
+    position: static;
+    display: grid;
+    width: 100%;
+    margin: -4px auto 10px;
+    justify-items: center;
+    pointer-events: auto;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__filter-row {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__filter-row
+    .listen-track-queue__filter-control,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__filter-row
+    .listen-track-queue__clear-filters {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__shuffle {
+    position: static;
+    display: inline-flex;
+    min-width: 118px;
+    min-height: 48px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 20px;
+    border: 0;
+    border-radius: 999px;
+    color: #f7effa;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(60, 40, 74, 0.9) 0 36%,
+        rgba(38, 26, 47, 0.62) 59%,
+        rgba(25, 18, 31, 0.18) 77%,
+        transparent 88%
+      );
+    box-shadow: none;
+    font: inherit;
+    font-size: 0.98rem;
+    font-weight: 700;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__shuffle svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  /* Compact portrait transport: the hero already owns a large scrubber, so
+   * do not duplicate the miniature waveform in the fixed footer. */
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock.shared-now-playing {
+    position: fixed;
+    z-index: 1200;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    min-height: 76px;
+    grid-template-areas: "artwork identity transport end";
+    grid-template-columns: 44px minmax(0, 1fr) auto 36px;
+    align-items: center;
+    gap: 8px;
+    padding:
+      8px
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__artwork {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__time,
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__waveform-region,
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-volume-control {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport {
+    grid-area: transport;
+    gap: 4px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > .shared-now-playing__play {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__end-controls {
+    grid-area: end;
+    display: flex;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__end-controls > button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__context,
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__detail {
+    font-size: 0.6rem;
+  }
+}
+
+
+/* =========================================================
+   Mobile portrait Listen — fixed viewport + title carousel
+   ========================================================= */
+
+
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Portrait Listen is a single-screen player. Settings/metadata overlays may
+   * scroll independently; the document itself remains fixed to the viewport. */
+  html:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen) #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen > .hiplingo-site-footer {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen .hiplingo-player-page {
+    height: calc(
+      100dvh - var(--hiplingo-site-header-bottom, 132px)
+    );
+    min-height: 0;
+    overflow: hidden;
+    padding:
+      4px 8px
+      calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .hiplingo-site-shell--listen .audio-player[data-display-mode="full"] {
+    display: grid;
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: auto auto;
+    align-content: start;
+    overflow: hidden;
+    padding: 0 !important;
+  }
+
+  .hiplingo-site-shell--listen .player-layout {
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .hiplingo-site-shell--listen .artwork-panel {
+    width: min(44vw, 180px);
+    max-width: 180px;
+  }
+
+  .hiplingo-site-shell--listen .waveform-panel {
+    --waveform-canvas-height: clamp(86px, 11dvh, 104px);
+  }
+
+  .hiplingo-site-shell--listen
+    .audio-player[data-display-mode="full"]
+    > .listen-track-queue-host {
+    margin: -6px auto 0;
+    padding-inline: 6px;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__titles {
+    --listen-title-center-y: 46%;
+    height: 132px;
+    margin: -8px auto 0;
+    perspective: 560px;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-has-previous="false"] {
+    --listen-title-center-y: 36%;
+    height: 118px;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title {
+    min-height: 36px;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title strong {
+    font-size: clamp(0.9rem, 4.6vw, 1.2rem);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--far-previous {
+    transform:
+      translate(-50%, calc(-50% - 58px))
+      translateZ(-112px)
+      scale(0.56);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--previous {
+    transform:
+      translate(-50%, calc(-50% - 34px))
+      translateZ(-70px)
+      scale(0.7);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__current {
+    min-height: 46px;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__current strong {
+    font-size: clamp(1.45rem, 7vw, 1.95rem);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--next {
+    transform:
+      translate(-50%, calc(-50% + 36px))
+      translateZ(-26px)
+      scale(0.74);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title--far-next {
+    transform:
+      translate(-50%, calc(-50% + 62px))
+      translateZ(-86px)
+      scale(0.6);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__filters {
+    margin: -6px auto 0;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__shuffle {
+    min-height: 42px;
+    padding: 6px 18px;
+    font-size: 0.9rem;
+  }
+
+
+
+}
+
+/* =========================================================
+   Mobile portrait Listen — simplified header + footer waveform
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+
+
+
+
+
+
+  /* Restore the compact scrubber as a dedicated row above transport controls. */
+  .hiplingo-site-shell--listen .hiplingo-player-page {
+    padding-bottom: calc(118px + env(safe-area-inset-bottom));
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock.shared-now-playing {
+    min-height: 118px;
+    grid-template-areas:
+      "waveform waveform waveform waveform"
+      "artwork identity transport end";
+    grid-template-columns: 44px minmax(0, 1fr) auto 36px;
+    grid-template-rows: 36px auto;
+    align-items: center;
+    gap: 6px 8px;
+    padding:
+      7px
+      max(10px, env(safe-area-inset-right))
+      max(7px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__waveform-region {
+    grid-area: waveform;
+    display: block;
+    width: 100%;
+    height: 36px;
+    min-width: 0;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__waveform {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__time {
+    display: none;
+  }
+}
+
+
+@media (max-width: 899px) and (orientation: portrait) {
+
+  /* Keep the title-carousel host as the only second row in the fixed player. */
+  .hiplingo-site-shell--listen
+    .audio-player[data-display-mode="full"]
+    > .listen-track-queue-host {
+    min-height: 0;
+    overflow: visible;
+  }
+}
+
+
+/* =========================================================
+   Mobile portrait Listen — hero scale + carousel placement
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Use more of the fixed viewport for the primary browsing/playback hero. */
+  .hiplingo-site-shell--listen .artwork-panel {
+    width: min(54vw, 215px);
+    max-width: 215px;
+  }
+
+  .hiplingo-site-shell--listen .waveform-panel {
+    --waveform-canvas-height: clamp(108px, 15dvh, 134px);
+  }
+
+  /* The footer owns the bottom edge. Spend the formerly empty middle space by
+   * dropping the title carousel away from the waveform without scrolling the
+   * Listen document. */
+  .hiplingo-site-shell--listen
+    .audio-player[data-display-mode="full"]
+    > .listen-track-queue-host {
+    margin: clamp(20px, 4dvh, 34px) auto 0;
+  }
+}
+
+/* =========================================================
+   Mobile portrait Listen — fixed title center + flanking footer transport
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Keep Now Playing on one stable carousel centerline. Fresh loads and
+   * shuffled queues may have no previous neighbor, but that must not move the
+   * center title upward. A taller stage also keeps both upper neighbors fully
+   * inside the fixed Listen viewport when they exist. */
+  .hiplingo-site-shell--listen
+    .audio-player[data-display-mode="full"]
+    > .listen-track-queue-host {
+    margin: clamp(42px, 5.6dvh, 52px) auto 0;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__titles,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-has-previous="false"] {
+    --listen-title-center-y: 50%;
+    --listen-title-neighbor-font-size: clamp(0.9rem, 4.6vw, 1.2rem);
+    --listen-title-current-font-size: clamp(1.45rem, 7vw, 1.95rem);
+    --listen-title-center-font-progress: clamp(
+      0,
+      calc(var(--listen-title-visual-progress) * 1.111111),
+      1
+    );
+    height: 176px;
+    margin: 0 auto;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__title strong {
+    font-size: var(--listen-title-neighbor-font-size);
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__current strong {
+    font-size: var(--listen-title-current-font-size);
+  }
+
+  /* The compact footer follows the reference transport hierarchy: play/pause
+   * and previous sit to the left of the scrubber; next and Info sit to its
+   * right. Artwork/identity and elapsed/total time occupy the lower row. */
+  .hiplingo-site-shell--listen .hiplingo-player-page {
+    padding-bottom: calc(126px + env(safe-area-inset-bottom));
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock.shared-now-playing {
+    min-height: 126px;
+    grid-template-areas:
+      "play previous waveform waveform next shuffle"
+      "artwork identity identity time time end";
+    grid-template-columns:
+      clamp(38px, 11vw, 44px)
+      clamp(38px, 11vw, 44px)
+      minmax(0, 1fr)
+      auto
+      clamp(38px, 11vw, 44px)
+      clamp(38px, 11vw, 44px);
+    grid-template-rows: 44px 48px;
+    align-items: center;
+    gap: 6px;
+    padding:
+      8px
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport {
+    display: contents;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button:nth-child(1) {
+    grid-area: previous;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > .shared-now-playing__play {
+    grid-area: play;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button:nth-child(3) {
+    grid-area: next;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button,
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__transport > .shared-now-playing__play {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__waveform-region {
+    grid-area: waveform;
+    display: block;
+    width: 100%;
+    height: 42px;
+    min-width: 0;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__artwork {
+    grid-area: artwork;
+    width: 44px;
+    height: 44px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__identity {
+    grid-area: identity;
+    min-width: 0;
+    padding-left: 4px;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__time {
+    grid-area: time;
+    display: flex;
+    justify-self: end;
+    align-self: center;
+    gap: 0.28rem;
+    padding-right: 2px;
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__end-controls {
+    display: contents;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock__shuffle-button {
+    grid-area: shuffle;
+    display: grid;
+    place-items: center;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock__metadata-button {
+    grid-area: end;
+  }
+
+  .hiplingo-site-shell--listen
+    .hiplingo-now-playing-dock
+    .shared-now-playing__end-controls > button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+/* =========================================================
+   Mobile portrait Listen — stable title/Shuffle handoff
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Reserve fixed rows for the carousel and Shuffle so queue-edge changes
+   * cannot move the surrounding composition during a track handoff. */
+  .hiplingo-site-shell--listen .listen-track-queue {
+    grid-template-rows: 176px 48px;
+    row-gap: 0;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__titles,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-has-previous="false"] {
+    height: 176px;
+  }
+
+  /* Drag motion remains pointer-driven. Once the gesture/track change has
+   * settled, snap directly to the stable slots instead of animating role
+   * changes caused by a newly selected track. */
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="none"]
+    .listen-track-queue__title {
+    transition: none;
+  }
+
+  .hiplingo-site-shell--listen .listen-track-queue__filters {
+    height: 48px;
+    min-height: 48px;
+    margin: 0 auto 10px;
+  }
+
+  /* Portrait Shuffle now lives in the persistent footer. Keep the reserved
+   * queue row for stable title geometry, but suppress the duplicate control. */
+  .hiplingo-site-shell--listen .listen-track-queue__shuffle {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Persistent main waveform shell during track handoff
+   ========================================================= */
+.listen-waveform-anchor {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Keep the complete waveform footprint mounted while the next track's peaks
+ * load. This prevents the title carousel below from reflowing upward between
+ * tracks, while preserving the frame/time/zoom affordance geometry. */
+.waveform-panel--loading {
+  width: 100%;
+  height: var(--waveform-canvas-height, 240px);
+  min-height: var(--waveform-canvas-height, 240px);
+  margin-bottom: 0;
+  overflow: hidden;
+  background: var(--hiplingo-surface-waveform);
+}
+
+.waveform-panel--loading .waveform-panel__zoom-controls,
+.waveform-panel--loading .waveform-panel__zoom-button {
+  pointer-events: none;
+}
+
+.waveform-panel--loading .waveform-panel__zoom-button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+/* =========================================================
+   Listen title carousel — proportional cascading handoff
+   ========================================================= */
+/* Every visible title interpolates toward exactly one neighboring semantic
+ * slot during a drag. Incoming previous/next titles stop at the Now Playing
+ * center; the gesture can therefore commit only one queue step without any
+ * title overshooting through the center position. */
+@media (min-width: 900px) {
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title,
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title {
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--far-previous {
+    z-index: 1;
+    opacity: calc(0.2 - (var(--listen-title-visual-progress) * 0.2));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (122px + (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-132px - (var(--listen-title-visual-progress) * 36px)))
+      scale(calc(0.38 - (var(--listen-title-visual-progress) * 0.08)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--previous {
+    z-index: 2;
+    opacity: calc(0.46 - (var(--listen-title-visual-progress) * 0.26));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (72px + (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-88px - (var(--listen-title-visual-progress) * 44px)))
+      scale(calc(0.54 - (var(--listen-title-visual-progress) * 0.16)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__current {
+    z-index: 5;
+    opacity: calc(1 - (var(--listen-title-visual-progress) * 0.54));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (var(--listen-title-visual-progress) * 72px))
+      )
+      translateZ(calc(42px - (var(--listen-title-visual-progress) * 130px)))
+      scale(calc(1 - (var(--listen-title-visual-progress) * 0.46)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--next {
+    z-index: 6;
+    opacity: calc(0.78 + (var(--listen-title-visual-progress) * 0.22));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + ((1 - var(--listen-title-visual-progress)) * 72px))
+      )
+      translateZ(calc(-34px + (var(--listen-title-visual-progress) * 76px)))
+      scale(calc(0.62 + (var(--listen-title-visual-progress) * 0.38)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--far-next {
+    z-index: 3;
+    opacity: calc(0.38 + (var(--listen-title-visual-progress) * 0.4));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (122px - (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-104px + (var(--listen-title-visual-progress) * 70px)))
+      scale(calc(0.46 + (var(--listen-title-visual-progress) * 0.16)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--far-previous {
+    z-index: 3;
+    opacity: calc(0.2 + (var(--listen-title-visual-progress) * 0.26));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (122px - (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-132px + (var(--listen-title-visual-progress) * 44px)))
+      scale(calc(0.38 + (var(--listen-title-visual-progress) * 0.16)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--previous {
+    z-index: 6;
+    opacity: calc(0.46 + (var(--listen-title-visual-progress) * 0.54));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - ((1 - var(--listen-title-visual-progress)) * 72px))
+      )
+      translateZ(calc(-88px + (var(--listen-title-visual-progress) * 130px)))
+      scale(calc(0.54 + (var(--listen-title-visual-progress) * 0.46)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__current {
+    z-index: 5;
+    opacity: calc(1 - (var(--listen-title-visual-progress) * 0.22));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (var(--listen-title-visual-progress) * 72px))
+      )
+      translateZ(calc(42px - (var(--listen-title-visual-progress) * 76px)))
+      scale(calc(1 - (var(--listen-title-visual-progress) * 0.38)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--next {
+    z-index: 2;
+    opacity: calc(0.78 - (var(--listen-title-visual-progress) * 0.4));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (72px + (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-34px - (var(--listen-title-visual-progress) * 70px)))
+      scale(calc(0.62 - (var(--listen-title-visual-progress) * 0.16)));
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--far-next {
+    z-index: 1;
+    opacity: calc(0.38 - (var(--listen-title-visual-progress) * 0.38));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (122px + (var(--listen-title-visual-progress) * 50px)))
+      )
+      translateZ(calc(-104px - (var(--listen-title-visual-progress) * 36px)))
+      scale(calc(0.46 - (var(--listen-title-visual-progress) * 0.08)));
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait) {
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title {
+    transition: none;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--far-previous {
+    z-index: 1;
+    opacity: calc(0.18 - (var(--listen-title-visual-progress) * 0.18));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (76px + (var(--listen-title-visual-progress) * 31px)))
+      )
+      translateZ(calc(-118px - (var(--listen-title-visual-progress) * 26px)))
+      scale(calc(0.58 - (var(--listen-title-visual-progress) * 0.08)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--previous {
+    z-index: 2;
+    opacity: calc(0.44 - (var(--listen-title-visual-progress) * 0.26));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (45px + (var(--listen-title-visual-progress) * 31px)))
+      )
+      translateZ(calc(-76px - (var(--listen-title-visual-progress) * 42px)))
+      scale(calc(0.72 - (var(--listen-title-visual-progress) * 0.14)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__current {
+    z-index: 5;
+    opacity: calc(1 - (var(--listen-title-visual-progress) * 0.56));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (var(--listen-title-visual-progress) * 45px))
+      )
+      translateZ(calc(34px - (var(--listen-title-visual-progress) * 110px)))
+      scale(calc(1 - (var(--listen-title-visual-progress) * 0.28)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--next {
+    z-index: 6;
+    opacity: calc(0.78 + (var(--listen-title-visual-progress) * 0.22));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + ((1 - var(--listen-title-visual-progress)) * 48px))
+      )
+      translateZ(calc(-28px + (var(--listen-title-visual-progress) * 62px)))
+      scale(calc(0.76 + (var(--listen-title-visual-progress) * 0.24)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--far-next {
+    z-index: 3;
+    opacity: calc(0.36 + (var(--listen-title-visual-progress) * 0.42));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (82px - (var(--listen-title-visual-progress) * 34px)))
+      )
+      translateZ(calc(-92px + (var(--listen-title-visual-progress) * 64px)))
+      scale(calc(0.62 + (var(--listen-title-visual-progress) * 0.14)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--far-previous {
+    z-index: 3;
+    opacity: calc(0.18 + (var(--listen-title-visual-progress) * 0.26));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - (76px - (var(--listen-title-visual-progress) * 31px)))
+      )
+      translateZ(calc(-118px + (var(--listen-title-visual-progress) * 42px)))
+      scale(calc(0.58 + (var(--listen-title-visual-progress) * 0.14)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--previous {
+    z-index: 6;
+    opacity: calc(0.44 + (var(--listen-title-visual-progress) * 0.56));
+    transform:
+      translate(
+        -50%,
+        calc(-50% - ((1 - var(--listen-title-visual-progress)) * 45px))
+      )
+      translateZ(calc(-76px + (var(--listen-title-visual-progress) * 110px)))
+      scale(calc(0.72 + (var(--listen-title-visual-progress) * 0.28)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__current {
+    z-index: 5;
+    opacity: calc(1 - (var(--listen-title-visual-progress) * 0.22));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (var(--listen-title-visual-progress) * 48px))
+      )
+      translateZ(calc(34px - (var(--listen-title-visual-progress) * 62px)))
+      scale(calc(1 - (var(--listen-title-visual-progress) * 0.24)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--next {
+    z-index: 2;
+    opacity: calc(0.78 - (var(--listen-title-visual-progress) * 0.42));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (48px + (var(--listen-title-visual-progress) * 34px)))
+      )
+      translateZ(calc(-28px - (var(--listen-title-visual-progress) * 64px)))
+      scale(calc(0.76 - (var(--listen-title-visual-progress) * 0.14)));
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--far-next {
+    z-index: 1;
+    opacity: calc(0.36 - (var(--listen-title-visual-progress) * 0.36));
+    transform:
+      translate(
+        -50%,
+        calc(-50% + (82px + (var(--listen-title-visual-progress) * 31px)))
+      )
+      translateZ(calc(-92px - (var(--listen-title-visual-progress) * 26px)))
+      scale(calc(0.62 - (var(--listen-title-visual-progress) * 0.08)));
+  }
+
+  /* Outer 3D scaling alone cannot reach the Now Playing typography because
+   * neighboring slots deliberately use a smaller base font. Interpolate the
+   * incoming one-step neighbor's font size too, reaching the exact center-row
+   * size at the 0.90 swipe commit threshold so promotion has no final pop. */
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--next strong,
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--previous strong {
+    font-size: calc(
+      var(--listen-title-neighbor-font-size) +
+      (
+        var(--listen-title-current-font-size) -
+        var(--listen-title-neighbor-font-size)
+      ) * var(--listen-title-center-font-progress)
+    );
+  }
+}

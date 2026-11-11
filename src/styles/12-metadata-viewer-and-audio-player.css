@@ -1,0 +1,908 @@
+/* =========================================================
+   Hiplingo 1.0 public settings theme
+   ========================================================= */
+
+/* Keep the hamburger settings surface in the same purple family as the
+ * public Listen shell instead of exposing the older neutral/orange/green
+ * prototype treatments. */
+.audio-player__settings-panel {
+  border: 1px solid var(--hiplingo-border-strong);
+  background:
+    linear-gradient(
+      180deg,
+      var(--hiplingo-surface-3),
+      var(--hiplingo-canvas)
+    );
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(169, 140, 255, 0.05);
+}
+
+
+.audio-player__settings-close {
+  border-color: var(--hiplingo-border-strong);
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-control);
+}
+
+.audio-player__settings-close:hover {
+  border-color: var(--hiplingo-border-active);
+  background: var(--hiplingo-surface-control-hover);
+}
+
+.audio-player__settings-panel .settings-control,
+.audio-player__settings-panel .settings-toggle,
+.audio-player__settings-panel .app-menu__about-contact-card {
+  border-color: var(--hiplingo-border-strong);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(169, 140, 255, 0.095),
+      rgba(239, 139, 197, 0.025)
+    ),
+    var(--hiplingo-surface-1);
+}
+
+.audio-player__settings-panel .settings-toggle--audiophile,
+.audio-player__settings-panel .settings-toggle--developer {
+  border-color: rgba(169, 140, 255, 0.32);
+}
+
+.audio-player__settings-panel .settings-toggle strong,
+.audio-player__settings-panel .settings-toggle--audiophile strong,
+.audio-player__settings-panel .settings-toggle--developer strong,
+.audio-player__settings-panel .app-menu__about-button strong {
+  color: var(--hiplingo-text-soft);
+}
+
+.audio-player__settings-panel .settings-toggle small,
+.audio-player__settings-panel .app-menu__about-button small {
+  color: var(--hiplingo-muted);
+}
+
+.audio-player__settings-panel .settings-toggle input,
+.audio-player__settings-panel .settings-toggle--audiophile input,
+.audio-player__settings-panel .settings-toggle--developer input {
+  accent-color: var(--hiplingo-purple);
+}
+
+.audio-player__settings-panel .settings-control select {
+  border-color: var(--hiplingo-border-strong);
+  color: var(--hiplingo-text);
+  background-color: var(--hiplingo-surface-control);
+}
+
+.audio-player__settings-panel .settings-control select:hover {
+  border-color: var(--hiplingo-border-active);
+  background-color: var(--hiplingo-surface-control-hover);
+}
+
+.audio-player__settings-panel .settings-control select:focus-visible,
+.audio-player__settings-panel .settings-toggle:focus-within,
+.audio-player__settings-panel .app-menu__about-button:focus-visible,
+.audio-player__settings-close:focus-visible {
+  outline: 2px solid var(--hiplingo-purple);
+  outline-offset: 2px;
+}
+
+.app-menu__about-contact-card {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(219, 200, 255, 0.2);
+  border-radius: 8px;
+}
+
+.app-menu__about-button--combined {
+  min-height: 58px;
+  padding: 12px 14px 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* =========================================================
+   Hiplingo host theme: waveform + metadata surfaces
+   ========================================================= */
+
+/* Theme tokens above are the single host-level color contract for public
+ * player surfaces. The shared metadata viewer keeps its layout/semantics,
+ * while Hiplingo supplies only colors so a future theme selector can swap
+ * these tokens without forking the shared component. */
+.metadata-viewer__backdrop {
+  background:
+    radial-gradient(
+      ellipse at center,
+      var(--hiplingo-overlay-center),
+      var(--hiplingo-overlay-edge) 72%
+    );
+}
+
+/* Keep the explicit Listen performance guard visible to the host contract:
+ * never continuously blur the animated Listen surface behind metadata. */
+.hiplingo-site-shell--listen .metadata-viewer__backdrop {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.metadata-viewer {
+  border-color: var(--hiplingo-border-strong);
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-1);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
+}
+
+.metadata-viewer__header,
+.metadata-viewer__tabs {
+  border-color: var(--hiplingo-border);
+  background: var(--hiplingo-surface-2);
+}
+
+.metadata-viewer__close-button {
+  border-color: var(--hiplingo-border-strong);
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-control);
+}
+
+.metadata-viewer__close-button:hover {
+  border-color: var(--hiplingo-border-active);
+  background: var(--hiplingo-surface-control-hover);
+}
+
+.metadata-viewer__close-button:focus-visible,
+.metadata-viewer__tab:focus-visible {
+  outline-color: var(--hiplingo-purple);
+}
+
+.metadata-viewer__tab {
+  color: var(--hiplingo-muted);
+}
+
+.metadata-viewer__tab:hover {
+  color: var(--hiplingo-text-soft);
+  background: var(--hiplingo-surface-control);
+}
+
+.metadata-viewer__tab[aria-selected="true"],
+.metadata-viewer__tab--audiophile[aria-selected="true"],
+.metadata-viewer__tab--developer[aria-selected="true"] {
+  border-color: var(--hiplingo-border-active);
+  color: var(--hiplingo-text);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(169, 140, 255, 0.24),
+      rgba(239, 139, 197, 0.08)
+    ),
+    var(--hiplingo-surface-3);
+}
+
+.metadata-viewer__tab--audiophile,
+.metadata-viewer__tab--developer {
+  color: var(--hiplingo-muted);
+}
+
+.metadata-viewer__content {
+  background: var(--hiplingo-canvas);
+}
+
+.metadata-viewer :where(.metadata-viewer__section) {
+  border-color: var(--hiplingo-border);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(169, 140, 255, 0.045),
+      rgba(239, 139, 197, 0.012)
+    ),
+    var(--hiplingo-surface-2);
+}
+
+.metadata-viewer :where(
+  .metadata-viewer__field,
+  .metadata-viewer__credit-group,
+  .metadata-viewer__detail-rows > div
+) {
+  border-color: var(--hiplingo-border);
+  background: var(--hiplingo-surface-1);
+}
+
+.metadata-viewer :where(
+  .metadata-viewer__field dt,
+  .metadata-viewer__detail-rows dt,
+  .metadata-viewer__credit-role,
+  .metadata-viewer__section-eyebrow,
+  .metadata-viewer__empty,
+  .metadata-viewer__section-empty
+) {
+  color: var(--hiplingo-muted);
+}
+
+.metadata-viewer :where(
+  .metadata-viewer__field dd,
+  .metadata-viewer__detail-rows dd,
+  .metadata-viewer__credit-name,
+  .metadata-viewer__section-heading h3,
+  .metadata-viewer__primary-value,
+  .metadata-viewer__json
+) {
+  color: var(--hiplingo-text-soft);
+}
+
+.metadata-viewer__chips li,
+.metadata-viewer__source,
+.metadata-viewer__provenance-part {
+  border-color: var(--hiplingo-border-strong);
+  color: var(--hiplingo-text-soft);
+  background: var(--hiplingo-surface-control);
+}
+
+/* Use the same darkest purple elevation for every rendered Hiplingo waveform
+ * shell. Shared canvases remain transparent so host theming stays authoritative. */
+.waveform-panel,
+.waveform-panel--loading,
+.settings-control__waveform-preview,
+.hiplingo-now-playing-dock .shared-now-playing__waveform {
+  background-color: var(--hiplingo-surface-waveform);
+}
+
+/* =========================================================
+   Mobile landscape Listen — fixed viewport + top-row dock waveform
+   ========================================================= */
+@media (max-width: 899px) and (orientation: landscape) {
+  /* Landscape Listen is an application viewport, not a scrolling document. */
+  html:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen) #root {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen > .hiplingo-site-footer {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen .hiplingo-player-page {
+    height: calc(
+      100dvh - var(--hiplingo-site-header-bottom, 56px)
+    );
+    min-height: 0;
+    overflow: hidden;
+    padding:
+      4px
+      max(8px, env(safe-area-inset-right))
+      calc(96px + env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-site-shell--listen .audio-player[data-display-mode="full"] {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen .player-layout {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* The document stays locked while the hamburger/settings surface owns its
+   * own vertical scrolling. Keep it above the fixed transport dock. */
+  .hiplingo-site-shell--listen .audio-player__settings-backdrop {
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen .audio-player__settings-panel {
+    top: calc(var(--hiplingo-site-header-bottom, 56px) + 6px);
+    bottom: calc(96px + env(safe-area-inset-bottom));
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+
+/* =========================================================
+   Mobile landscape — canonical global footer transport
+   ========================================================= */
+@media (max-width: 899px) and (orientation: landscape) {
+  /* Use one transport geometry on Listen, Releases, Artists, Licensing, and
+   * detail routes. Compact hosts lose their old inset so route changes never
+   * rearrange the footer. */
+  .audio-player[data-display-mode="compact"] {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .hiplingo-site-shell:has(.hiplingo-now-playing-dock) {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+
+  .hiplingo-now-playing-dock.shared-now-playing {
+    position: fixed;
+    z-index: 1200;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    width: 100%;
+    min-height: 96px;
+    grid-template-areas:
+      "waveform waveform waveform waveform actions"
+      "artwork identity time transport actions";
+    grid-template-columns:
+      42px
+      minmax(0, 1fr)
+      max-content
+      auto
+      36px;
+    grid-template-rows: 36px auto;
+    align-items: center;
+    gap: 5px 8px;
+    padding:
+      7px
+      max(10px, env(safe-area-inset-right))
+      max(7px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__waveform-region {
+    grid-area: waveform;
+    display: block;
+    width: 100%;
+    height: 36px;
+    min-width: 0;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__waveform {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__artwork {
+    grid-area: artwork;
+    width: 42px;
+    height: 42px;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__identity {
+    grid-area: identity;
+    min-width: 0;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__time {
+    grid-area: time;
+    display: flex;
+    width: max-content;
+    min-width: max-content;
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__transport {
+    grid-area: transport;
+    display: flex;
+    gap: 4px;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__transport > button {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+  }
+
+  .hiplingo-now-playing-dock
+    .shared-now-playing__transport
+    > .shared-now-playing__play {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+
+  /* Keep the two host actions in a dedicated two-row column. This is more
+   * deterministic than display: contents across mobile browsers: Shuffle is
+   * aligned with the waveform row and Info is aligned with the transport row. */
+  .hiplingo-now-playing-dock .hiplingo-now-playing-dock__end-controls {
+    grid-area: actions;
+    display: grid;
+    grid-template-rows: 36px minmax(0, 1fr);
+    width: 36px;
+    height: 100%;
+    align-items: center;
+    justify-items: end;
+    row-gap: 5px;
+  }
+
+  .hiplingo-now-playing-dock__shuffle-button {
+    grid-row: 1;
+    display: grid;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    place-items: center;
+    justify-self: end;
+    padding: 0;
+    border-radius: 999px;
+  }
+
+  .hiplingo-now-playing-dock__metadata-button {
+    grid-row: 2;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    align-self: center;
+    justify-self: end;
+  }
+
+  .hiplingo-now-playing-dock .shared-volume-control {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Mobile portrait — canonical global footer transport
+   ========================================================= */
+@media (max-width: 899px) and (orientation: portrait) {
+  /* Reuse the approved Listen portrait transport geometry on compact routes
+   * so navigation never moves the waveform or transport controls. */
+  .hiplingo-now-playing-dock.shared-now-playing {
+    min-height: 126px;
+    grid-template-areas:
+      "play previous waveform waveform next shuffle"
+      "artwork identity identity time time end";
+    grid-template-columns:
+      clamp(38px, 11vw, 44px)
+      clamp(38px, 11vw, 44px)
+      minmax(0, 1fr)
+      auto
+      clamp(38px, 11vw, 44px)
+      clamp(38px, 11vw, 44px);
+    grid-template-rows: 44px 48px;
+    align-items: center;
+    gap: 6px;
+    padding:
+      8px
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__transport {
+    display: contents;
+  }
+
+  .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button:nth-child(1) {
+    grid-area: previous;
+  }
+
+  .hiplingo-now-playing-dock
+    .shared-now-playing__transport > .shared-now-playing__play {
+    grid-area: play;
+  }
+
+  .hiplingo-now-playing-dock
+    .shared-now-playing__transport > button:nth-child(3) {
+    grid-area: next;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__transport > button,
+  .hiplingo-now-playing-dock
+    .shared-now-playing__transport > .shared-now-playing__play {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__waveform-region {
+    grid-area: waveform;
+    display: block;
+    width: 100%;
+    height: 42px;
+    min-width: 0;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__artwork {
+    grid-area: artwork;
+    width: 44px;
+    height: 44px;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__identity {
+    grid-area: identity;
+    min-width: 0;
+    padding-left: 4px;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__time {
+    grid-area: time;
+    display: flex;
+    justify-self: end;
+    align-self: center;
+    gap: 0.28rem;
+    padding-right: 2px;
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hiplingo-now-playing-dock .shared-now-playing__end-controls {
+    display: contents;
+  }
+
+  .hiplingo-now-playing-dock
+    .shared-now-playing__end-controls > button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .hiplingo-now-playing-dock__shuffle-button {
+    grid-area: shuffle;
+    display: grid;
+    place-items: center;
+  }
+
+  .hiplingo-now-playing-dock__metadata-button {
+    grid-area: end;
+    justify-self: end;
+  }
+}
+
+/* =========================================================
+   Mobile landscape Listen — playlist deferred
+   ========================================================= */
+@media (max-width: 899px) and (orientation: landscape) {
+  /* Keep the current title-carousel/filter implementation in source for the
+   * upcoming landscape playlist pass, but keep the main Listen canvas clear. */
+  .hiplingo-site-shell--listen .listen-track-queue__titles,
+  .hiplingo-site-shell--listen .listen-track-queue__filters {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Desktop primary-lens-only performance budget
+   ========================================================= */
+
+/*
+ * Keep the base plane and primary lens reactive, but permanently remove the
+ * four auxiliary masked image surfaces from desktop painting/compositing.
+ *
+ * This is deliberately NOT tied to playback state. Play/Pause/track handoff
+ * therefore cannot cause lenses to disappear/reappear or jiggle.
+ */
+@media (min-width: 900px) {
+  .listen-reactive-background__secondary-lens-mask,
+  .listen-reactive-background__tertiary-lens-mask,
+  .listen-reactive-background__macro-lens-mask,
+  .listen-reactive-background__macro-secondary-lens-mask {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Desktop playback compositor budget
+   ========================================================= */
+/*
+ * Keep every lens surface continuously mounted through playback-state and
+ * source handoffs so its smoothed position/zoom cannot pop or jiggle.
+ * The 18 tint clusters remain the playback-only compositor sacrifice.
+ */
+@media (min-width: 900px) {
+  .listen-reactive-background[data-playback-active="true"]
+    .listen-reactive-background__clusters {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Hero artwork stays fully opaque
+   ========================================================= */
+
+/*
+ * Preserve the artwork slider's scale, rotation, position and stacking
+ * choreography, but do not fade album covers during resting or swipe states.
+ */
+.audio-player[data-display-mode="full"]
+  .artwork-stack__item--current,
+.audio-player[data-display-mode="full"]
+  .artwork-stack__item--previous,
+.audio-player[data-display-mode="full"]
+  .artwork-stack__item--next,
+.audio-player[data-display-mode="full"]
+  .artwork-stack__item--far-previous,
+.audio-player[data-display-mode="full"]
+  .artwork-stack__item--far-next {
+  opacity: 1 !important;
+}
+
+/* =========================================================
+   Site-wide ambient background + translucent header
+   ========================================================= */
+
+/*
+ * Normal site routes reuse the Listen artwork as one fixed compositor plane.
+ * The component paints its slow resting orbit at 12 fps. Because the plane is
+ * fixed, normal document scrolling naturally creates parallax without any
+ * scroll listener or background-position repaint.
+ */
+.hiplingo-site-shell {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.hiplingo-site-ambient-background {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #08070e;
+}
+
+.hiplingo-site-ambient-background__field {
+  position: absolute;
+  inset: -9%;
+  opacity: 0.72;
+  background-color: #151219;
+  background-image: url("/brand/hiplingo-listen-background-desktop.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: translate3d(2.1%, 0, 0) scale(1.07);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.hiplingo-site-ambient-background::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(
+      180deg,
+      rgba(9, 8, 16, 0.36),
+      rgba(9, 8, 16, 0.18) 24%,
+      rgba(9, 8, 16, 0.34) 72%,
+      rgba(9, 8, 16, 0.58)
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 16%,
+      rgba(5, 4, 7, 0.48) 92%
+    );
+}
+
+.hiplingo-site-header {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(9, 8, 16, 0.68),
+      rgba(9, 8, 16, 0.56)
+    );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  .hiplingo-site-ambient-background__field {
+    inset: -14%;
+    background-image: url("/brand/hiplingo-listen-background-mobile-landscape.webp");
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait) {
+  .hiplingo-site-ambient-background__field {
+    inset: -14%;
+    background-image: url("/brand/hiplingo-listen-background-mobile-portrait.webp");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiplingo-site-ambient-background__field {
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+/* =========================================================
+   Full-bleed landing hero parallax restore
+   ========================================================= */
+
+.hiplingo-home {
+  --hiplingo-home-header-overlap: 53px;
+  padding-top: 0 !important;
+}
+
+/*
+ * Break out of the normal route container. The negative top margin lets the
+ * banner artwork begin behind the sticky translucent header while the header
+ * remains in normal sticky flow.
+ */
+.hiplingo-home .hiplingo-hero {
+  width: 100vw;
+  max-width: none;
+  margin-top: calc(-1 * var(--hiplingo-home-header-overlap));
+  margin-right: calc(50% - 50vw);
+  margin-left: calc(50% - 50vw);
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.hiplingo-home .hiplingo-hero__banner {
+  position: relative;
+  overflow: hidden;
+  background: #08070e;
+}
+
+.hiplingo-hero__parallax-layer {
+  --hiplingo-hero-parallax-y: 0px;
+
+  position: absolute;
+  inset: -42% -4%;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(8, 7, 14, 0.02) 30%,
+      rgba(8, 7, 14, 0.18) 68%,
+      rgba(8, 7, 14, 0.72) 100%
+    ),
+    url("/brand/hiplingo-banner-mobile.webp");
+  background-position: center 44%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform:
+    translate3d(
+      0,
+      var(--hiplingo-hero-parallax-y),
+      0
+    )
+    scale(1.08);
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  .hiplingo-hero__parallax-layer {
+    inset: -24% -3%;
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(8, 7, 14, 0.02) 35%,
+        rgba(8, 7, 14, 0.15) 72%,
+        rgba(8, 7, 14, 0.72) 100%
+      ),
+      url("/brand/hiplingo-banner-desktop.webp");
+    background-position: center 48%;
+    transform:
+      translate3d(
+        0,
+        var(--hiplingo-hero-parallax-y),
+        0
+      )
+      scale(1.05);
+  }
+}
+
+@media (max-width: 639px) and (orientation: portrait) {
+  .hiplingo-home {
+    --hiplingo-home-header-overlap: 92px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
+  .hiplingo-home {
+    --hiplingo-home-header-overlap: 50px;
+    padding-top: 0 !important;
+  }
+
+  .hiplingo-hero__parallax-layer {
+    inset: -80% -3%;
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(8, 7, 14, 0.02) 22%,
+        rgba(8, 7, 14, 0.25) 70%,
+        rgba(8, 7, 14, 0.72) 100%
+      ),
+      url("/brand/hiplingo-banner-desktop.webp");
+    background-position: center 48%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiplingo-hero__parallax-layer {
+    --hiplingo-hero-parallax-y: 0px !important;
+    transform: scale(1.05);
+    will-change: auto;
+  }
+}
+
+/* =========================================================
+   Public small-text + date + hero-gradient polish
+   ========================================================= */
+
+.hiplingo-site-shell {
+  --hiplingo-small-accent: #a9d8ed;
+  --hiplingo-small-accent-muted: #86b9d0;
+}
+
+/* Reuse the former catalog-eyebrow blue for actual contextual information. */
+.hiplingo-catalog-heading > p,
+.hiplingo-release-card__copy > span,
+.hiplingo-release-card__copy small,
+.hiplingo-artist-card__copy span,
+.hiplingo-artist-card__copy small,
+.hiplingo-artist-release__copy small,
+.hiplingo-artist-detail__heading p,
+.hiplingo-release-detail__meta,
+.hiplingo-release-detail__masthead .hiplingo-release-detail__artist,
+.hiplingo-release-track__title small {
+  color: var(--hiplingo-small-accent) !important;
+}
+
+.hiplingo-release-card__copy > span,
+.hiplingo-release-detail__masthead .hiplingo-release-detail__artist {
+  font-weight: 700;
+}
+
+.hiplingo-release-card__copy small,
+.hiplingo-artist-card__copy span,
+.hiplingo-artist-card__copy small,
+.hiplingo-artist-release__copy small,
+.hiplingo-release-detail__meta {
+  color: var(--hiplingo-small-accent-muted) !important;
+}
+
+/*
+ * Keep the full-bleed parallax image, but restore the visual handoff into the
+ * identity/copy section instead of ending the photo on a hard horizontal cut.
+ */
+.hiplingo-home .hiplingo-hero__banner::after {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 48%;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(8, 7, 14, 0.22) 30%,
+      rgba(8, 7, 14, 0.72) 72%,
+      var(--hiplingo-surface-1) 100%
+    );
+}
+
+.hiplingo-home .hiplingo-hero__identity {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--hiplingo-surface-1),
+      rgba(12, 9, 20, 0.97)
+    );
+}

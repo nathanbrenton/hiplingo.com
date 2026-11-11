@@ -1,0 +1,913 @@
+/*
+ * Responsive Listen backgrounds. Mobile keeps the moving base plane but
+ * omits the expensive cluster/lens compositor stack. The orientation crops
+ * are derived from the desktop-wide source master without scaling.
+ */
+@media (max-width: 899px) {
+  .listen-reactive-background {
+    display: block;
+    background:
+      radial-gradient(
+        circle at 50% 42%,
+        rgba(13, 10, 17, 0.22),
+        rgba(7, 6, 9, 0.74) 72%
+      );
+  }
+
+  .listen-reactive-background__field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.72;
+    transform:
+      translate3d(
+        var(--listen-bg-x),
+        var(--listen-bg-y),
+        0
+      )
+      scale(var(--listen-bg-scale));
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .listen-reactive-background__backplate {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background-color: #151219;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .listen-reactive-background__clusters,
+  .listen-reactive-background__macro-lens-mask,
+  .listen-reactive-background__macro-secondary-lens-mask,
+  .listen-reactive-background__lens-mask,
+  .listen-reactive-background__secondary-lens-mask,
+  .listen-reactive-background__tertiary-lens-mask {
+    display: none;
+  }
+
+  .listen-reactive-background::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background:
+      linear-gradient(
+        180deg,
+        rgba(9, 8, 16, 0.3),
+        transparent 24%,
+        transparent 68%,
+        rgba(9, 8, 16, 0.48)
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 20%,
+        rgba(5, 4, 7, 0.4) 88%
+      );
+  }
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  .listen-reactive-background__backplate {
+    background-image: url("/brand/hiplingo-listen-background-mobile-landscape.webp");
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait) {
+  .listen-reactive-background__backplate {
+    background-image: url("/brand/hiplingo-listen-background-mobile-portrait.webp");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listen-reactive-background__field {
+    transform: none;
+    will-change: auto;
+  }
+
+  .listen-reactive-background__cluster {
+    transform: none;
+    will-change: auto;
+  }
+
+  .listen-reactive-background__lens-mask,
+  .listen-reactive-background__secondary-lens-mask,
+  .listen-reactive-background__tertiary-lens-mask,
+  .listen-reactive-background__macro-lens-mask,
+  .listen-reactive-background__macro-secondary-lens-mask {
+    display: none;
+    will-change: auto;
+  }
+
+  .listen-reactive-background__lens-surface,
+  .listen-reactive-background__secondary-lens-surface,
+  .listen-reactive-background__tertiary-lens-surface,
+  .listen-reactive-background__macro-lens-surface,
+  .listen-reactive-background__macro-secondary-lens-surface {
+    transform: none;
+    will-change: auto;
+  }
+}
+
+/* =========================================================
+   PT8 Listen persistent view + queue-filter control docks
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+
+
+  /* Keep desktop queue filters independent from the centered title carousel. */
+
+  .listen-track-queue-host .listen-track-queue__filter-control {
+    min-height: 42px;
+    padding: 6px 18px;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .listen-track-queue-host .listen-track-queue__clear-filters {
+    min-height: 38px;
+    padding: 6px 16px;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.18);
+  }
+}
+
+
+/* =========================================================
+   PT8 desktop Listen queue-first simplification
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+  .audio-player[data-display-mode="full"] {
+    padding-top: 4px !important;
+  }
+
+  .audio-player[data-display-mode="full"] > .listen-track-queue-host {
+    width: min(1000px, calc(100vw - 48px));
+    margin: -6px auto var(--fixed-now-playing-height, 92px);
+    transform: none;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .audio-player[data-display-mode="full"] .waveform-panel__current-time {
+    min-width: 68px;
+    padding: 6px 10px;
+    font-size: 1.18rem;
+    font-weight: 650;
+  }
+
+  .listen-track-queue {
+    display: grid;
+    width: min(960px, 100%);
+    gap: 4px;
+    margin-inline: auto;
+    padding: 0 12px;
+  }
+
+  .listen-track-queue__titles {
+    --listen-title-drag-y: 0px;
+
+    display: grid;
+    gap: 1px;
+    transform: translate3d(0, var(--listen-title-drag-y), 0);
+    transition: transform 160ms ease;
+    user-select: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-active="true"] {
+    transition: none;
+    cursor: grabbing;
+  }
+
+  .listen-track-queue__current {
+    display: grid;
+    width: min(760px, 100%);
+    min-height: 48px;
+    margin-inline: auto;
+    padding: 0 24px;
+    place-items: center;
+    color: #fffaff;
+    text-align: center;
+  }
+
+  .listen-track-queue__current strong {
+    font-size: clamp(2.25rem, 3vw, 3.15rem);
+    font-weight: 760;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .listen-track-queue__empty {
+    margin: 8px auto;
+    color: #918697;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .listen-track-queue__filters {
+    position: fixed;
+    z-index: 390;
+    top: calc(var(--hiplingo-site-header-bottom, 64px) + 2px);
+    right: max(4px, env(safe-area-inset-right));
+    display: grid;
+    width: min(225px, calc(100vw - 8px));
+    justify-items: stretch;
+    gap: 2px;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .listen-track-queue__filter-row {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    pointer-events: auto;
+  }
+
+  .listen-track-queue__filter-row .listen-track-queue__filter-control {
+    min-height: 68px;
+    padding: 10px 30px;
+    border-radius: 0;
+    background:
+      radial-gradient(
+        ellipse 72% 62% at center,
+        rgba(17, 12, 21, 0.9) 0 28%,
+        rgba(17, 12, 21, 0.64) 43%,
+        rgba(17, 12, 21, 0.28) 57%,
+        rgba(17, 12, 21, 0.08) 67%,
+        transparent 77%
+      );
+    box-shadow: none;
+  }
+
+  .listen-track-queue__filter-row .listen-track-queue__filter-control {
+    width: 100%;
+    flex: 0 0 auto;
+    max-width: none;
+  }
+
+  .listen-track-queue__filter-row .listen-track-queue__filter-control > span {
+    font-size: 0.96rem;
+    letter-spacing: 0.065em;
+  }
+
+  .listen-track-queue__filter-row .listen-track-queue__filter-control select {
+    min-height: 34px;
+    font-size: 1.16rem;
+  }
+
+  .listen-track-queue__shuffle {
+    position: static;
+    display: inline-flex;
+    min-width: 132px;
+    min-height: 62px;
+    margin: 12px auto 2px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 999px;
+    color: #f7effa;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(60, 40, 74, 0.92) 0 38%,
+        rgba(38, 26, 47, 0.72) 62%,
+        rgba(25, 18, 31, 0.26) 82%,
+        transparent 100%
+      );
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.2);
+    font: inherit;
+    font-size: 1.14rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .listen-track-queue__shuffle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .listen-track-queue__shuffle:hover,
+  .listen-track-queue__shuffle:focus-visible {
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(78, 51, 97, 0.98) 0 38%,
+        rgba(47, 31, 58, 0.78) 62%,
+        rgba(28, 20, 35, 0.28) 82%,
+        transparent 100%
+      );
+  }
+
+  .listen-track-queue__shuffle:focus-visible {
+    outline: 2px solid rgba(164, 122, 224, 0.7);
+    outline-offset: 1px;
+  }
+
+  .listen-track-queue__shuffle:disabled {
+    cursor: default;
+    opacity: 0.42;
+  }
+
+  .listen-track-queue__filter-row .listen-track-queue__clear-filters {
+    min-width: 84px;
+    min-height: 48px;
+    padding: 7px 18px;
+    font-size: 1rem;
+    border-radius: 999px;
+    color: #cbbad7;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(45, 30, 55, 0.8),
+        rgba(26, 19, 31, 0.36) 72%,
+        transparent 100%
+      );
+  }
+}
+
+/* =========================================================
+   Desktop Listen shell cohesion
+   ========================================================= */
+
+/* The Listen hero and title stack use oversized radial fields whose opacity
+ * reaches zero well before their compositor bounds. This keeps the cloud
+ * atmosphere without exposing the edge of a finite rectangle/ellipse. */
+@media (min-width: 900px) {
+  .listen-track-queue__titles {
+    position: relative;
+    isolation: isolate;
+    padding: 12px 0 14px;
+    perspective: 720px;
+    perspective-origin: 50% 22%;
+  }
+
+  .listen-track-queue__titles::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -62px;
+    bottom: -52px;
+    left: 50%;
+    width: min(1180px, calc(100% + 320px));
+    transform: translateX(-50%);
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 46% 48% at center,
+        rgba(17, 12, 21, 0.82) 0 28%,
+        rgba(17, 12, 21, 0.56) 45%,
+        rgba(17, 12, 21, 0.24) 60%,
+        rgba(17, 12, 21, 0.08) 70%,
+        transparent 79%
+      );
+  }
+
+  .listen-track-queue__current {
+    opacity: 1;
+    transform: translateZ(44px) scale(1.02);
+  }
+
+  .listen-track-queue__current strong {
+    text-shadow:
+      0 0 18px rgba(255, 244, 255, 0.12),
+      0 8px 26px rgba(0, 0, 0, 0.26);
+  }
+
+  .hiplingo-site-shell--listen .audio-player[data-display-mode="full"] .player-layout {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hiplingo-site-shell--listen .audio-player[data-display-mode="full"] .player-layout::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: min(1380px, calc(100% + 420px));
+    height: calc(100% + 220px);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 47% 46% at center,
+        rgba(17, 12, 21, 0.82) 0 27%,
+        rgba(17, 12, 21, 0.56) 44%,
+        rgba(17, 12, 21, 0.24) 59%,
+        rgba(17, 12, 21, 0.08) 69%,
+        transparent 78%
+      );
+  }
+}
+
+/* The shared transport keeps its behavior/layout, while Hiplingo supplies a
+ * host-specific purple/canvas skin matching the rest of the public app. */
+.hiplingo-now-playing-dock.shared-now-playing {
+  border-top-color: rgba(219, 200, 255, 0.2);
+  color: var(--hiplingo-text);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(29, 24, 41, 0.985),
+      rgba(14, 12, 22, 0.985)
+    );
+  box-shadow:
+    0 -0.55rem 1.35rem rgba(0, 0, 0, 0.42),
+    0 -1px 0 rgba(169, 140, 255, 0.08);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__artwork {
+  border-color: rgba(219, 200, 255, 0.2);
+  background: rgba(18, 14, 27, 0.96);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__title {
+  color: var(--hiplingo-text);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__context {
+  color: var(--hiplingo-muted);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__detail,
+.hiplingo-now-playing-dock .shared-now-playing__time {
+  color: var(--hiplingo-muted-deep);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__time span:nth-child(2) {
+  color: #62596e;
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__waveform {
+  border-color: rgba(169, 140, 255, 0.24);
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 49.5%,
+      rgba(169, 140, 255, 0.18) 50%,
+      transparent 50.5%
+    ),
+    var(--hiplingo-surface-waveform);
+}
+
+.hiplingo-now-playing-dock .shared-now-playing__transport > button,
+.hiplingo-now-playing-dock .shared-volume-control__button,
+.hiplingo-now-playing-dock .shared-now-playing__end-controls > button {
+  border-color: rgba(219, 200, 255, 0.24);
+  color: #ddd5e7;
+  background: rgba(31, 25, 45, 0.78);
+}
+
+.hiplingo-now-playing-dock
+  .shared-now-playing__transport
+  > button:hover:not(:disabled),
+.hiplingo-now-playing-dock
+  .shared-volume-control__button:hover:not(:disabled),
+.hiplingo-now-playing-dock
+  .shared-now-playing__end-controls
+  > button:hover:not(:disabled) {
+  border-color: rgba(169, 140, 255, 0.5);
+  color: #fffaff;
+  background: rgba(66, 48, 88, 0.88);
+}
+
+.hiplingo-now-playing-dock
+  .shared-now-playing__transport
+  > .shared-now-playing__play {
+  border-color: rgba(169, 140, 255, 0.58);
+  color: #fffaff;
+  background: rgba(73, 55, 103, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(239, 139, 197, 0.06);
+}
+
+.hiplingo-now-playing-dock .shared-volume-control__popup {
+  border-color: rgba(219, 200, 255, 0.22);
+  background: rgba(22, 17, 31, 0.985);
+}
+
+/* Keep the footer Shuffle control mounted across routes so mobile orientation
+ * changes do not alter player structure. Portrait and landscape place it in
+ * their own canonical transport grids below. */
+.hiplingo-now-playing-dock__shuffle-button {
+  display: none;
+}
+
+.hiplingo-now-playing-dock__shuffle-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+/* Header destinations and the hamburger share one control height/baseline. */
+@media (min-width: 900px) {
+  .hiplingo-site-header {
+    align-items: center;
+  }
+
+  .hiplingo-site-nav {
+    min-height: 40px;
+    align-items: center;
+    padding-block: 0;
+  }
+
+  .hiplingo-site-nav > a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 12px;
+    line-height: 1;
+  }
+
+  .hiplingo-site-actions {
+    min-height: 40px;
+    align-items: center;
+  }
+
+  .hiplingo-site-menu {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+}
+
+/* Desktop Listen is intentionally a single-viewport composition. Lock only
+ * the page shell; the upcoming-track viewport retains its own pan/scroll. */
+@media (min-width: 900px) {
+  html:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen),
+  body:has(.hiplingo-site-shell--listen) #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hiplingo-site-shell--listen > .hiplingo-site-footer {
+    display: none;
+  }
+
+  .hiplingo-site-shell--listen .hiplingo-player-page {
+    height: calc(
+      100dvh - var(--hiplingo-site-header-bottom, 64px)
+    );
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+
+/* =========================================================
+   Desktop Listen title carousel — artwork-style handoff
+   ========================================================= */
+@media (min-width: 900px) {
+  .listen-track-queue__titles {
+    --listen-title-drag-y: 0px;
+    --listen-title-visual-progress: 0;
+    --listen-title-center-y: 42%;
+
+    position: relative;
+    display: block;
+    width: min(760px, 100%);
+    height: 218px;
+    margin: -112px auto -8px;
+    padding: 0;
+    transform: none;
+    transition: none;
+    perspective: 720px;
+    perspective-origin: 50% 50%;
+    touch-action: pan-x;
+    user-select: none;
+  }
+
+  /* A freshly loaded/shuffled queue starts at index 0, so no previous title
+   * exists. Collapse that absent upper carousel depth instead of reserving a
+   * visual hole above Now Playing. */
+  .listen-track-queue__titles[data-has-previous="false"] {
+    --listen-title-center-y: 30%;
+
+    height: 198px;
+    margin-top: -124px;
+    margin-bottom: -10px;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"],
+  .listen-track-queue__titles[data-swipe-direction="previous"] {
+    cursor: grabbing;
+  }
+
+  .listen-track-queue__title {
+    position: absolute;
+    top: var(--listen-title-center-y);
+    left: 50%;
+    display: grid;
+    width: min(760px, 100%);
+    min-height: 56px;
+    padding: 0 24px;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    color: #fffaff;
+    background: transparent;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transform-origin: center;
+    transition:
+      transform 180ms ease,
+      opacity 160ms ease,
+      color 160ms ease;
+  }
+
+  .listen-track-queue__title strong {
+    font-size: clamp(2.25rem, 3vw, 3.15rem);
+    font-weight: 760;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .listen-track-queue__title:focus-visible {
+    outline: 2px solid rgba(164, 122, 224, 0.7);
+    outline-offset: 1px;
+  }
+
+  .listen-track-queue__title--far-previous {
+    z-index: 1;
+    opacity: 0.2;
+    transform:
+      translate(-50%, calc(-50% - 122px))
+      translateZ(-132px)
+      scale(0.38);
+  }
+
+  .listen-track-queue__title--previous {
+    z-index: 2;
+    opacity: 0.46;
+    transform:
+      translate(-50%, calc(-50% - 72px))
+      translateZ(-88px)
+      scale(0.54);
+  }
+
+  .listen-track-queue__current {
+    z-index: 5;
+    width: min(760px, 100%);
+    min-height: 64px;
+    margin: 0;
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translateZ(42px)
+      scale(1);
+    touch-action: pan-x;
+  }
+
+  .listen-track-queue__current strong {
+    font-size: clamp(2.25rem, 3vw, 3.15rem);
+    text-shadow:
+      0 0 18px rgba(255, 244, 255, 0.12),
+      0 8px 26px rgba(0, 0, 0, 0.26);
+  }
+
+  .listen-track-queue__title--next {
+    z-index: 3;
+    opacity: 0.78;
+    transform:
+      translate(-50%, calc(-50% + 72px))
+      translateZ(-34px)
+      scale(0.62);
+  }
+
+  .listen-track-queue__title--far-next {
+    z-index: 2;
+    opacity: 0.38;
+    transform:
+      translate(-50%, calc(-50% + 122px))
+      translateZ(-104px)
+      scale(0.46);
+  }
+
+  .listen-track-queue__title--previous:hover,
+  .listen-track-queue__title--next:hover,
+  .listen-track-queue__title--far-previous:hover,
+  .listen-track-queue__title--far-next:hover {
+    color: #ffffff;
+    opacity: 0.96;
+  }
+
+  /* Match the artwork swiper's forgiving dead-zone handoff. The incoming
+   * title zooms and brightens only after visual progress begins. */
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__current,
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__current {
+    z-index: 4;
+    opacity: calc(
+      1 - (var(--listen-title-visual-progress) * 0.4)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(-50% + var(--listen-title-drag-y))
+      )
+      translateZ(
+        calc(42px - (var(--listen-title-visual-progress) * 100px))
+      )
+      scale(
+        calc(1 - (var(--listen-title-visual-progress) * 0.22))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--next {
+    z-index: 4;
+    opacity: calc(
+      0.78 + (var(--listen-title-visual-progress) * 0.22)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% +
+          ((1 - var(--listen-title-visual-progress)) * 72px)
+        )
+      )
+      translateZ(
+        calc(-34px + (var(--listen-title-visual-progress) * 76px))
+      )
+      scale(
+        calc(0.62 + (var(--listen-title-visual-progress) * 0.38))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--far-next {
+    opacity: calc(
+      0.38 + (var(--listen-title-visual-progress) * 0.4)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% +
+          (122px - (var(--listen-title-visual-progress) * 50px))
+        )
+      )
+      translateZ(
+        calc(-104px + (var(--listen-title-visual-progress) * 70px))
+      )
+      scale(
+        calc(0.46 + (var(--listen-title-visual-progress) * 0.16))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="next"]
+    .listen-track-queue__title--previous {
+    opacity: calc(
+      0.46 - (var(--listen-title-visual-progress) * 0.28)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% -
+          (72px + (var(--listen-title-visual-progress) * 50px))
+        )
+      )
+      translateZ(-132px)
+      scale(
+        calc(0.54 - (var(--listen-title-visual-progress) * 0.14))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--previous {
+    z-index: 4;
+    opacity: calc(
+      0.46 + (var(--listen-title-visual-progress) * 0.54)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% -
+          ((1 - var(--listen-title-visual-progress)) * 72px)
+        )
+      )
+      translateZ(
+        calc(-88px + (var(--listen-title-visual-progress) * 130px))
+      )
+      scale(
+        calc(0.54 + (var(--listen-title-visual-progress) * 0.46))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--far-previous {
+    opacity: calc(
+      0.2 + (var(--listen-title-visual-progress) * 0.26)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% -
+          (122px - (var(--listen-title-visual-progress) * 50px))
+        )
+      )
+      translateZ(
+        calc(-132px + (var(--listen-title-visual-progress) * 44px))
+      )
+      scale(
+        calc(0.38 + (var(--listen-title-visual-progress) * 0.16))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="previous"]
+    .listen-track-queue__title--next {
+    opacity: calc(
+      0.78 - (var(--listen-title-visual-progress) * 0.46)
+    );
+    transform:
+      translate(
+        -50%,
+        calc(
+          -50% +
+          (72px + (var(--listen-title-visual-progress) * 50px))
+        )
+      )
+      translateZ(-118px)
+      scale(
+        calc(0.62 - (var(--listen-title-visual-progress) * 0.14))
+      );
+    transition: none;
+  }
+
+  .listen-track-queue__titles[data-swipe-promoted="true"]
+    .listen-track-queue__title--next,
+  .listen-track-queue__titles[data-swipe-promoted="true"]
+    .listen-track-queue__title--previous {
+    z-index: 6;
+  }
+
+  .listen-track-queue__titles[data-swipe-committing="true"]
+    .listen-track-queue__title {
+    transition: none !important;
+  }
+
+  .listen-track-queue__titles[data-swipe-committing="true"]
+    .listen-track-queue__current {
+    z-index: 7;
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      translateZ(42px)
+      scale(1);
+  }
+
+  .listen-track-queue__titles[data-swipe-direction="none"]
+    .listen-track-queue__title {
+    transition:
+      transform 180ms ease,
+      opacity 160ms ease,
+      color 160ms ease;
+  }
+}

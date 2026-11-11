@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -14,7 +16,7 @@ async function readSource(relativePath) {
 }
 
 test("centralizes Hiplingo purple surface tokens across metadata and waveform shells", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(css, /--hiplingo-surface-waveform:\s*#0d0a16;/);
   assert.match(css, /--hiplingo-surface-control:\s*rgba\(33, 27, 46, 0\.92\);/);
@@ -50,7 +52,7 @@ test("keeps the rendered waveform canvas transparent so the themed shell surface
 
 test("removes the redundant settings heading while keeping the close action", async () => {
   const playerSource = await readSource("src/components/AudioPlayer.tsx");
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.doesNotMatch(playerSource, /Appearance & settings/);
   assert.doesNotMatch(playerSource, /className="audio-player__settings-header"/);

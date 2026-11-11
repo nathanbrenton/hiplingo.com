@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -18,10 +20,7 @@ test("hamburger remains the menu toggle while the settings panel clears the stic
     path.join(projectRoot, "src/components/AudioPlayer.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(appSource, /const headerRef = useRef<HTMLElement \| null>\(null\)/);
   assert.match(appSource, /--hiplingo-site-header-bottom/);

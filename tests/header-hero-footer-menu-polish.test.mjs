@@ -4,16 +4,15 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
 
 test("mobile landscape restores the HIPLINGO wordmark", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Header + hero + footer + settings-menu final polish",
@@ -28,10 +27,7 @@ test("mobile landscape restores the HIPLINGO wordmark", async () => {
 });
 
 test("wide landing headline stays on one line and short landscape gets compact sizing", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Header + hero + footer + settings-menu final polish",
@@ -49,10 +45,7 @@ test("wide landing headline stays on one line and short landscape gets compact s
 });
 
 test("hero banner grows only when viewport runway is available", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Header + hero + footer + settings-menu final polish",
@@ -70,10 +63,7 @@ test("hero banner grows only when viewport runway is available", async () => {
 });
 
 test("public footer receives a subtle readable surface and text shadow", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Header + hero + footer + settings-menu final polish",
@@ -95,10 +85,7 @@ test("public footer receives a subtle readable surface and text shadow", async (
 });
 
 test("settings panel itself scrolls so Developer information remains reachable", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Header + hero + footer + settings-menu final polish",

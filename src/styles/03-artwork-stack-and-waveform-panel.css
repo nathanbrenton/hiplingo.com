@@ -1,0 +1,943 @@
+/*
+ * On short landscape screens, reserve the artwork surface for pointer
+ * gestures. Vertical page scrolling remains available everywhere
+ * outside the artwork itself.
+ */
+@media (orientation: landscape) and (max-height: 520px) {
+  .artwork-stack__item--current {
+    touch-action: none;
+  }
+}
+
+/* ---------------------------------------------------------
+   Keep all background covers behind the committed center cover
+   --------------------------------------------------------- */
+
+/* The committed destination/current artwork always owns the top layer. */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--current,
+.artwork-stack[data-commit-direction="next"]
+  .artwork-stack__item--next,
+.artwork-stack[data-commit-direction="previous"]
+  .artwork-stack__item--previous {
+  z-index: 10 !important;
+  isolation: isolate;
+}
+
+/*
+ * Every non-centered cover remains behind for the entire release
+ * handoff, even while its position is being rebuilt.
+ */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--next,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-next {
+  z-index: 1 !important;
+  transition: none !important;
+}
+
+/* Restore the actual committed destination above the blanket rule. */
+.artwork-stack[data-commit-direction="next"]
+  .artwork-stack__item--next,
+.artwork-stack[data-commit-direction="previous"]
+  .artwork-stack__item--previous {
+  z-index: 10 !important;
+}
+
+/*
+ * Prevent shadows or filters from visually bleeding over the centered
+ * artwork during the release-time rebuild.
+ */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--next,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-next {
+  box-shadow: none;
+  filter: brightness(0.78);
+}
+
+/* Keep the centered artwork visually solid throughout the handoff. */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--current,
+.artwork-stack[data-commit-direction="next"]
+  .artwork-stack__item--next,
+.artwork-stack[data-commit-direction="previous"]
+  .artwork-stack__item--previous {
+  opacity: 1 !important;
+  filter: none !important;
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 48%);
+}
+
+/* ---------------------------------------------------------
+   Prevent compositor-layer flicker during artwork commit
+   --------------------------------------------------------- */
+
+/*
+ * The centered artwork forms an opaque paint layer over every cover
+ * that is being repositioned during the release handoff.
+ */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--current {
+  z-index: 20 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  backface-visibility: hidden;
+  transform:
+    translate3d(-50%, -50%, 2px)
+    rotate(0deg)
+    scale(1) !important;
+  filter: none !important;
+  isolation: isolate;
+  will-change: transform;
+}
+
+/*
+ * Hide every rebuilding background cover for the two-frame commit
+ * window. Their DOM positions still update behind the centered cover.
+ */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--next,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-previous,
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item--far-next {
+  z-index: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backface-visibility: hidden;
+}
+
+/*
+ * Before React changes the selected track, the destination cover is
+ * still named previous or next. Keep that one visible and centered.
+ */
+.artwork-stack[data-commit-direction="next"]
+  .artwork-stack__item--next,
+.artwork-stack[data-commit-direction="previous"]
+  .artwork-stack__item--previous {
+  left: 50% !important;
+  right: auto !important;
+  z-index: 20 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform:
+    translate3d(-50%, -50%, 2px)
+    rotate(0deg)
+    scale(1) !important;
+  filter: none !important;
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 48%);
+  transition: none !important;
+  backface-visibility: hidden;
+}
+
+/* Confine artwork painting to the carousel area. */
+.artwork-stack {
+  isolation: isolate;
+  contain: paint;
+}
+
+/* ---------------------------------------------------------
+   Stable artwork commit overlay
+   --------------------------------------------------------- */
+
+/*
+ * Preserve the exact destination artwork above the carousel while
+ * React rebuilds the previous/current/next track roles underneath.
+ */
+.artwork-stack__commit-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  display: block;
+  width: 78%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid #3b3b3b;
+  border-radius: 10px;
+  background: #181818;
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 48%);
+  pointer-events: none;
+  transform:
+    translate3d(-50%, -50%, 10px)
+    rotate(0deg)
+    scale(1);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.artwork-stack__commit-overlay img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+ * The regular stack can rebuild freely, but every regular cover stays
+ * beneath the stable commit overlay.
+ */
+.artwork-stack[data-swipe-committing="true"]
+  .artwork-stack__item {
+  z-index: 1 !important;
+  transition: none !important;
+}
+
+/* Match the active artwork sizing used by narrow portrait layouts. */
+@media (max-width: 639px) {
+  .artwork-stack__commit-overlay {
+    width: 72%;
+  }
+}
+
+/* Match the active artwork sizing used by desktop layouts. */
+@media (min-width: 900px) {
+  .artwork-stack__commit-overlay {
+    width: 76%;
+  }
+}
+
+/* ---------------------------------------------------------
+   Mobile portrait and landscape refinement
+   --------------------------------------------------------- */
+
+/* Mobile-first spacing: compact, but still comfortable to touch. */
+@media (max-width: 639px) {
+  #root {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .app-menu > summary {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+
+  .player-layout {
+    gap: 10px;
+  }
+
+  /*
+   * Keep the artwork large enough to feel central, while leaving
+   * room for transport controls and the waveform.
+   */
+  .artwork-panel {
+    width: min(64vw, 270px);
+  }
+
+  /*
+   * Track selector stays full-width. Zoom remains compact beneath it.
+   */
+
+  .waveform-panel {
+    margin-bottom: 10px;
+    border-radius: 7px;
+  }
+
+  .waveform-panel__current-time {
+    bottom: 6px;
+    left: 6px;
+  }
+
+  .app-menu__panel {
+    position: fixed;
+    top:
+      max(
+        58px,
+        calc(env(safe-area-inset-top) + 48px)
+      );
+    right: max(10px, env(safe-area-inset-right));
+    left: max(10px, env(safe-area-inset-left));
+    width: auto;
+    max-height:
+      calc(
+        100dvh -
+        max(
+          74px,
+          calc(env(safe-area-inset-top) + 64px)
+        ) -
+        max(10px, env(safe-area-inset-bottom))
+      );
+    overscroll-behavior: contain;
+  }
+}
+
+/*
+ * Preserve one compact row on very narrow portrait screens.
+ * Track metadata truncates before either touch control is squeezed.
+ */
+@media (max-width: 360px) {
+
+  .app-menu > summary {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+}
+
+/* ---------------------------------------------------------
+   Mobile landscape
+   --------------------------------------------------------- */
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  #root {
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .audio-player {
+    width: 100%;
+  }
+
+  /*
+   * Header stays compact across the top instead of consuming a full
+   * mobile portrait-style block.
+   */
+
+  .app-menu > summary {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+
+  /*
+   * Artwork occupies a compact left rail. Controls and waveform use
+   * the remaining width.
+   */
+  .player-layout {
+    grid-template-columns:
+      minmax(155px, 30vw)
+      minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+
+  .artwork-panel {
+    position: sticky;
+    top: 6px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .player-layout__main {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+
+  .waveform-panel {
+    margin-bottom: 0;
+  }
+
+  .waveform-panel__current-time {
+    bottom: 5px;
+    left: 5px;
+    padding: 3px 6px;
+    font-size: 0.72rem;
+  }
+
+  .app-menu__panel {
+    position: fixed;
+    top:
+      max(
+        48px,
+        calc(env(safe-area-inset-top) + 40px)
+      );
+    right: max(10px, env(safe-area-inset-right));
+    left: auto;
+    width: min(72vw, 430px);
+    max-height:
+      calc(
+        100dvh -
+        max(
+          58px,
+          calc(env(safe-area-inset-top) + 50px)
+        ) -
+        max(8px, env(safe-area-inset-bottom))
+      );
+    overscroll-behavior: contain;
+  }
+}
+
+/*
+ * Very short landscape screens need an even narrower artwork rail.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    grid-template-columns:
+      minmax(135px, 26vw)
+      minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .artwork-stack__item--current,
+  .artwork-stack__commit-overlay {
+    width: 70%;
+  }
+
+  .artwork-stack__item--previous,
+  .artwork-stack__item--next {
+    width: 64%;
+  }
+
+
+}
+
+/* ---------------------------------------------------------
+   Waveform overlay zoom controls
+   --------------------------------------------------------- */
+
+/*
+ * Reserve a dedicated control rail over the waveform. The rail itself owns
+ * pointer input, so taps beside the zoom buttons cannot fall through into
+ * waveform scrubbing or a host playback toggle.
+ */
+.waveform-panel__zoom-controls {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 4;
+  width: 68px;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.waveform-panel__zoom-button {
+  --waveform-zoom-hit-inset: 7px;
+
+  position: absolute;
+  right: 8px;
+  display: grid;
+  width: 38px;
+  min-width: 38px;
+  max-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
+  padding: 0;
+  place-items: center;
+  overflow: visible;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 7px;
+  background: rgb(0 0 0 / 72%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 30%);
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  backdrop-filter: blur(5px);
+}
+
+/*
+ * Keep the painted control compact while preserving the larger touch target
+ * introduced for mobile. The transparent pseudo-element belongs to the button,
+ * so taps in this extra area activate the control without adding visible size
+ * or selectable text.
+ */
+.waveform-panel__zoom-button::after {
+  position: absolute;
+  inset:
+    calc(-1 * var(--waveform-zoom-hit-inset));
+  content: "";
+  background: transparent;
+}
+
+.waveform-panel__zoom-button > svg {
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.waveform-panel__zoom-button--increase {
+  top: 8px;
+}
+
+.waveform-panel__zoom-button--decrease {
+  bottom: 8px;
+}
+
+.waveform-panel__zoom-button:hover:not(:disabled) {
+  background: rgb(35 35 35 / 88%);
+}
+
+.waveform-panel__zoom-button:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 2px;
+}
+
+.waveform-panel__zoom-button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+@media (max-width: 639px) {
+  .waveform-panel__zoom-controls {
+    width: 76px;
+  }
+
+  .waveform-panel__zoom-button {
+    --waveform-zoom-hit-inset: 10px;
+
+    right: 8px;
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+  }
+
+  .waveform-panel__zoom-button--increase {
+    top: 8px;
+  }
+
+  .waveform-panel__zoom-button--decrease {
+    bottom: 8px;
+  }
+}
+
+/* Keep a generous control rail even on short landscape phones. */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .waveform-panel__zoom-controls {
+    width: 70px;
+  }
+
+  .waveform-panel__zoom-button {
+    --waveform-zoom-hit-inset: 8px;
+
+    right: 7px;
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+  }
+
+  .waveform-panel__zoom-button--increase {
+    top: 7px;
+  }
+
+  .waveform-panel__zoom-button--decrease {
+    bottom: 7px;
+  }
+}
+
+/* ---------------------------------------------------------
+   Short-screen landscape waveform sizing
+   --------------------------------------------------------- */
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .waveform-panel {
+    --waveform-canvas-height: 170px;
+  }
+
+  .player-layout {
+    gap: 8px;
+  }
+
+  .player-layout__main {
+    gap: 6px;
+  }
+
+
+}
+
+/* Extra-short phones need a shallower waveform viewport. */
+@media (
+  orientation: landscape
+) and (max-height: 410px) and (max-width: 950px) {
+  .waveform-panel {
+    --waveform-canvas-height: 145px;
+  }
+
+}
+
+/* ---------------------------------------------------------
+   Track metadata viewer
+   --------------------------------------------------------- */
+
+/* Keep the track selector and information trigger aligned together. */
+
+/* Compact circular information trigger beside the track selector. */
+
+/*
+ * Metadata playback stays fixed near the top on compact layouts.
+ * The modal begins beneath it and no longer recenters between tabs.
+ */
+
+/*
+ * Landscape has enough horizontal room for a passive waveform beside
+ * the persistent transport. Portrait keeps the compact title block.
+ */
+
+
+/* ---------------------------------------------------------
+   Hiplingo controls adjacent to listener metadata
+   --------------------------------------------------------- */
+
+/* Preserve full-width mobile selector behavior around the information button. */
+
+
+/* Fit the selector wrapper into the existing landscape control grid. */
+
+
+@media (prefers-reduced-motion: reduce) {
+  .app-menu > summary {
+    transition: none;
+  }
+
+
+}
+
+/* ---------------------------------------------------------
+   Prevent mobile track selector and metadata button overlap
+   --------------------------------------------------------- */
+
+/*
+ * Allow the selector column to shrink within its two-column grid.
+ * The information button keeps its fixed touch-friendly width.
+ */
+
+/*
+ * Keep mobile selector placement consistent regardless of DOM order:
+ * Track dropdown on the left, information button on the right.
+ */
+
+
+/* Match the smaller control height used in short landscape layouts. */
+
+/* Settings switches for optional metadata-viewer modes. */
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 58px;
+  padding: 12px;
+  border: 1px solid #303030;
+  border-radius: 8px;
+  background: #181818;
+  cursor: pointer;
+}
+
+.settings-toggle > span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.settings-toggle strong {
+  color: #d7d7d7;
+  font-size: 0.875rem;
+}
+
+.settings-toggle small {
+  color: #8f8f8f;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.settings-toggle input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #4f9ac4;
+  cursor: pointer;
+}
+
+.settings-toggle:focus-within {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 2px;
+}
+
+/* Audiophile settings treatment. */
+.settings-toggle--audiophile {
+  border-color: #5f3928;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(139, 65, 35, 0.18),
+      rgba(92, 52, 24, 0.1)
+    );
+}
+
+.settings-toggle--audiophile strong {
+  color: #f1ad75;
+}
+
+.settings-toggle--audiophile input {
+  accent-color: #d66a3d;
+}
+
+/* Developer settings treatment. */
+.settings-toggle--developer {
+  border-color: #28523a;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 101, 61, 0.18),
+      rgba(20, 67, 42, 0.1)
+    );
+}
+
+.settings-toggle--developer strong {
+  color: #80d69b;
+}
+
+.settings-toggle--developer input {
+  accent-color: #49b86d;
+}
+/* ---------------------------------------------------------
+   Independent artwork transport controls
+   --------------------------------------------------------- */
+
+/*
+ * The edge controls intentionally extend outside the carousel.
+ * `contain: paint` would clip them regardless of overflow settings.
+ */
+.artwork-panel,
+.artwork-stack {
+  overflow: visible;
+}
+
+.artwork-stack {
+  contain: none;
+}
+
+/*
+ * Previous and next controls are direct children of the artwork
+ * stack, so they remain stationary during artwork drag gestures.
+ */
+.artwork-stack__edge-control {
+  position: absolute;
+  top: 50%;
+  z-index: 50;
+  display: grid;
+  width: 104px;
+  min-width: 104px;
+  max-width: none;
+  height: 104px;
+  min-height: 104px;
+  padding: 0;
+  place-items: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 50%;
+  color: rgb(255 255 255 / 68%);
+  background: transparent;
+  cursor: pointer;
+  opacity: 1;
+  transform: translateY(-50%);
+  filter: none;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Move the controls outward without modifying any artwork geometry.
+ * Pixel offsets keep them visible and predictable across layouts.
+ */
+.artwork-stack__edge-control--previous {
+  right: 86%;
+  left: auto;
+}
+
+.artwork-stack__edge-control--next {
+  right: auto;
+  left: 86%;
+}
+
+/* The full visible circle is the actual clickable button surface. */
+.artwork-stack__edge-control
+  .artwork-stack__transport-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  overflow: visible;
+  color: inherit;
+  opacity: 1;
+  pointer-events: none;
+  transform: none;
+  filter: none;
+}
+
+.artwork-stack__edge-control
+  .artwork-stack__transport-icon::before {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  content: "";
+  transform: none;
+}
+
+.artwork-stack__edge-control
+  .artwork-stack__transport-icon svg {
+  position: relative;
+  z-index: 1;
+  width: 52%;
+  height: 52%;
+  overflow: visible;
+  opacity: 1;
+  stroke-width: 3;
+  transform: none;
+  filter:
+    drop-shadow(0 1px 3px rgb(0 0 0 / 65%));
+}
+
+/*
+ * Extend the forgiving hit target beyond the visible circle.
+ * The pseudo-element remains part of the button's clickable area.
+ */
+.artwork-stack__edge-control::after {
+  position: absolute;
+  border-radius: 50%;
+  content: "";
+}
+
+.artwork-stack__edge-control--previous::after {
+  inset: -18px 0 -18px -18px;
+}
+
+.artwork-stack__edge-control--next::after {
+  inset: -18px -18px -18px 0;
+}
+
+/* Keep the independent controls unchanged throughout swipe states. */
+.artwork-stack[data-swipe-direction]
+  .artwork-stack__edge-control {
+  top: 50%;
+  opacity: 1 !important;
+  transform: translateY(-50%) !important;
+  filter: none !important;
+}
+
+.artwork-stack[data-swipe-direction]
+  .artwork-stack__edge-control
+  .artwork-stack__transport-icon {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.artwork-stack__edge-control:hover,
+.artwork-stack__edge-control:focus-visible {
+  color: rgb(255 255 255 / 86%);
+}
+
+.artwork-stack__edge-control:hover
+  .artwork-stack__transport-icon::before,
+.artwork-stack__edge-control:focus-visible
+  .artwork-stack__transport-icon::before {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transform: none;
+}
+
+.artwork-stack__edge-control:focus-visible {
+  outline: 3px solid #8fd3ff;
+  outline-offset: 4px;
+}
+
+/*
+ * Keep the larger center play/pause treatment on mobile, but restore
+ * its original size in desktop layouts.
+ */
+@media (min-width: 900px) {
+  .artwork-stack__item--current
+    .artwork-stack__transport-icon::before {
+    width: clamp(42px, 24%, 72px);
+  }
+
+  .artwork-stack__item--current
+    .artwork-stack__transport-icon svg {
+    width: clamp(24px, 14%, 42px);
+    stroke-width: 3;
+  }
+
+  .artwork-stack__edge-control {
+    width: 56px;
+    min-width: 56px;
+    height: 56px;
+    min-height: 56px;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 88%;
+    left: auto;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto;
+    left: 88%;
+  }
+
+  /*
+   * Desktop keeps a forgiving outward hit area while preventing
+   * either navigation button from covering the active artwork.
+   */
+  .artwork-stack__edge-control--previous::after {
+    inset: -14px 0 -14px -14px;
+  }
+
+  .artwork-stack__edge-control--next::after {
+    inset: -14px -14px -14px 0;
+  }
+}

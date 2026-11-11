@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -37,7 +39,7 @@ test("Artist detail simplifies track count and About copy", async () => {
 test("landing uses Start listening as the primary listening CTA without a duplicate hero Listen button", async () => {
   const [app, css] = await Promise.all([
     source("src/App.tsx"),
-    source("src/index.css"),
+    readSiteStyles(),
   ]);
 
   assert.match(
@@ -65,7 +67,7 @@ test("landing uses Start listening as the primary listening CTA without a duplic
 test("long Listen titles receive conditional extra runway", async () => {
   const [queue, css] = await Promise.all([
     source("src/components/ListenTrackQueue.tsx"),
-    source("src/index.css"),
+    readSiteStyles(),
   ]);
 
   assert.match(
@@ -107,7 +109,7 @@ test("compact footer ignores the second rapid play-pause activation", async () =
 });
 
 test("Artist text cards are translucent purple and hero elements keep depth", async () => {
-  const css = await source("src/index.css");
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Final UI refinement: Artist cards, long titles, waveform depth",

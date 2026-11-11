@@ -4,16 +4,15 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
 
 test("footer Artist and Release links do not inherit global 44px control height", async () => {
-  const css = await readFile(
-    path.join(root, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Footer linked-context intrinsic height",

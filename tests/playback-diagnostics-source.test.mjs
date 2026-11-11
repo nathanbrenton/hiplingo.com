@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -16,7 +18,7 @@ const [appSource, playerSource, diagnosticsSource, css] = await Promise.all([
     path.join(projectRoot, "src/components/PlaybackDiagnostics.tsx"),
     "utf8",
   ),
-  readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+  readSiteStyles(),
 ]);
 
 test("playback diagnostics can be opened by URL or six-second hamburger hold", () => {

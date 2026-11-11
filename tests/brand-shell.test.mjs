@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(testDirectory, "..");
 
@@ -18,7 +20,7 @@ test("ships responsive Hiplingo brand assets with the public app", async () => {
     await access(path.join(projectRoot, relativePath));
   }
 
-  const css = await readFile(path.join(projectRoot, "src/index.css"), "utf8");
+  const css = await readSiteStyles();
   assert.match(css, /hiplingo-banner-mobile\.webp/);
   assert.match(css, /hiplingo-banner-desktop\.webp/);
 });

@@ -4,16 +4,15 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
 
 test("uses a primary-lens-only compositor stack on desktop", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const start = css.indexOf(
     "Desktop primary-lens-only performance budget",

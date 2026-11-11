@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -18,7 +20,7 @@ test("keeps the lens stack mounted while reducing desktop playback compositor wo
       ),
       "utf8",
     ),
-    readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+    readSiteStyles(),
   ]);
 
   assert.match(

@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -111,10 +113,7 @@ test("reuses the shared analyser for a calmer low-bass global envelope and keeps
 
 test("keeps one globally aligned image plane while local clusters remain tint-only motion zones", async () => {
   const backgroundSource = await readBackgroundSource();
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(backgroundSource, /LOCAL_CLUSTER_COUNT = 18/);
   assert.match(backgroundSource, /LOCAL_CLUSTER_COLUMNS = 6/);
@@ -138,10 +137,7 @@ test("keeps one globally aligned image plane while local clusters remain tint-on
 
 test("keeps two macro lenses and adds a third small lens with randomized starts and slight speed offsets", async () => {
   const backgroundSource = await readBackgroundSource();
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(backgroundSource, /function createLensMotionSeed\(\): LensMotionSeed/);
   assert.match(backgroundSource, /const primaryLensSeedRef = useRef<LensMotionSeed>\(/);
@@ -178,10 +174,7 @@ test("keeps two macro lenses and adds a third small lens with randomized starts 
 
 test("supports softer watery edges and slightly reduced macro magnification without reintroducing a second image source", async () => {
   const backgroundSource = await readBackgroundSource();
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(backgroundSource, /const macroLensScale = wateryMode\s*\? 1\.03 \+ lensZoomBass \* 0\.018\s*:\s*1\.09 \+ lensZoomBass \* 0\.042/);
   assert.match(backgroundSource, /const macroSecondaryLensScale = wateryMode\s*\? 1\.025 \+ lensZoomBass \* 0\.016\s*:\s*1\.075 \+ lensZoomBass \* 0\.036/);
@@ -213,10 +206,7 @@ test("supports softer watery edges and slightly reduced macro magnification with
 
 test("bounds lens compositor surfaces and suspends hidden-tab work without dropping below 12 fps while running", async () => {
   const backgroundSource = await readBackgroundSource();
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(backgroundSource, /ACTIVE_BACKGROUND_FPS = 12/);
   assert.match(backgroundSource, /RESTING_BACKGROUND_FPS = 12/);
@@ -252,10 +242,7 @@ test("bounds lens compositor surfaces and suspends hidden-tab work without dropp
 });
 
 test("uses transform-only motion and disables reactive travel for reduced motion", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(css, /translate3d\([\s\S]*?var\(--listen-bg-x\)[\s\S]*?var\(--listen-bg-y\)/);
   assert.match(css, /scale\(var\(--listen-bg-scale\)\)/);

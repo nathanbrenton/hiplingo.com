@@ -1,0 +1,993 @@
+/* The shared Now Playing dock z-index/placement lives in
+ * components/compact-now-playing-host.css. */
+.audio-player[data-display-mode="compact"] {
+  z-index: 1200;
+}
+
+
+.audio-player[data-display-mode="compact"]
+  > .audio-player__settings-backdrop {
+  display: block !important;
+}
+
+
+/* ---------------------------------------------------------
+   Desktop artwork / waveform centerline alignment
+   --------------------------------------------------------- */
+
+/*
+ * The artwork stack is taller than the primary waveform panel. Align
+ * the two full-player columns by their visual centerlines instead of
+ * their top edges so the listening workspace remains balanced after
+ * the unified Hiplingo header removed the legacy player header.
+ */
+@media (min-width: 900px) {
+  .audio-player[data-display-mode="full"] .player-layout {
+    align-items: center;
+  }
+
+  .audio-player[data-display-mode="full"] .artwork-panel,
+  .audio-player[data-display-mode="full"] .player-layout__main {
+    align-self: center;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* =========================================================
+   Hiplingo PT4 public artist navigation
+   ========================================================= */
+
+.hiplingo-artist-grid,
+.hiplingo-artist-release-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 12px;
+}
+
+.hiplingo-artist-card,
+.hiplingo-artist-release {
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hiplingo-artist-card__artwork,
+.hiplingo-artist-release__artwork {
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #272727;
+  border-radius: 10px;
+  background:
+    linear-gradient(145deg, rgba(92, 137, 159, 0.18), transparent 58%),
+    #151515;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+}
+
+.hiplingo-artist-card:hover .hiplingo-artist-card__artwork,
+.hiplingo-artist-release:hover .hiplingo-artist-release__artwork {
+  transform: translateY(-2px);
+  border-color: #4d6673;
+}
+
+.hiplingo-artist-card__artwork img,
+.hiplingo-artist-release__artwork img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiplingo-artist-card__copy,
+.hiplingo-artist-release__copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 10px 2px 0;
+}
+
+.hiplingo-artist-card__copy strong,
+.hiplingo-artist-card__copy span,
+.hiplingo-artist-card__copy small,
+.hiplingo-artist-release__copy strong,
+.hiplingo-artist-release__copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hiplingo-artist-card__copy strong,
+.hiplingo-artist-release__copy strong {
+  color: #ededed;
+  font-size: 0.9rem;
+}
+
+.hiplingo-artist-card__copy span {
+  color: #858585;
+  font-size: 0.72rem;
+}
+
+.hiplingo-artist-card__copy small,
+.hiplingo-artist-release__copy small {
+  color: #626262;
+  font-size: 0.65rem;
+  text-transform: capitalize;
+}
+
+.hiplingo-artist-card:focus-visible,
+.hiplingo-artist-release:focus-visible,
+.hiplingo-release-detail__artist:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 3px;
+}
+
+.hiplingo-artist-detail-page {
+  padding-top: 26px;
+}
+
+.hiplingo-artist-detail__heading {
+  max-width: 780px;
+  margin-bottom: 38px;
+}
+
+.hiplingo-artist-detail__heading h1 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: clamp(2.7rem, 12vw, 5.8rem);
+  font-weight: 780;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+  overflow-wrap: anywhere;
+}
+
+.hiplingo-artist-detail__heading p {
+  margin: 14px 0 0;
+  color: #747474;
+  font-size: 0.74rem;
+}
+
+.hiplingo-artist-discography {
+  padding-top: 24px;
+  border-top: 1px solid #252525;
+}
+
+.hiplingo-artist-discography__heading {
+  margin-bottom: 18px;
+}
+
+.hiplingo-artist-discography__heading h2 {
+  margin: 0;
+  color: #dedede;
+  font-size: 1.2rem;
+}
+
+button.hiplingo-release-detail__artist {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  font-weight: 660;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.hiplingo-release-detail__artist:hover {
+  color: #d9edf7;
+}
+
+.hiplingo-release-detail__masthead button.hiplingo-release-detail__artist {
+  font-size: 0.86rem;
+}
+
+@media (min-width: 640px) {
+  .hiplingo-artist-grid,
+  .hiplingo-artist-release-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px 18px;
+  }
+}
+
+@media (min-width: 980px) {
+  .hiplingo-artist-grid,
+  .hiplingo-artist-release-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 22px;
+  }
+}
+
+/* =========================================================
+   Hiplingo PT5 first-class Artist snapshot
+   ========================================================= */
+
+.hiplingo-artist-card__artwork--photo {
+  aspect-ratio: 16 / 9;
+}
+
+.hiplingo-artist-card__artwork--photo img {
+  object-fit: contain;
+}
+
+.hiplingo-artist-detail__heading--with-photo {
+  max-width: 960px;
+}
+
+.hiplingo-artist-detail__photo {
+  display: grid;
+  width: min(100%, 720px);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 28px;
+  place-items: center;
+  border: 1px solid #272727;
+  border-radius: 14px;
+  background: #151515;
+}
+
+.hiplingo-artist-detail__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* =========================================================
+   Hiplingo PT5 public summaries
+   ========================================================= */
+
+.hiplingo-public-summary {
+  width: min(100%, 820px);
+  margin: 0 0 38px;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--hiplingo-border, #26232e);
+}
+
+.hiplingo-public-summary h2 {
+  margin: 0 0 10px;
+  color: #f0edf6;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+}
+
+.hiplingo-public-summary p {
+  margin: 0;
+  color: #a8a3b0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+@media (min-width: 900px) {
+
+  /* Base desktop queue-filter control styling. */
+
+  .listen-track-queue__filter-control {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 46px;
+    flex: 1 1 132px;
+    max-width: 180px;
+    align-content: center;
+    gap: 1px;
+    padding: 7px 20px;
+    border: 0;
+    border-radius: 999px;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(16, 12, 20, 0.9) 0 48%,
+        rgba(16, 12, 20, 0.72) 64%,
+        rgba(16, 12, 20, 0.34) 80%,
+        rgba(16, 12, 20, 0.08) 92%,
+        transparent 100%
+      );
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.24);
+  }
+
+  .listen-track-queue__filter-control > span {
+    color: #817a86;
+    font-size: 0.6rem;
+    font-weight: 760;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .listen-track-queue__filter-control select {
+    width: 100%;
+    min-height: 25px;
+    padding: 2px 24px 2px 0;
+    border: 0;
+    border-radius: 999px;
+    color: #f1ebf4;
+    background: transparent;
+    font: inherit;
+    font-size: 0.7rem;
+    cursor: pointer;
+  }
+
+  .listen-track-queue__clear-filters {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 7px 18px;
+    border: 0;
+    border-radius: 999px;
+    color: #bdb2c3;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(25, 17, 30, 0.86) 0 46%,
+        rgba(25, 17, 30, 0.58) 68%,
+        rgba(25, 17, 30, 0.16) 88%,
+        transparent 100%
+      );
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.22);
+    font: inherit;
+    font-size: 0.65rem;
+    cursor: pointer;
+  }
+
+  .listen-track-queue__clear-filters:hover {
+    color: #f0e8f4;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(45, 30, 54, 0.9) 0 46%,
+        rgba(45, 30, 54, 0.6) 68%,
+        rgba(45, 30, 54, 0.18) 88%,
+        transparent 100%
+      );
+  }
+
+  /*
+   * Tiles / Cards is a dense cover wall, separate from Artwork First.
+   * Covers nearly touch at rest; interaction depth appears only on hover.
+   */
+
+}
+
+@media (min-width: 900px) and (max-width: 1080px) {
+  .listen-track-queue__filter-control {
+    flex-basis: 135px;
+  }
+
+}
+
+/* =========================================================
+   PT8 desktop Listen audio-reactive background prototype
+   ========================================================= */
+
+.audio-player[data-display-mode="full"] {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+}
+
+.listen-reactive-background {
+  --listen-bg-x: 2.2%;
+  --listen-bg-y: 0%;
+  --listen-bg-scale: 1.07;
+  --listen-bg-global-bass: 0;
+  --listen-bg-cluster-scale-outer: 1.006;
+  --listen-bg-cluster-scale-near: 1.008;
+  --listen-bg-cluster-scale-center: 1.012;
+  --listen-bg-cluster-rotation-outer: 0deg;
+  --listen-bg-cluster-rotation-near: 0deg;
+  --listen-bg-cluster-rotation-center: 0deg;
+  --listen-bg-lens-x-px: 144px;
+  --listen-bg-lens-y-px: 320px;
+  --listen-bg-lens-bg-x: 0px;
+  --listen-bg-lens-bg-y: 0px;
+  --listen-bg-lens-scale: 1.08;
+  --listen-bg-lens-radius: clamp(113.333px, 10vw, 240px);
+  --listen-bg-lens-drift-x: 0px;
+  --listen-bg-lens-drift-y: 0px;
+  --listen-bg-lens-rotation: 0deg;
+  --listen-bg-secondary-lens-x-px: 1036px;
+  --listen-bg-secondary-lens-y-px: 520px;
+  --listen-bg-secondary-lens-bg-x: 0px;
+  --listen-bg-secondary-lens-bg-y: 0px;
+  --listen-bg-secondary-lens-scale: 1.06;
+  --listen-bg-secondary-lens-radius: clamp(84px, 7vw, 176px);
+  --listen-bg-secondary-lens-drift-x: 0px;
+  --listen-bg-secondary-lens-drift-y: 0px;
+  --listen-bg-secondary-lens-rotation: 0deg;
+  --listen-bg-tertiary-lens-x-px: 720px;
+  --listen-bg-tertiary-lens-y-px: 210px;
+  --listen-bg-tertiary-lens-bg-x: 0px;
+  --listen-bg-tertiary-lens-bg-y: 0px;
+  --listen-bg-tertiary-lens-scale: 1.055;
+  --listen-bg-tertiary-lens-radius: clamp(72px, 6vw, 150px);
+  --listen-bg-tertiary-lens-drift-x: 0px;
+  --listen-bg-tertiary-lens-drift-y: 0px;
+  --listen-bg-tertiary-lens-rotation: 0deg;
+  --listen-bg-macro-lens-x-px: 870px;
+  --listen-bg-macro-lens-y-px: 256px;
+  --listen-bg-macro-lens-bg-x: 0px;
+  --listen-bg-macro-lens-bg-y: 0px;
+  --listen-bg-macro-lens-scale: 1.03;
+  --listen-bg-macro-lens-radius: clamp(453.333px, 40vw, 960px);
+  --listen-bg-macro-lens-drift-x: 0px;
+  --listen-bg-macro-lens-drift-y: 0px;
+  --listen-bg-macro-lens-rotation: 0deg;
+  --listen-bg-macro-secondary-lens-x-px: 490px;
+  --listen-bg-macro-secondary-lens-y-px: 576px;
+  --listen-bg-macro-secondary-lens-bg-x: 0px;
+  --listen-bg-macro-secondary-lens-bg-y: 0px;
+  --listen-bg-macro-secondary-lens-scale: 1.025;
+  --listen-bg-macro-secondary-lens-radius: clamp(312px, 27vw, 680px);
+  --listen-bg-macro-secondary-lens-drift-x: 0px;
+  --listen-bg-macro-secondary-lens-drift-y: 0px;
+  --listen-bg-macro-secondary-lens-rotation: 0deg;
+  --listen-bg-low: 0;
+  --listen-bg-mid: 0;
+  --listen-bg-high: 0;
+  --listen-bg-source-width: max(100vw, 177.777778vh);
+  --listen-bg-source-height: max(100vh, 56.25vw);
+  --listen-bg-source-x: calc((100vw - var(--listen-bg-source-width)) / 2);
+  --listen-bg-source-y: calc((100vh - var(--listen-bg-source-height)) / 2);
+
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .listen-reactive-background {
+    display: block;
+    background:
+      radial-gradient(
+        circle at 50% 42%,
+        rgba(13, 10, 17, 0.22),
+        rgba(7, 6, 9, 0.74) 72%
+      );
+  }
+
+  .listen-reactive-background__field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-image:
+      radial-gradient(
+        circle at 48% 44%,
+        rgba(
+          140,
+          89,
+          184,
+          calc(0.04 + var(--listen-bg-low) * 0.1)
+        ),
+        transparent 48%
+      ),
+      radial-gradient(
+        circle at 62% 58%,
+        rgba(
+          87,
+          147,
+          173,
+          calc(0.03 + var(--listen-bg-high) * 0.08)
+        ),
+        transparent 42%
+      );
+    opacity: 0.76;
+    transform:
+      translate3d(
+        var(--listen-bg-x),
+        var(--listen-bg-y),
+        0
+      )
+      scale(var(--listen-bg-scale));
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  /*
+   * One globally aligned image source feeds the base plane and every lens
+   * sample. Explicit cover dimensions let the bounded lens surfaces sample
+   * the same pixels without restoring full-viewport compositor layers.
+   */
+  .listen-reactive-background__backplate,
+  .listen-reactive-background__lens-surface,
+  .listen-reactive-background__secondary-lens-surface,
+  .listen-reactive-background__tertiary-lens-surface,
+  .listen-reactive-background__macro-lens-surface,
+  .listen-reactive-background__macro-secondary-lens-surface {
+    background-color: #151219;
+    background-image: url("/brand/hiplingo-listen-background-desktop.webp");
+    background-size:
+      var(--listen-bg-source-width)
+      var(--listen-bg-source-height);
+    background-repeat: no-repeat;
+  }
+
+  .listen-reactive-background__backplate {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    opacity: 1;
+    background-position:
+      var(--listen-bg-source-x)
+      var(--listen-bg-source-y);
+  }
+
+  .listen-reactive-background__clusters {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    overflow: hidden;
+  }
+
+  .listen-reactive-background__cluster {
+    --listen-bg-cluster-local-scale: var(
+      --listen-bg-cluster-scale-outer
+    );
+    --listen-bg-cluster-local-rotation: var(
+      --listen-bg-cluster-rotation-outer
+    );
+
+    min-width: 0;
+    min-height: 0;
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(191, 162, 223, calc(0.03 + var(--listen-bg-mid) * 0.075)),
+        rgba(87, 147, 173, calc(0.016 + var(--listen-bg-high) * 0.05)) 48%,
+        transparent 74%
+      );
+    transform:
+      scale(var(--listen-bg-cluster-local-scale))
+      rotate(var(--listen-bg-cluster-local-rotation));
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .listen-reactive-background__cluster--near {
+    --listen-bg-cluster-local-scale: var(
+      --listen-bg-cluster-scale-near
+    );
+    --listen-bg-cluster-local-rotation: var(
+      --listen-bg-cluster-rotation-near
+    );
+  }
+
+  .listen-reactive-background__cluster--center {
+    --listen-bg-cluster-local-scale: var(
+      --listen-bg-cluster-scale-center
+    );
+    --listen-bg-cluster-local-rotation: var(
+      --listen-bg-cluster-rotation-center
+    );
+  }
+
+  /*
+   * Performance: each lens is now only its visible diameter instead of a
+   * full-viewport checker layer that gets masked afterward. Background
+   * offsets keep each local tile aligned with the one moving base plane.
+   */
+  .listen-reactive-background__macro-lens-mask,
+  .listen-reactive-background__macro-secondary-lens-mask,
+  .listen-reactive-background__lens-mask,
+  .listen-reactive-background__secondary-lens-mask,
+  .listen-reactive-background__tertiary-lens-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    pointer-events: none;
+    contain: layout paint style;
+    will-change: transform;
+  }
+
+  .listen-reactive-background__macro-lens-mask {
+    z-index: 2;
+    width: calc(var(--listen-bg-macro-lens-radius) * 2);
+    height: calc(var(--listen-bg-macro-lens-radius) * 2);
+    transform: translate3d(
+      calc(var(--listen-bg-macro-lens-x-px) - var(--listen-bg-macro-lens-radius)),
+      calc(var(--listen-bg-macro-lens-y-px) - var(--listen-bg-macro-lens-radius)),
+      0
+    );
+  }
+
+  .listen-reactive-background__macro-secondary-lens-mask {
+    z-index: 3;
+    width: calc(var(--listen-bg-macro-secondary-lens-radius) * 2);
+    height: calc(var(--listen-bg-macro-secondary-lens-radius) * 2);
+    transform: translate3d(
+      calc(var(--listen-bg-macro-secondary-lens-x-px) - var(--listen-bg-macro-secondary-lens-radius)),
+      calc(var(--listen-bg-macro-secondary-lens-y-px) - var(--listen-bg-macro-secondary-lens-radius)),
+      0
+    );
+  }
+
+  .listen-reactive-background__lens-mask {
+    z-index: 4;
+    width: calc(var(--listen-bg-lens-radius) * 2);
+    height: calc(var(--listen-bg-lens-radius) * 2);
+    transform: translate3d(
+      calc(var(--listen-bg-lens-x-px) - var(--listen-bg-lens-radius)),
+      calc(var(--listen-bg-lens-y-px) - var(--listen-bg-lens-radius)),
+      0
+    );
+  }
+
+  .listen-reactive-background__secondary-lens-mask {
+    z-index: 5;
+    width: calc(var(--listen-bg-secondary-lens-radius) * 2);
+    height: calc(var(--listen-bg-secondary-lens-radius) * 2);
+    transform: translate3d(
+      calc(var(--listen-bg-secondary-lens-x-px) - var(--listen-bg-secondary-lens-radius)),
+      calc(var(--listen-bg-secondary-lens-y-px) - var(--listen-bg-secondary-lens-radius)),
+      0
+    );
+  }
+
+  .listen-reactive-background__tertiary-lens-mask {
+    z-index: 6;
+    width: calc(var(--listen-bg-tertiary-lens-radius) * 2);
+    height: calc(var(--listen-bg-tertiary-lens-radius) * 2);
+    transform: translate3d(
+      calc(var(--listen-bg-tertiary-lens-x-px) - var(--listen-bg-tertiary-lens-radius)),
+      calc(var(--listen-bg-tertiary-lens-y-px) - var(--listen-bg-tertiary-lens-radius)),
+      0
+    );
+  }
+
+  .listen-reactive-background__lens-surface,
+  .listen-reactive-background__secondary-lens-surface,
+  .listen-reactive-background__tertiary-lens-surface,
+  .listen-reactive-background__macro-lens-surface,
+  .listen-reactive-background__macro-secondary-lens-surface {
+    position: absolute;
+    inset: 0;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .listen-reactive-background__lens-surface {
+    background-position:
+      calc(var(--listen-bg-source-x) + var(--listen-bg-lens-bg-x))
+      calc(var(--listen-bg-source-y) + var(--listen-bg-lens-bg-y));
+    transform:
+      translate3d(
+        var(--listen-bg-lens-drift-x),
+        var(--listen-bg-lens-drift-y),
+        0
+      )
+      rotate(var(--listen-bg-lens-rotation))
+      scale(var(--listen-bg-lens-scale));
+  }
+
+  .listen-reactive-background__secondary-lens-surface {
+    background-position:
+      calc(var(--listen-bg-source-x) + var(--listen-bg-secondary-lens-bg-x))
+      calc(var(--listen-bg-source-y) + var(--listen-bg-secondary-lens-bg-y));
+    transform:
+      translate3d(
+        var(--listen-bg-secondary-lens-drift-x),
+        var(--listen-bg-secondary-lens-drift-y),
+        0
+      )
+      rotate(var(--listen-bg-secondary-lens-rotation))
+      scale(var(--listen-bg-secondary-lens-scale));
+  }
+
+  .listen-reactive-background__tertiary-lens-surface {
+    background-position:
+      calc(var(--listen-bg-source-x) + var(--listen-bg-tertiary-lens-bg-x))
+      calc(var(--listen-bg-source-y) + var(--listen-bg-tertiary-lens-bg-y));
+    transform:
+      translate3d(
+        var(--listen-bg-tertiary-lens-drift-x),
+        var(--listen-bg-tertiary-lens-drift-y),
+        0
+      )
+      rotate(var(--listen-bg-tertiary-lens-rotation))
+      scale(var(--listen-bg-tertiary-lens-scale));
+  }
+
+  .listen-reactive-background__macro-lens-surface {
+    background-position:
+      calc(var(--listen-bg-source-x) + var(--listen-bg-macro-lens-bg-x))
+      calc(var(--listen-bg-source-y) + var(--listen-bg-macro-lens-bg-y));
+    transform:
+      translate3d(
+        var(--listen-bg-macro-lens-drift-x),
+        var(--listen-bg-macro-lens-drift-y),
+        0
+      )
+      rotate(var(--listen-bg-macro-lens-rotation))
+      scale(var(--listen-bg-macro-lens-scale));
+  }
+
+  .listen-reactive-background__macro-secondary-lens-surface {
+    background-position:
+      calc(var(--listen-bg-source-x) + var(--listen-bg-macro-secondary-lens-bg-x))
+      calc(var(--listen-bg-source-y) + var(--listen-bg-macro-secondary-lens-bg-y));
+    transform:
+      translate3d(
+        var(--listen-bg-macro-secondary-lens-drift-x),
+        var(--listen-bg-macro-secondary-lens-drift-y),
+        0
+      )
+      rotate(var(--listen-bg-macro-secondary-lens-rotation))
+      scale(var(--listen-bg-macro-secondary-lens-scale));
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 38%,
+      rgba(0, 0, 0, 0.96) 56%,
+      rgba(0, 0, 0, 0.8) 70%,
+      rgba(0, 0, 0, 0.46) 84%,
+      rgba(0, 0, 0, 0.18) 94%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 38%,
+      rgba(0, 0, 0, 0.96) 56%,
+      rgba(0, 0, 0, 0.8) 70%,
+      rgba(0, 0, 0, 0.46) 84%,
+      rgba(0, 0, 0, 0.18) 94%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__secondary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 36%,
+      rgba(0, 0, 0, 0.95) 54%,
+      rgba(0, 0, 0, 0.78) 68%,
+      rgba(0, 0, 0, 0.43) 82%,
+      rgba(0, 0, 0, 0.16) 93.5%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 36%,
+      rgba(0, 0, 0, 0.95) 54%,
+      rgba(0, 0, 0, 0.78) 68%,
+      rgba(0, 0, 0, 0.43) 82%,
+      rgba(0, 0, 0, 0.16) 93.5%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__tertiary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 36%,
+      rgba(0, 0, 0, 0.95) 54%,
+      rgba(0, 0, 0, 0.78) 68%,
+      rgba(0, 0, 0, 0.43) 82%,
+      rgba(0, 0, 0, 0.16) 93.5%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 36%,
+      rgba(0, 0, 0, 0.95) 54%,
+      rgba(0, 0, 0, 0.78) 68%,
+      rgba(0, 0, 0, 0.43) 82%,
+      rgba(0, 0, 0, 0.16) 93.5%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__macro-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 48%,
+      rgba(0, 0, 0, 0.96) 64%,
+      rgba(0, 0, 0, 0.82) 76%,
+      rgba(0, 0, 0, 0.48) 88%,
+      rgba(0, 0, 0, 0.2) 95%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 48%,
+      rgba(0, 0, 0, 0.96) 64%,
+      rgba(0, 0, 0, 0.82) 76%,
+      rgba(0, 0, 0, 0.48) 88%,
+      rgba(0, 0, 0, 0.2) 95%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__macro-secondary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 45%,
+      rgba(0, 0, 0, 0.95) 62%,
+      rgba(0, 0, 0, 0.8) 75%,
+      rgba(0, 0, 0, 0.44) 87%,
+      rgba(0, 0, 0, 0.18) 94.5%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 45%,
+      rgba(0, 0, 0, 0.95) 62%,
+      rgba(0, 0, 0, 0.8) 75%,
+      rgba(0, 0, 0, 0.44) 87%,
+      rgba(0, 0, 0, 0.18) 94.5%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__secondary-lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__tertiary-lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__macro-lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__macro-secondary-lens-surface {
+    opacity: 0.94;
+  }
+
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__secondary-lens-surface,
+  .listen-reactive-background[data-background-mode="watery"]
+    .listen-reactive-background__tertiary-lens-surface {
+    opacity: 0.93;
+  }
+
+  .listen-reactive-background[data-background-mode="magnify"]
+    .listen-reactive-background__lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 86%,
+      rgba(0, 0, 0, 0.985) 92%,
+      rgba(0, 0, 0, 0.72) 96%,
+      rgba(0, 0, 0, 0.24) 99%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 86%,
+      rgba(0, 0, 0, 0.985) 92%,
+      rgba(0, 0, 0, 0.72) 96%,
+      rgba(0, 0, 0, 0.24) 99%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="magnify"]
+    .listen-reactive-background__secondary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 85%,
+      rgba(0, 0, 0, 0.985) 91.5%,
+      rgba(0, 0, 0, 0.7) 95.5%,
+      rgba(0, 0, 0, 0.22) 98.8%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 85%,
+      rgba(0, 0, 0, 0.985) 91.5%,
+      rgba(0, 0, 0, 0.7) 95.5%,
+      rgba(0, 0, 0, 0.22) 98.8%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="magnify"]
+    .listen-reactive-background__tertiary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 85%,
+      rgba(0, 0, 0, 0.985) 91.5%,
+      rgba(0, 0, 0, 0.7) 95.5%,
+      rgba(0, 0, 0, 0.22) 98.8%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 85%,
+      rgba(0, 0, 0, 0.985) 91.5%,
+      rgba(0, 0, 0, 0.7) 95.5%,
+      rgba(0, 0, 0, 0.22) 98.8%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="magnify"]
+    .listen-reactive-background__macro-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 88%,
+      rgba(0, 0, 0, 0.986) 93.6%,
+      rgba(0, 0, 0, 0.76) 96.8%,
+      rgba(0, 0, 0, 0.26) 99.2%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 88%,
+      rgba(0, 0, 0, 0.986) 93.6%,
+      rgba(0, 0, 0, 0.76) 96.8%,
+      rgba(0, 0, 0, 0.26) 99.2%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background[data-background-mode="magnify"]
+    .listen-reactive-background__macro-secondary-lens-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 86.8%,
+      rgba(0, 0, 0, 0.985) 92.8%,
+      rgba(0, 0, 0, 0.72) 96.2%,
+      rgba(0, 0, 0, 0.24) 99%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 50% at center,
+      #000 0 86.8%,
+      rgba(0, 0, 0, 0.985) 92.8%,
+      rgba(0, 0, 0, 0.72) 96.2%,
+      rgba(0, 0, 0, 0.24) 99%,
+      transparent 100%
+    );
+  }
+
+  .listen-reactive-background::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background:
+      linear-gradient(
+        180deg,
+        rgba(9, 8, 16, 0.32),
+        transparent 22%,
+        transparent 70%,
+        rgba(9, 8, 16, 0.48)
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 24%,
+        rgba(5, 4, 7, 0.42) 86%
+      );
+  }
+}

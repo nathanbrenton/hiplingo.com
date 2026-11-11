@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -56,10 +58,7 @@ test("normal site routes use one low-budget resting ambient background", async (
 });
 
 test("responsive ambient background reuses all three Listen background assets", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -80,10 +79,7 @@ test("responsive ambient background reuses all three Listen background assets", 
 });
 
 test("public header is semi-transparent without continuous backdrop blur", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   const contractStart = css.indexOf(
     "Site-wide ambient background + translucent header",

@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -14,7 +16,7 @@ test("keeps retired Search and Browse Library UI out of the public app", async (
     readFile(path.join(projectRoot, "src/App.tsx"), "utf8"),
     readFile(path.join(projectRoot, "src/components/AudioPlayer.tsx"), "utf8"),
     readFile(path.join(projectRoot, "src/components/ListenTrackQueue.tsx"), "utf8"),
-    readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+    readSiteStyles(),
   ]);
 
   assert.doesNotMatch(appSource, />Search</);

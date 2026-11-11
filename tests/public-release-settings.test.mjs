@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -15,7 +17,7 @@ async function readSource(relativePath) {
 
 test("presents the public settings panel in Hiplingo purple without a direct contact action", async () => {
   const playerSource = await readSource("src/components/AudioPlayer.tsx");
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     playerSource,

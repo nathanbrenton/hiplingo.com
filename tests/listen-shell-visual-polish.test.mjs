@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -14,7 +16,7 @@ async function readSource(relativePath) {
 }
 
 test("uses edge-free ambient clouds and a fixed artwork-style title carousel", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -43,7 +45,7 @@ test("uses edge-free ambient clouds and a fixed artwork-style title carousel", a
 });
 
 test("feathers the floating filter rail before its box edges and raises the title carousel", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -60,7 +62,7 @@ test("feathers the floating filter rail before its box edges and raises the titl
 });
 
 test("avoids a full-screen metadata backdrop blur on desktop Listen", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -69,7 +71,7 @@ test("avoids a full-screen metadata backdrop blur on desktop Listen", async () =
 });
 
 test("skins the shared footer transport with Hiplingo host colors", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -82,7 +84,7 @@ test("skins the shared footer transport with Hiplingo host colors", async () => 
 });
 
 test("normalizes desktop header navigation and menu control geometry", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -96,7 +98,7 @@ test("normalizes desktop header navigation and menu control geometry", async () 
 
 test("marks desktop Listen as a single viewport while preserving mobile flow", async () => {
   const appSource = await readSource("src/App.tsx");
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     appSource,

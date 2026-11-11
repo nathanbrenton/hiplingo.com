@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -14,7 +16,7 @@ async function source(relativePath) {
 }
 
 test("settings dialog owns short landscape and exposes the Developer card", async () => {
-  const css = await source("src/index.css");
+  const css = await readSiteStyles();
   const start = css.indexOf(
     "Final menu / footer / Listen behavior polish",
   );
@@ -32,7 +34,7 @@ test("settings dialog owns short landscape and exposes the Developer card", asyn
 });
 
 test("Waveform Color play-pause uses the same purple primary transport family", async () => {
-  const css = await source("src/index.css");
+  const css = await readSiteStyles();
   const start = css.indexOf(
     "Final menu / footer / Listen behavior polish",
   );
@@ -64,7 +66,7 @@ test("compact footer detail shows only the selected release year", async () => {
 });
 
 test("public hero and route H1 surfaces use relaxed tracking", async () => {
-  const css = await source("src/index.css");
+  const css = await readSiteStyles();
   const start = css.indexOf(
     "Final menu / footer / Listen behavior polish",
   );

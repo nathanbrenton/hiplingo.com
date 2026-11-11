@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -14,7 +16,7 @@ async function readSource(relativePath) {
 }
 
 test("locks mobile landscape Listen to one viewport while settings scroll internally", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -27,7 +29,7 @@ test("locks mobile landscape Listen to one viewport while settings scroll intern
 });
 
 test("uses one canonical landscape footer geometry across all public routes", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -48,7 +50,7 @@ test("uses one canonical landscape footer geometry across all public routes", as
 });
 
 test("keeps the approved portrait footer geometry consistent across routes", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -61,7 +63,7 @@ test("keeps the approved portrait footer geometry consistent across routes", asy
 });
 
 test("places the route-appropriate end action beside the landscape footer waveform", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
   const audioPlayerSource = await readSource("src/components/AudioPlayer.tsx");
 
   assert.match(
@@ -87,7 +89,7 @@ test("places the route-appropriate end action beside the landscape footer wavefo
 });
 
 test("defers the landscape title carousel while keeping floating discovery controls removed", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
   const queueSource = await readSource("src/components/ListenTrackQueue.tsx");
 
   assert.match(css, /Mobile landscape Listen — playlist deferred[\s\S]*?\.listen-track-queue__titles,[\s\S]*?\{\s*display:\s*none;/);
@@ -97,7 +99,7 @@ test("defers the landscape title carousel while keeping floating discovery contr
 });
 
 test("restores the Hiplingo purple hamburger control styling", async () => {
-  const css = await readSource("src/index.css");
+  const css = await readSiteStyles();
 
   assert.match(
     css,

@@ -1,0 +1,957 @@
+/* =========================================================
+   Release runtime + left transport + developer contact
+   ========================================================= */
+
+.hiplingo-release-track {
+  grid-template-columns: 36px 30px minmax(0, 1fr) auto;
+}
+
+.hiplingo-release-track__action {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+}
+
+.hiplingo-release-track__number {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.hiplingo-release-track__title {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.hiplingo-release-track__runtime,
+.hiplingo-release-track__status {
+  grid-column: 4;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.hiplingo-release-track__runtime {
+  min-width: 3.4em;
+  color: var(--hiplingo-small-accent-muted, #86b9d0);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (min-width: 640px) {
+  .hiplingo-release-track {
+    grid-template-columns: 46px 42px minmax(0, 1fr) auto;
+  }
+}
+
+.app-menu__developer-contact {
+  display: flex;
+  min-height: 68px;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px 12px;
+  border-top: 1px solid rgba(219, 200, 255, 0.14);
+  color: inherit;
+  background: rgba(10, 8, 17, 0.28);
+  text-decoration: none;
+}
+
+.app-menu__developer-contact > span:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.app-menu__developer-contact strong {
+  color: var(--hiplingo-text-soft);
+  font-size: 0.84rem;
+}
+
+.app-menu__developer-contact small {
+  color: var(--hiplingo-muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.app-menu__developer-contact > span:first-child small:first-child {
+  color: var(--hiplingo-small-accent, #a9d8ed);
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.app-menu__developer-contact-arrow {
+  flex: 0 0 auto;
+  color: #cfbfff;
+  font-size: 1rem;
+}
+
+.app-menu__developer-contact:hover {
+  background: rgba(169, 140, 255, 0.08);
+}
+
+.app-menu__developer-contact:focus-visible {
+  outline: 2px solid var(--hiplingo-purple);
+  outline-offset: -3px;
+}
+
+/* =========================================================
+   Final UI refinement: Artist cards, long titles, waveform depth
+   ========================================================= */
+
+.hiplingo-artist-detail__identity-card,
+.hiplingo-artist-bio {
+  border: 1px solid rgba(169, 140, 255, 0.28);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(169, 140, 255, 0.08),
+      rgba(239, 139, 197, 0.025)
+    ),
+    rgba(29, 24, 41, 0.86);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.24),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.hiplingo-artist-detail__identity-card {
+  width: min(100%, 720px);
+  padding: 18px 20px;
+}
+
+.hiplingo-artist-detail__identity-card h1 {
+  margin-top: 4px;
+}
+
+.hiplingo-artist-detail__identity-card p {
+  margin-bottom: 0;
+}
+
+.hiplingo-artist-bio {
+  padding: 22px;
+}
+
+.hiplingo-artist-bio .hiplingo-kicker {
+  display: block;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 900px) {
+  .listen-track-queue__titles[data-long-current-title="true"] {
+    --listen-title-center-y: 50%;
+    height: 292px;
+    margin-top: -138px;
+    margin-bottom: -22px;
+  }
+
+  .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__current {
+    min-height: 122px;
+    padding-block: 8px;
+  }
+
+  .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--far-previous {
+    transform:
+      translate(-50%, calc(-50% - 205px))
+      translateZ(-132px)
+      scale(0.38);
+  }
+
+  .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--previous {
+    transform:
+      translate(-50%, calc(-50% - 122px))
+      translateZ(-88px)
+      scale(0.54);
+  }
+
+  .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--next {
+    transform:
+      translate(-50%, calc(-50% + 128px))
+      translateZ(-34px)
+      scale(0.62);
+  }
+
+  .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--far-next {
+    transform:
+      translate(-50%, calc(-50% + 212px))
+      translateZ(-104px)
+      scale(0.46);
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait) {
+  .hiplingo-site-shell--listen
+    .listen-track-queue[data-long-current-title="true"] {
+    grid-template-rows: 244px 48px;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"],
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"][data-has-previous="false"] {
+    --listen-title-center-y: 50%;
+    height: 244px;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__current {
+    min-height: 108px;
+    padding-block: 6px;
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--far-previous {
+    transform:
+      translate(-50%, calc(-50% - 150px))
+      translateZ(-118px)
+      scale(0.58);
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--previous {
+    transform:
+      translate(-50%, calc(-50% - 92px))
+      translateZ(-76px)
+      scale(0.72);
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--next {
+    transform:
+      translate(-50%, calc(-50% + 100px))
+      translateZ(-28px)
+      scale(0.76);
+  }
+
+  .hiplingo-site-shell--listen
+    .listen-track-queue__titles[data-long-current-title="true"]
+    .listen-track-queue__title--far-next {
+    transform:
+      translate(-50%, calc(-50% + 156px))
+      translateZ(-92px)
+      scale(0.62);
+  }
+}
+
+.audio-player[data-display-mode="full"]
+  .listen-waveform-anchor
+  .waveform-panel {
+  box-shadow:
+    0 22px 30px -18px rgba(0, 0, 0, 0.72),
+    0 10px 22px -18px rgba(169, 140, 255, 0.52);
+}
+
+.hiplingo-home .hiplingo-hero__identity {
+  z-index: 4;
+}
+
+.hiplingo-home .hiplingo-hero__logo {
+  position: relative;
+  z-index: 5;
+}
+
+/* =========================================================
+   Header + hero + footer + settings-menu final polish
+   ========================================================= */
+
+/*
+ * The legacy short-landscape rule hid the brand word. There is enough
+ * horizontal room in the current four-link header, so match portrait and keep
+ * the HIPLINGO wordmark visible.
+ */
+@media (max-width: 899px) and (orientation: landscape) {
+  .hiplingo-site-brand span {
+    display: inline !important;
+  }
+
+  .hiplingo-site-brand {
+    gap: 7px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hiplingo-site-nav {
+    gap: 1px;
+  }
+
+  .hiplingo-site-nav a {
+    padding-inline: 6px;
+    font-size: 0.64rem;
+  }
+}
+
+/*
+ * Wide-enough layouts get the complete landing statement in a single line.
+ * Short landscape uses the smallest size because that is where vertical space
+ * is most valuable.
+ */
+@media (min-width: 760px) {
+  .hiplingo-home .hiplingo-hero h1 {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(2.1rem, 4.8vw, 4.35rem);
+    letter-spacing: -0.05em;
+    line-height: 0.94;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
+  .hiplingo-home .hiplingo-hero h1 {
+    font-size: clamp(1.8rem, 4.35vw, 2.45rem);
+  }
+
+  .hiplingo-home .hiplingo-hero__banner {
+    height: 160px;
+  }
+}
+
+/*
+ * Spend extra viewport height on the parallax banner only when there really is
+ * runway. This avoids pushing identity/actions behind the persistent player in
+ * short landscape.
+ */
+@media (min-width: 640px) and (min-height: 650px) {
+  .hiplingo-home .hiplingo-hero__banner {
+    height: clamp(300px, 42vw, 450px);
+  }
+}
+
+@media (min-width: 980px) and (min-height: 720px) {
+  .hiplingo-home .hiplingo-hero__banner {
+    height: clamp(340px, 36vw, 480px);
+  }
+}
+
+/*
+ * Keep footer copy readable against the ambient photograph without turning the
+ * footer into a visually heavy block.
+ */
+.hiplingo-site-footer {
+  border-top-color: rgba(169, 216, 237, 0.12);
+  color: #a7b4bb;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 8, 11, 0.10),
+      rgba(7, 8, 11, 0.28)
+    );
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.94),
+    0 0 8px rgba(0, 0, 0, 0.58);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.hiplingo-site-footer a {
+  color: #bfd0d8;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.94),
+    0 0 8px rgba(0, 0, 0, 0.58);
+}
+
+.hiplingo-site-footer a:hover,
+.hiplingo-site-footer a:focus-visible {
+  color: #eef8fc;
+}
+
+/*
+ * The settings overlay may be taller than short landscape. Make the panel the
+ * actual scroll container so its final Developer card remains reachable even
+ * with the persistent player mounted beneath the overlay.
+ */
+.audio-player__settings-backdrop {
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.audio-player__settings-panel {
+  box-sizing: border-box;
+  max-height: calc(
+    100dvh -
+    max(12px, env(safe-area-inset-top)) -
+    max(12px, env(safe-area-inset-bottom))
+  ) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-bottom:
+    max(20px, calc(env(safe-area-inset-bottom) + 12px)) !important;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  .audio-player__settings-panel {
+    top: max(6px, env(safe-area-inset-top)) !important;
+    max-height: calc(
+      100dvh -
+      max(12px, env(safe-area-inset-top)) -
+      max(12px, env(safe-area-inset-bottom))
+    ) !important;
+  }
+}
+
+/* =========================================================
+   Settings preview focus stability + hidden developer gesture
+   ========================================================= */
+
+/*
+ * Keep the Waveform Color settings card on one Hiplingo purple surface even
+ * when its preview/play control retains focus after a click. The interactive
+ * button/select keep their own focus rings.
+ */
+.audio-player__settings-panel .settings-control,
+.audio-player__settings-panel .settings-control:focus-within {
+  background: var(--hiplingo-surface-control) !important;
+}
+
+/* =========================================================
+   Mobile / Artist / compact-footer polish v2
+   ========================================================= */
+
+.hiplingo-artist-detail-page .hiplingo-artist-detail__heading,
+.hiplingo-artist-detail-page .hiplingo-artist-detail__identity-card,
+.hiplingo-artist-detail-page .hiplingo-artist-bio {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  background: rgba(8, 9, 11, 0.34) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.018),
+    0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.hiplingo-artist-discography__heading #artist-discography-heading.hiplingo-kicker {
+  display: block;
+  margin: 0;
+  color: var(--hiplingo-small-accent, #a9d8ed);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button {
+  display: grid;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(169, 140, 255, 0.30);
+  border-radius: 50%;
+  color: var(--hiplingo-small-accent, #a9d8ed);
+  background: rgba(50, 43, 64, 0.58);
+  cursor: pointer;
+}
+
+.audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button:hover:not(:disabled) {
+  border-color: rgba(169, 140, 255, 0.52);
+  background: rgba(73, 55, 103, 0.72);
+}
+
+.audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button:focus-visible {
+  border-color: rgba(169, 140, 255, 0.52);
+  outline: 2px solid var(--hiplingo-purple, #a98cff);
+  outline-offset: 2px;
+}
+
+.audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  .audio-player[data-display-mode="compact"] .hiplingo-now-playing-dock__listen-button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+/* =========================================================
+   Final menu / footer / Listen behavior polish
+   ========================================================= */
+
+/*
+ * Keep one small semantic control contract for settings-specific primary
+ * transport actions. Future themes can replace these values at the panel
+ * boundary without rewriting the preview transport selectors.
+ */
+.audio-player__settings-panel {
+  --settings-primary-transport-surface: rgba(73, 55, 103, 0.90);
+  --settings-primary-transport-surface-hover: rgba(88, 65, 123, 0.96);
+  --settings-primary-transport-border: rgba(169, 140, 255, 0.58);
+  --settings-primary-transport-text: #fffaff;
+  --settings-primary-focus-ring: var(--hiplingo-purple, #a98cff);
+}
+
+/* Match the Waveform Color preview transport to the persistent primary play. */
+.audio-player__settings-panel
+  .settings-control__waveform-actions
+  .audio-player__menu-playback-button {
+  border-color: var(--settings-primary-transport-border) !important;
+  color: var(--settings-primary-transport-text) !important;
+  background: var(--settings-primary-transport-surface) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 139, 197, 0.06) !important;
+}
+
+.audio-player__settings-panel
+  .settings-control__waveform-actions
+  .audio-player__menu-playback-button:hover:not(:disabled),
+.audio-player__settings-panel
+  .settings-control__waveform-actions
+  .audio-player__menu-playback-button:active:not(:disabled),
+.audio-player__settings-panel
+  .settings-control__waveform-actions
+  .audio-player__menu-playback-button[aria-pressed="true"] {
+  border-color: var(--settings-primary-transport-border) !important;
+  color: var(--settings-primary-transport-text) !important;
+  background: var(--settings-primary-transport-surface-hover) !important;
+}
+
+.audio-player__settings-panel
+  .settings-control__waveform-actions
+  .audio-player__menu-playback-button:focus-visible {
+  outline: 2px solid var(--settings-primary-focus-ring) !important;
+  outline-offset: 2px;
+}
+
+/*
+ * The settings dialog owns the viewport while open. Hiding the persistent
+ * transport removes the lower stacking/gesture obstruction and lets the
+ * dialog use the full short-landscape height.
+ */
+.audio-player[data-menu-open="true"]
+  .hiplingo-now-playing-dock {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  .audio-player__settings-backdrop {
+    z-index: 4000 !important;
+    overflow: hidden !important;
+  }
+
+  .audio-player__settings-panel {
+    z-index: 4010 !important;
+    top: max(6px, env(safe-area-inset-top)) !important;
+    right: max(6px, env(safe-area-inset-right)) !important;
+    bottom: max(6px, env(safe-area-inset-bottom)) !important;
+    left: auto !important;
+    width: min(
+      calc(
+        100vw -
+        max(12px, env(safe-area-inset-left)) -
+        max(12px, env(safe-area-inset-right))
+      ),
+      430px
+    ) !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    padding-bottom:
+      max(28px, calc(env(safe-area-inset-bottom) + 18px)) !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Slightly relax the very tight display tracking across public H1 surfaces. */
+:where(
+  .hiplingo-hero,
+  .hiplingo-catalog-heading,
+  .hiplingo-placeholder-card,
+  .hiplingo-release-detail__intro,
+  .hiplingo-artist-detail__heading
+) h1 {
+  letter-spacing: -0.035em !important;
+}
+
+/*
+ * The persistent end action is route-specific: Shuffle on the full Listen
+ * surface, waveform navigation on compact site routes.
+ */
+.audio-player[data-display-mode="full"]
+  .hiplingo-now-playing-dock__shuffle-button {
+  display: grid;
+}
+
+.audio-player[data-display-mode="compact"]
+  .hiplingo-now-playing-dock__listen-button {
+  display: grid;
+}
+
+/* =========================================================
+   Desktop Listen simplification + linked footer identity
+   ========================================================= */
+
+.hiplingo-now-playing-dock__context-links {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  gap: 0.34em;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.hiplingo-now-playing-dock__context-link {
+  min-width: 0;
+  max-width: min(24ch, 42vw);
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  line-height: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.hiplingo-now-playing-dock__context-link:hover {
+  color: var(--hiplingo-small-accent, #a9d8ed);
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.hiplingo-now-playing-dock__context-link:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--hiplingo-purple, #a98cff);
+  outline-offset: 2px;
+}
+
+@media (max-width: 899px) {
+  .hiplingo-now-playing-dock__context-link {
+    max-width: 19ch;
+  }
+}
+
+/* =========================================================
+   Footer linked-context intrinsic height
+   ========================================================= */
+
+/*
+ * Artist/Release are buttons so they can navigate, but the global control
+ * contract gives buttons a 44px minimum touch height. In the persistent
+ * footer that inflates the Context row from ~11px to 44px and visually
+ * separates Title / Context / Year. Keep the navigation semantics while
+ * opting these text-only links out of the global control height.
+ */
+.hiplingo-now-playing-dock
+  .hiplingo-now-playing-dock__context-link {
+  display: inline-block !important;
+  width: auto;
+  height: auto !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: inherit !important;
+  vertical-align: baseline;
+}
+
+/* =========================================================
+   Mobile Listen footer full-width
+   ========================================================= */
+
+/*
+ * The full Listen dock is already the persistent viewport footer. On portrait
+ * phones, consume the complete safe horizontal viewport instead of keeping the
+ * floating-card side inset. Internal dock padding continues to protect the
+ * controls themselves.
+ */
+@media (max-width: 640px) and (orientation: portrait) {
+  .audio-player[data-display-mode="full"]
+    .hiplingo-now-playing-dock {
+    box-sizing: border-box;
+    right: env(safe-area-inset-right);
+    left: env(safe-area-inset-left);
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
+/* =========================================================
+   Playback diagnostics
+   ========================================================= */
+
+/*
+ * Listener-facing diagnostics stay non-modal so a user can keep selecting
+ * tracks and reproducing an intermittent playback problem while the session
+ * captures media events. Nothing is transmitted automatically.
+ */
+.playback-diagnostics {
+  position: fixed;
+  z-index: 5000;
+  top: calc(var(--hiplingo-site-header-bottom, 64px) + 8px);
+  right: max(8px, env(safe-area-inset-right));
+  width: min(calc(100vw - 16px), 560px);
+  color: var(--hiplingo-text);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.playback-diagnostics__bar,
+.playback-diagnostics__panel {
+  border: 1px solid var(--hiplingo-border-active);
+  background: rgba(17, 17, 17, 0.96);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.playback-diagnostics__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  padding: 7px 8px 7px 11px;
+  border-radius: 10px;
+}
+
+.playback-diagnostics[data-details-open="true"]
+  .playback-diagnostics__bar {
+  border-radius: 10px 10px 0 0;
+}
+
+.playback-diagnostics__bar-status {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.playback-diagnostics__bar-status strong {
+  overflow: hidden;
+  color: var(--hiplingo-text);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playback-diagnostics__bar-status small {
+  overflow: hidden;
+  color: var(--hiplingo-muted);
+  font-size: 0.67rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playback-diagnostics__bar-actions,
+.playback-diagnostics__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.playback-diagnostics button {
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid var(--hiplingo-border-strong);
+  border-radius: 7px;
+  color: var(--hiplingo-text-soft);
+  background: var(--hiplingo-surface-control);
+  font: inherit;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.playback-diagnostics button:hover {
+  border-color: var(--hiplingo-border-active);
+  color: var(--hiplingo-text);
+  background: var(--hiplingo-surface-control-hover);
+}
+
+.playback-diagnostics button:focus-visible {
+  outline: 2px solid var(--hiplingo-cyan);
+  outline-offset: 2px;
+}
+
+.playback-diagnostics__bar-actions button:first-child,
+.playback-diagnostics__actions button:first-child {
+  border-color: rgba(110, 215, 239, 0.62);
+}
+
+.playback-diagnostics__end {
+  color: var(--hiplingo-muted) !important;
+}
+
+.playback-diagnostics__panel {
+  max-height: calc(
+    100dvh -
+    var(--hiplingo-site-header-bottom, 64px) -
+    72px -
+    env(safe-area-inset-bottom)
+  );
+  overflow-y: auto;
+  padding: 12px;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.playback-diagnostics__grid {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.7fr) minmax(0, 1.3fr);
+  gap: 6px 12px;
+  padding-bottom: 12px;
+}
+
+.playback-diagnostics__grid > span {
+  color: var(--hiplingo-muted);
+}
+
+.playback-diagnostics__grid > strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--hiplingo-text-soft);
+  font-weight: 690;
+}
+
+.playback-diagnostics__visual-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 1px solid var(--hiplingo-border-strong);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.playback-diagnostics__visual-toggle > span {
+  display: grid;
+  gap: 2px;
+}
+
+.playback-diagnostics__visual-toggle strong {
+  color: var(--hiplingo-text-soft);
+}
+
+.playback-diagnostics__visual-toggle small {
+  color: var(--hiplingo-muted);
+  font-size: 0.67rem;
+}
+
+.playback-diagnostics__visual-toggle input {
+  flex: 0 0 auto;
+}
+
+.playback-diagnostics__actions {
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+}
+
+.playback-diagnostics__copy-status {
+  margin: 0 0 10px;
+  color: var(--hiplingo-small-accent, #a9d8ed);
+  font-size: 0.7rem;
+}
+
+.playback-diagnostics__event-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0 6px;
+  border-top: 1px solid var(--hiplingo-border-strong);
+}
+
+.playback-diagnostics__event-heading small {
+  color: var(--hiplingo-muted);
+}
+
+.playback-diagnostics__events {
+  display: grid;
+  gap: 6px;
+  max-height: 260px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.playback-diagnostics__events li {
+  display: grid;
+  gap: 2px;
+  padding: 7px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.playback-diagnostics__events code {
+  overflow-wrap: anywhere;
+  color: var(--hiplingo-text-soft);
+  font-size: 0.68rem;
+}
+
+.playback-diagnostics__events small {
+  overflow-wrap: anywhere;
+  color: var(--hiplingo-muted);
+  font-size: 0.64rem;
+}
+
+@media (max-width: 560px) {
+  .playback-diagnostics {
+    right: max(6px, env(safe-area-inset-right));
+    left: max(6px, env(safe-area-inset-left));
+    width: auto;
+  }
+
+  .playback-diagnostics__bar {
+    align-items: stretch;
+    gap: 6px;
+    padding-left: 9px;
+  }
+
+  .playback-diagnostics__bar-status {
+    align-self: center;
+  }
+
+  .playback-diagnostics__bar-actions {
+    gap: 4px;
+  }
+
+  .playback-diagnostics__bar-actions button {
+    min-height: 32px;
+    padding-inline: 7px;
+    font-size: 0.68rem;
+  }
+
+  .playback-diagnostics__grid {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+}

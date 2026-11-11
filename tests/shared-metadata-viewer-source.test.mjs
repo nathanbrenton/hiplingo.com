@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const wrapperSource = await readFile(
   new URL(
     "../src/components/MetadataViewer.tsx",
@@ -32,10 +34,7 @@ const hostStyles = await readFile(
   ),
   "utf8",
 );
-const appStyles = await readFile(
-  new URL("../src/index.css", import.meta.url),
-  "utf8",
-);
+const appStyles = await readSiteStyles();
 
 test("Hiplingo metadata viewer delegates to the shared listener presentation", () => {
   assert.match(

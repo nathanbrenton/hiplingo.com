@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const surface = await readFile(
   new URL(
     "../../packages/media-player/src/MediaVisualizationSurface.tsx",
@@ -10,10 +12,7 @@ const surface = await readFile(
   "utf8",
 );
 
-const styles = await readFile(
-  new URL("../src/index.css", import.meta.url),
-  "utf8",
-);
+const styles = await readSiteStyles();
 
 test("zoom controls stop pointer/click propagation before waveform scrubbing", () => {
   assert.match(

@@ -1,0 +1,902 @@
+/* Keep controls comfortably inside very narrow portrait viewports. */
+@media (max-width: 380px) {
+  .artwork-stack__edge-control {
+    width: 92px;
+    min-width: 92px;
+    height: 92px;
+    min-height: 92px;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 86%;
+    left: auto;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto;
+    left: 86%;
+  }
+
+  .artwork-stack__edge-control--previous::after {
+    inset: -14px 0 -14px -14px;
+  }
+
+  .artwork-stack__edge-control--next::after {
+    inset: -14px -14px -14px 0;
+  }
+}
+
+/* ---------------------------------------------------------
+   Mobile landscape waveform refinement
+   --------------------------------------------------------- */
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  /*
+   * Restore the original artwork-column dimensions. Only the
+   * waveform panel becomes narrower in this layout.
+   */
+  .player-layout {
+    grid-template-columns:
+      minmax(155px, 30vw)
+      minmax(0, 1fr);
+  }
+
+  /*
+   * Move the artwork rail inward without resizing the artwork or
+   * changing any carousel, pointer, or swipe geometry.
+   */
+  .artwork-panel {
+    transform: translateX(24px);
+  }
+
+  /*
+   * Keep the waveform narrow and aligned with the viewport's
+   * right edge, preserving clearance beside the next artwork.
+   */
+  .waveform-panel {
+    width: 88%;
+    justify-self: end;
+  }
+
+  /*
+   * Align Track and its information button with the waveform.
+   * The selector remains a single cohesive control group.
+   */
+
+
+  /*
+   * Keep navigation hit areas outside the active artwork boundary.
+   * The visible arrows move inward independently of those boundaries.
+   */
+  .artwork-stack__edge-control--previous {
+    right: 89%;
+    left: auto;
+  }
+
+  .artwork-stack__edge-control--next {
+    right: auto;
+    left: 89%;
+  }
+
+  .artwork-stack__edge-control--previous
+    .artwork-stack__transport-icon svg {
+    transform: translateX(18px);
+  }
+
+  .artwork-stack__edge-control--next
+    .artwork-stack__transport-icon svg {
+    transform: translateX(-18px);
+  }
+
+  /*
+   * Expand click tolerance only outward and vertically. No part of
+   * either navigation button overlaps the active artwork.
+   */
+  .artwork-stack__edge-control--previous::after {
+    inset: -14px 0 -14px -14px;
+  }
+
+  .artwork-stack__edge-control--next::after {
+    inset: -14px -14px -14px 0;
+  }
+}
+
+/*
+ * Extra-short landscape retains its original narrower artwork rail.
+ * The active artwork is 70% wide, giving safe boundaries at 85%.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    grid-template-columns:
+      minmax(135px, 26vw)
+      minmax(0, 1fr);
+  }
+
+  .artwork-panel {
+    transform: translateX(18px);
+  }
+
+  .waveform-panel {
+    width: 86%;
+    justify-self: end;
+  }
+
+  .artwork-stack__edge-control--previous {
+    right: 85%;
+  }
+
+  .artwork-stack__edge-control--next {
+    left: 85%;
+  }
+}
+
+/* ---------------------------------------------------------
+   Narrow desktop artwork left-edge clearance
+   --------------------------------------------------------- */
+
+/*
+ * At narrower desktop widths, shift only the artwork panel inward.
+ * The larger desktop column gap provides room on its right side.
+ */
+@media (min-width: 900px) and (max-width: 1199px) {
+  /*
+   * The artwork shift is visual and does not affect grid calculations.
+   * Add matching right-side clearance so next artwork stays clear.
+   */
+  .player-layout {
+    gap: 80px;
+  }
+
+  .artwork-panel {
+    transform: translateX(28px);
+  }
+}
+
+/* ---------------------------------------------------------
+   Desktop vertical-fit refinement
+   --------------------------------------------------------- */
+
+@media (min-width: 900px) {
+  /*
+   * Recover vertical space without changing the primary artwork or
+   * waveform dimensions and without locking the page to the viewport.
+   */
+  #root {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .player-layout {
+    row-gap: 8px;
+  }
+
+  /*
+   * The track list remains independently scrollable while giving the
+   * overall desktop page enough room to fit within a 993px viewport.
+   */
+
+}
+
+
+/* ---------------------------------------------------------
+   Flattened hamburger menu
+   --------------------------------------------------------- */
+
+/* Settings are now direct contents of the hamburger panel. */
+.app-menu__content {
+  display: grid;
+  gap: 10px;
+}
+
+
+/* Placeholder uses the same card language as the mode controls. */
+.app-menu__about-button {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 76px;
+  padding: 12px;
+  align-items: center;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #d7d7d7;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.015)
+    );
+  text-align: left;
+  cursor: default;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.app-menu__about-button > span {
+  display: grid;
+  width: 100%;
+  gap: 3px;
+}
+
+.app-menu__about-button strong {
+  color: #d7d7d7;
+  font-size: 0.875rem;
+}
+
+.app-menu__about-button small {
+  display: block;
+  color: #858585;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.app-menu__about-button small + small {
+  margin-top: 2px;
+  color: #a9a9a9;
+}
+
+.app-menu__about-button:disabled {
+  opacity: 0.72;
+  cursor: default;
+}
+
+
+/* ---------------------------------------------------------
+   Live oscilloscope visualization
+   --------------------------------------------------------- */
+
+/*
+ * Match the existing waveform canvas footprint so switching modes
+ * never changes the artwork/waveform layout relationship.
+ */
+.oscilloscope-canvas {
+  display: block;
+  width: 100%;
+  height: var(--waveform-canvas-height, 240px);
+  max-width: 100%;
+  background: var(--hiplingo-surface-waveform);
+}
+
+/* Keep the live trace shallow on the established landscape layouts. */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .oscilloscope-canvas {
+    height: var(--waveform-canvas-height, 170px);
+  }
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 410px) and (max-width: 950px) {
+  .oscilloscope-canvas {
+    height: var(--waveform-canvas-height, 145px);
+  }
+}
+
+/* ---------------------------------------------------------
+   Waveform-to-oscilloscope visual handoff
+   --------------------------------------------------------- */
+
+/*
+ * Both canvases retain the same physical panel and briefly fade into
+ * place when crossing between generated and live visualization modes.
+ */
+.waveform-panel > canvas {
+  animation:
+    waveform-view-enter 180ms ease-out both;
+}
+
+@keyframes waveform-view-enter {
+  from {
+    opacity: 0.42;
+    filter: brightness(0.82) saturate(0.84);
+  }
+
+  to {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waveform-panel > canvas {
+    animation: none;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Larger waveform current time
+   --------------------------------------------------------- */
+
+.waveform-panel__current-time {
+  min-width: 54px;
+  padding: 5px 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+@media (max-width: 639px) {
+  .waveform-panel__current-time {
+    font-size: 0.88rem;
+  }
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .waveform-panel__current-time {
+    padding: 4px 7px;
+    font-size: 0.84rem;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Compact waveform interaction, mobile balance, and footer
+   --------------------------------------------------------- */
+
+/*
+ * Compact waveform taps seek once on release. Vertical page and modal
+ * scrolling remain available because no drag-scrubbing is captured.
+ */
+
+/*
+ * Give the settings preview enough height for all modes to share the
+ * same apparent waveform scale.
+ */
+.settings-control__waveform-preview {
+  height: 72px;
+}
+
+/* Subtle product information without creating another visual header. */
+.audio-player__footer {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #242424;
+  color: #656565;
+  font-size: 0.66rem;
+  line-height: 1.4;
+}
+
+/*
+ * Portrait gains a small visual breathing space between its compact
+ * header and the primary artwork/waveform region.
+ */
+@media (orientation: portrait) and (max-width: 899px) {
+  .player-layout {
+    margin-top: 8px;
+  }
+
+  .audio-player__footer {
+    margin-top: 12px;
+  }
+}
+
+/*
+ * Shift both landscape columns together so artwork and waveform sit
+ * slightly below the viewport centerline rather than crowding the
+ * compact header.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .artwork-panel,
+  .player-layout__main {
+    transform: translateY(7px);
+  }
+
+  /*
+   * Preserve the existing horizontal artwork adjustment while adding
+   * the new shared vertical offset.
+   */
+  .artwork-panel {
+    transform:
+      translateX(24px)
+      translateY(7px);
+  }
+
+  .audio-player__footer {
+    margin-top: 10px;
+    padding-top: 7px;
+  }
+
+  /*
+   * Outline the actual selected square artwork instead of the complete
+   * rectangular release tile and its text label.
+   */
+
+}
+
+/* Retain the established smaller horizontal shift on extra-short screens. */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .artwork-panel {
+    transform:
+      translateX(18px)
+      translateY(5px);
+  }
+
+  .player-layout__main {
+    transform: translateY(5px);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   Final compact-player balance refinements
+   --------------------------------------------------------- */
+
+/*
+ * Let the player fill the available viewport height so the footer can
+ * remain at the bottom even when the current content is short.
+ */
+#root {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.audio-player {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.player-layout {
+  flex: 0 0 auto;
+}
+
+/* Auto margin consumes all unused height above the footer. */
+.audio-player__footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+}
+
+/*
+ * Compact waveform dragging previews the destination position but
+ * does not update the audio element until pointer release.
+ */
+
+/*
+ * Move the primary mobile content farther below the compact header.
+ * The amount remains modest so short screens retain usable controls.
+ */
+@media (orientation: portrait) and (max-width: 899px) {
+  .player-layout {
+    margin-top: 16px;
+  }
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .artwork-panel {
+    transform:
+      translateX(24px)
+      translateY(14px);
+  }
+
+  .player-layout__main {
+    transform: translateY(14px);
+  }
+
+  /*
+   * Add row spacing inside the independently scrolling release grid.
+   * Column spacing was already visually correct.
+   */
+
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .artwork-panel {
+    transform:
+      translateX(18px)
+      translateY(10px);
+  }
+
+  .player-layout__main {
+    transform: translateY(10px);
+  }
+
+
+}
+
+
+/* ---------------------------------------------------------
+   Audiophile zoom readout and landscape width repair
+   --------------------------------------------------------- */
+
+/*
+ * Prevent selects, labels, and surrounding text from receiving native
+ * selection highlighting while a compact playhead is being dragged.
+ */
+
+/*
+ * Audiophile Mode exposes the technical zoom value beside the main
+ * waveform controls without making the readout interactive.
+ */
+.waveform-panel__zoom-value {
+  position: absolute;
+  top: 8px;
+  right: 54px;
+  display: grid;
+  min-height: 38px;
+  padding: 0 10px;
+  place-items: center;
+  border: 1px solid #74452f;
+  border-radius: 7px;
+  color: #f1ad75;
+  background:
+    linear-gradient(
+      135deg,
+      rgb(104 48 27 / 82%),
+      rgb(62 39 23 / 82%)
+    );
+  box-shadow: 0 4px 14px rgb(0 0 0 / 30%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+@media (max-width: 639px) {
+  .waveform-panel__zoom-value {
+    top: 6px;
+    right: 48px;
+    min-height: 36px;
+    padding-inline: 8px;
+    font-size: 0.66rem;
+  }
+}
+
+/*
+ * Use the full available landscape viewport width. Earlier refinements
+ * intentionally narrowed these controls, leaving unused viewport area.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .player-layout__main {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /*
+   * Treat the hamburger as a centered overlay rather than a side rail.
+   * The underlying player retains its full-width layout.
+   */
+  .app-menu__panel {
+    right: max(10px, env(safe-area-inset-right));
+    left: max(10px, env(safe-area-inset-left));
+    width: auto;
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .waveform-panel__zoom-value {
+    top: 5px;
+    right: 45px;
+    min-height: 34px;
+  }
+}
+
+/* ---------------------------------------------------------
+   Viewport width and overlay containment repair
+   --------------------------------------------------------- */
+
+/*
+ * Keep the application centered on desktop. The player remains a
+ * vertical flex container so its footer can consume leftover height,
+ * but it must not grow wider than its established desktop measure.
+ */
+#root {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.audio-player {
+  width: min(100%, 1000px);
+  max-width: 1000px;
+  min-height:
+    calc(
+      100dvh -
+      64px
+    );
+  margin-inline: auto;
+  flex: none;
+}
+
+/*
+ * Compact waveform gestures must not visually or functionally alter
+ * the neighboring select while the playhead is being positioned.
+ */
+.settings-control__waveform-preview {
+  position: relative;
+  z-index: 1;
+}
+
+.settings-control__waveform-preview:active,
+.settings-control__waveform-preview:focus,
+.settings-control__waveform-preview:focus-visible {
+  border-color: #303030;
+}
+
+/*
+ * Restore the complete mobile-landscape viewport to the application.
+ * Earlier percentage widths and visual translations narrowed the main
+ * column and left unused viewport area on the right.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  #root {
+    width: 100%;
+    padding-right:
+      max(10px, env(safe-area-inset-right));
+    padding-left:
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .audio-player {
+    width: 100%;
+    max-width: none;
+    min-height:
+      calc(
+        100dvh -
+        max(16px, env(safe-area-inset-top)) -
+        max(16px, env(safe-area-inset-bottom))
+      );
+    margin-inline: 0;
+  }
+
+  .player-layout {
+    width: 100%;
+    max-width: none;
+    grid-template-columns:
+      minmax(155px, 30vw)
+      minmax(0, 1fr);
+  }
+
+  .player-layout__main {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    justify-self: stretch;
+  }
+
+  /*
+   * Keep the visual downward balance without shifting the main column
+   * horizontally or changing the grid's calculated width.
+   */
+  .artwork-panel {
+    transform:
+      translateX(18px)
+      translateY(14px);
+  }
+
+  .player-layout__main {
+    transform: translateY(14px);
+  }
+
+}
+
+/* Extra-short landscape keeps the same full-width containment. */
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    width: 100%;
+    grid-template-columns:
+      minmax(135px, 26vw)
+      minmax(0, 1fr);
+  }
+
+  .artwork-panel {
+    transform:
+      translateX(14px)
+      translateY(10px);
+  }
+
+
+}
+
+/* Account for the smaller desktop root padding already used later. */
+@media (min-width: 900px) {
+  .audio-player {
+    min-height:
+      calc(
+        100dvh -
+        36px
+      );
+  }
+}
+
+/*
+ * Use real layout spacing instead of vertical transforms. Transforms
+ * previously moved the columns visually without reserving space,
+ * allowing the waveform column to overlap the artwork area.
+ */
+@media (
+  orientation: landscape
+) and (max-height: 520px) and (max-width: 950px) {
+  .player-layout {
+    padding-top: 14px;
+  }
+
+  .artwork-panel {
+    transform: translateX(18px);
+  }
+
+  .player-layout__main {
+    transform: none;
+  }
+}
+
+@media (
+  orientation: landscape
+) and (max-height: 390px) and (max-width: 950px) {
+  .player-layout {
+    padding-top: 10px;
+  }
+
+  .artwork-panel {
+    transform: translateX(14px);
+  }
+
+  .player-layout__main {
+    transform: none;
+  }
+}
+
+/*
+ * Keep the settings transport pinned to the actual panel top. Panel
+ * contents receive their own padding below it, preventing overlap.
+ */
+.app-menu__panel {
+  padding: 0;
+}
+
+.app-menu__content {
+  padding: 10px;
+}
+
+/*
+ * Replace the text glyph with a consistently centered icon. The same
+ * touch target remains in place while the open state becomes an X.
+ */
+.app-menu > summary {
+  position: relative;
+  font-size: 0;
+}
+
+.app-menu > summary > span {
+  display: none;
+}
+
+.app-menu > summary::before {
+  display: block;
+  color: currentColor;
+  content: "☰";
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.app-menu[open] > summary::before {
+  content: "×";
+  font-size: 1.8rem;
+  font-weight: 500;
+  transform: translateY(-1px);
+}
+
+/*
+ * Keep the Audiophile readout text strong while allowing more of the
+ * waveform underneath to remain visible.
+ */
+.waveform-panel__zoom-value {
+  background:
+    linear-gradient(
+      135deg,
+      rgb(104 48 27 / 46%),
+      rgb(62 39 23 / 42%)
+    );
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/*
+ * Freeze the complete select presentation during compact-waveform
+ * dragging. This overrides hover, focus, active, and label activation.
+ */
+
+
+/* Footer links remain intentionally quiet until interaction. */
+.audio-player__footer a {
+  color: #747474;
+  text-decoration: none;
+}
+
+.audio-player__footer a:hover {
+  color: #a7a7a7;
+  text-decoration: underline;
+}
+
+.audio-player__footer a:focus-visible {
+  outline: 2px solid #8fd3ff;
+  outline-offset: 3px;
+  color: #c8c8c8;
+}
+
+/*
+ * Each landscape release tile owns a complete intrinsic grid row.
+ * Explicit row sizing prevents artwork and labels from intruding into
+ * the tiles immediately above or below them.
+ */
+
+/*
+ * Center the generated hamburger and close glyphs geometrically
+ * inside the unchanged square button.
+ */
+.app-menu > summary {
+  display: grid;
+  padding: 0;
+  place-items: center;
+}
+
+.app-menu > summary::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  line-height: 1;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.app-menu[open] > summary::before {
+  transform: translate(-50%, -52%);
+}
+
+/*
+ * Keep the Audiophile readout legible while making both its outline
+ * and fill substantially more transparent.
+ */
+.waveform-panel__zoom-value {
+  border-color: rgb(241 173 117 / 24%);
+  background:
+    linear-gradient(
+      135deg,
+      rgb(104 48 27 / 20%),
+      rgb(62 39 23 / 16%)
+    );
+  box-shadow:
+    0 3px 10px rgb(0 0 0 / 18%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}

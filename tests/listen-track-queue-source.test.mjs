@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { readSiteStyles } from "./support/site-styles.mjs";
+
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -50,7 +52,7 @@ test("ListenTrackQueue contains only the active title carousel", async () => {
 test("desktop Listen makes the current title dominant without floating discovery controls", async () => {
   const [queueSource, css] = await Promise.all([
     readFile(path.join(projectRoot, "src/components/ListenTrackQueue.tsx"), "utf8"),
-    readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+    readSiteStyles(),
   ]);
 
   assert.match(css, /\.listen-track-queue__title strong\s*\{[\s\S]*?font-size:\s*clamp\(2\.25rem, 3vw, 3\.15rem\);/);
@@ -91,10 +93,7 @@ test("desktop Listen mirrors the artwork handoff model on a vertical title carou
     path.join(projectRoot, "src/components/AudioPlayer.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(queueSource, /const movementThreshold = 8;/);
   assert.match(queueSource, /const reversalThreshold = 12;/);
@@ -209,7 +208,7 @@ test("mobile portrait keeps Listen browser-free while preserving the fixed foote
   const [appSource, queueSource, css] = await Promise.all([
     readFile(path.join(projectRoot, "src/App.tsx"), "utf8"),
     readFile(path.join(projectRoot, "src/components/ListenTrackQueue.tsx"), "utf8"),
-    readFile(path.join(projectRoot, "src/index.css"), "utf8"),
+    readSiteStyles(),
   ]);
 
   assert.doesNotMatch(appSource, /Browse Library|hiplingo-site-browse|onBrowseLibrary/);
@@ -239,10 +238,7 @@ test("mobile portrait keeps Listen browser-free while preserving the fixed foote
 });
 
 test("mobile portrait keeps a fixed title centerline and uses the available middle space", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -267,10 +263,7 @@ test("mobile portrait suppresses carousel reflow between committed track changes
     path.join(projectRoot, "src/components/ListenTrackQueue.tsx"),
     "utf8",
   );
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   for (const slot of [
     "far-previous",
@@ -304,10 +297,7 @@ test("mobile portrait suppresses carousel reflow between committed track changes
 });
 
 test("mobile portrait flanks the footer waveform with transport controls and restores time below", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -353,10 +343,7 @@ test("mobile portrait flanks the footer waveform with transport controls and res
 
 
 test("mobile portrait cascades every title one slot without crossing the Now Playing center", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,
@@ -378,10 +365,7 @@ test("mobile portrait cascades every title one slot without crossing the Now Pla
 
 
 test("mobile portrait grows the incoming neighbor into the Now Playing typography", async () => {
-  const css = await readFile(
-    path.join(projectRoot, "src/index.css"),
-    "utf8",
-  );
+  const css = await readSiteStyles();
 
   assert.match(
     css,

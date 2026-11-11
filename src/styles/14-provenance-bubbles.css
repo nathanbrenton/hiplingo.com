@@ -1,0 +1,72 @@
+/*
+ * Creative-provenance bubbles (Human / Some AI / AI). The bubble itself is
+ * styled by @hiplingo/media-player/provenance-badge.css; these rules only
+ * place it within Hiplingo layouts.
+ */
+.hiplingo-release-card,
+.hiplingo-artist-release {
+  position: relative;
+}
+
+.hiplingo-card-provenance {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 8px;
+  font-size: 0.6rem;
+  pointer-events: none;
+}
+
+.hiplingo-release-detail__provenance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
+  margin: -10px 0 22px;
+  color: var(--hiplingo-muted, #aaa1b5);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.hiplingo-release-detail__provenance > span:last-child {
+  min-width: 0;
+  flex: 1 1 16ch;
+}
+
+.hiplingo-release-track {
+  grid-template-columns: 36px 30px minmax(0, 1fr) auto auto;
+}
+
+.hiplingo-release-track__provenance {
+  grid-column: 4;
+  grid-row: 1;
+  font-size: 0.6rem;
+}
+
+.hiplingo-release-track__runtime,
+.hiplingo-release-track__status {
+  grid-column: 5;
+}
+
+/* Narrow rows keep the tier dot and drop the word; the title stays readable. */
+@media (max-width: 479px) {
+  .hiplingo-release-track__provenance {
+    padding: 0.3em;
+  }
+
+  .hiplingo-release-track__provenance .hiplingo-provenance-badge__label {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .hiplingo-release-track {
+    grid-template-columns: 46px 42px minmax(0, 1fr) auto auto;
+  }
+}
+
+.hiplingo-now-playing-dock__provenance {
+  margin-left: 0.6em;
+  padding-block: 0.08em;
+  font-size: 0.56rem;
+}
