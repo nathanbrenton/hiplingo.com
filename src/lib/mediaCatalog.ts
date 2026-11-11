@@ -2,7 +2,7 @@ import {
   resolveReleaseProvenance,
   resolveTrackProvenance,
   type ResolvedProvenance,
-} from "@hiplingo/media-player";
+} from "@hiplingo/media-player/provenance";
 
 import type {
   CatalogRelease,
@@ -26,6 +26,13 @@ type PublicCatalogEntry = {
   title: string | null;
   primaryArtist: string | null;
   artworkPath: string | null;
+  /*
+   * release.json and track.json documents embedded in catalog.json by
+   * metadata-editor. Absent in catalogs published before embedding; the
+   * per-release files are fetched instead.
+   */
+  embeddedRelease: JsonRecord | null;
+  embeddedTracks: JsonRecord;
 };
 
 export function getTrackKey(
@@ -305,9 +312,18 @@ function catalogEntries(value: unknown): PublicCatalogEntry[] {
       }/release.json`;
 
     const artwork = isRecord(entry.artwork) ? entry.artwork : {};
+    const documents = isRecord(entry.documents)
+      ? entry.documents
+      : {};
 
     return [
       {
+        embeddedRelease: isRecord(documents.release)
+          ? documents.release
+          : null,
+        embeddedTracks: isRecord(documents.tracks)
+          ? documents.tracks
+          : {},
         id,
         href: href.replace(/^\/+/, ""),
         title: stringValue(entry.title),
@@ -497,7 +513,9 @@ async function hydrateRelease(
   entry: PublicCatalogEntry,
   signal?: AbortSignal,
 ): Promise<CatalogRelease> {
-  const document = await fetchJsonDocument(entry.href, signal);
+  const document =
+    entry.embeddedRelease ??
+    (await fetchJsonDocument(entry.href, signal));
 
   if (!isRecord(document)) {
     throw new Error(
@@ -584,8 +602,13 @@ async function hydrateRelease(
         return [];
       }
 
+      const embeddedTrack = entry.embeddedTracks[trackId];
+
       return [
-        fetchJsonDocument(trackPath, signal).then((trackDocument) =>
+        (isRecord(embeddedTrack)
+          ? Promise.resolve(embeddedTrack)
+          : fetchJsonDocument(trackPath, signal)
+        ).then((trackDocument) =>
           normalizeTrack(
             release,
             trackId,

@@ -16,7 +16,7 @@ const [catalog, main, releaseCatalog, releaseDetail, artistDetail, player] =
   ]);
 
 test("provenance is resolved by the shared package, not reimplemented by the site", () => {
-  assert.match(catalog, /resolveTrackProvenance,?\s[\s\S]*from "@hiplingo\/media-player"/);
+  assert.match(catalog, /resolveTrackProvenance,?\s[\s\S]*from "@hiplingo\/media-player\/provenance"/);
   assert.match(catalog, /export function getTrackProvenance\(/);
   assert.match(catalog, /export function getReleaseProvenance\(/);
   assert.doesNotMatch(catalog, /"ai-generated|"ai-assisted/);

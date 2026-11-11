@@ -555,3 +555,13 @@ track. `getTrackProvenance()` / `getReleaseProvenance()` in
 `src/lib/mediaCatalog.ts` delegate to the shared resolver in
 `@hiplingo/media-player`; the site holds no provenance vocabulary of its own.
 Untagged media shows no bubble.
+
+## One-request catalog loading
+
+`catalog.json` entries published by current metadata-editor embed each
+release's `release.json` and `track.json` documents under `documents`.
+`fetchMediaCatalog()` uses them when present, so the whole catalog loads from
+one request; entries without `documents` (older catalogs) fall back to the
+per-release files. `tests/media-catalog-behaviour.test.mjs` runs the real
+loader against an in-memory published-media tree — prefer that style over
+source-text assertions for new tests.
