@@ -149,6 +149,13 @@ export default function ReleaseDetail({
       }
 
       setTrackDurationSecondsById(durations);
+    }).catch((error: unknown) => {
+      // Leaving the page aborts in-flight duration probes; that is expected.
+      if (controller.signal.aborted) {
+        return;
+      }
+
+      console.warn("Unable to read release track durations", error);
     });
 
     return () => {
