@@ -23,6 +23,6 @@ test("footer Artist and Release links do not inherit global 44px control height"
 
   assert.match(
     contract,
-    /\.hiplingo-now-playing-dock[\s\S]*?\.hiplingo-now-playing-dock__context-link\s*\{[\s\S]*?display:\s*inline-block !important;[\s\S]*?height:\s*auto !important;[\s\S]*?min-height:\s*0 !important;[\s\S]*?padding:\s*0 !important;[\s\S]*?line-height:\s*inherit !important;/,
+    /\.hiplingo-now-playing-dock[\s\S]*?\.hiplingo-now-playing-dock__context-link\s*\{[\s\S]*?display:\s*inline-block(?: !important)?;[\s\S]*?height:\s*auto(?: !important)?;[\s\S]*?min-height:\s*0(?: !important)?;[\s\S]*?padding:\s*0(?: !important)?;[\s\S]*?line-height:\s*inherit(?: !important)?;/,
   );
 });

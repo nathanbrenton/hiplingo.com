@@ -102,7 +102,7 @@ test("small public metadata uses the baby-blue accent consistently", async () =>
   );
   assert.match(
     contract,
-    /color:\s*var\(--hiplingo-small-accent\) !important;/,
+    /color:\s*var\(--hiplingo-small-accent\)(?: !important)?;/,
   );
 });
 

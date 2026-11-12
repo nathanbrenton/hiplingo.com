@@ -730,7 +730,7 @@
 
 .hiplingo-home {
   --hiplingo-home-header-overlap: 53px;
-  padding-top: 0 !important;
+  padding-top: 0;
 }
 
 /*
@@ -814,7 +814,7 @@
 @media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
   .hiplingo-home {
     --hiplingo-home-header-overlap: 50px;
-    padding-top: 0 !important;
+    padding-top: 0;
   }
 
   .hiplingo-hero__parallax-layer {
@@ -859,7 +859,7 @@
 .hiplingo-release-detail__meta,
 .hiplingo-release-detail__masthead .hiplingo-release-detail__artist,
 .hiplingo-release-track__title small {
-  color: var(--hiplingo-small-accent) !important;
+  color: var(--hiplingo-small-accent);
 }
 
 .hiplingo-release-card__copy > span,
@@ -872,7 +872,7 @@
 .hiplingo-artist-card__copy small,
 .hiplingo-artist-release__copy small,
 .hiplingo-release-detail__meta {
-  color: var(--hiplingo-small-accent-muted) !important;
+  color: var(--hiplingo-small-accent-muted);
 }
 
 /*

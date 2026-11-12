@@ -22,7 +22,7 @@ test("mobile landscape restores the HIPLINGO wordmark", async () => {
 
   assert.match(
     contract,
-    /@media \(max-width:\s*899px\) and \(orientation:\s*landscape\)[\s\S]*?\.hiplingo-site-brand span\s*\{[\s\S]*?display:\s*inline !important;/,
+    /@media \(max-width:\s*899px\) and \(orientation:\s*landscape\)[\s\S]*?\.hiplingo-site-brand span\s*\{[\s\S]*?display:\s*inline(?: !important)?;/,
   );
 });
 
@@ -94,10 +94,10 @@ test("settings panel itself scrolls so Developer information remains reachable",
 
   assert.match(
     contract,
-    /\.audio-player__settings-backdrop\s*\{[\s\S]*?overflow-y:\s*auto !important;[\s\S]*?overscroll-behavior:\s*contain;/,
+    /\.audio-player__settings-backdrop\s*\{[\s\S]*?overflow-y:\s*auto(?: !important)?;[\s\S]*?overscroll-behavior:\s*contain;/,
   );
   assert.match(
     contract,
-    /\.audio-player__settings-panel\s*\{[\s\S]*?max-height:\s*calc\([\s\S]*?100dvh[\s\S]*?overflow-y:\s*auto !important;[\s\S]*?padding-bottom:/,
+    /\.audio-player__settings-panel\s*\{[\s\S]*?max-height:\s*calc\([\s\S]*?100dvh[\s\S]*?overflow-y:\s*auto(?: !important)?;[\s\S]*?padding-bottom:/,
   );
 });

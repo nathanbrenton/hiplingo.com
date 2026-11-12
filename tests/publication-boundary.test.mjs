@@ -512,11 +512,11 @@ test("top-anchors metadata and reserves the persistent player dock", async () =>
   );
   assert.match(
     hostStyles,
-    /body:has\(\.metadata-viewer__backdrop\)[\s\S]*?\.shared-now-playing__waveform-region[\s\S]*?display:\s*none\s*!important;/,
+    /body:has\(\.metadata-viewer__backdrop\)[\s\S]*?\.shared-now-playing__waveform-region[\s\S]*?display:\s*none(?:\s*!important)?;/,
   );
   assert.match(
     hostStyles,
-    /grid-template-areas:\s*\n\s*"artwork identity time transport metadata"\s*!important;/,
+    /grid-template-areas:\s*\n\s*"artwork identity time transport metadata"(?:\s*!important)?;/,
   );
 });
 

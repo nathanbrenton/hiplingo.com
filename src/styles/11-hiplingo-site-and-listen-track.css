@@ -413,7 +413,7 @@
     grid-template-rows: auto auto;
     align-content: start;
     overflow: hidden;
-    padding: 0 !important;
+    padding: 0;
   }
 
   .hiplingo-site-shell--listen .player-layout {

@@ -831,7 +831,7 @@ if (command === "baseline") {
   console.log(
     `\n${results.length} states compared, ${changed.length} with differences.`,
   );
-  for (const result of changed.slice(0, 20)) {
+  for (const result of changed) {
     console.log(`  ${result.id}: ${result.differences.length}`);
     for (const difference of result.differences.slice(0, 3)) {
       console.log(

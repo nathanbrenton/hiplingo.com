@@ -7,7 +7,7 @@
 
 .audio-player[data-display-mode="compact"]
   > .audio-player__settings-backdrop {
-  display: block !important;
+  display: block;
 }
 
 

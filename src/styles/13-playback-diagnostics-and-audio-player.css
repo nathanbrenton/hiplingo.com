@@ -271,7 +271,7 @@
  */
 @media (max-width: 899px) and (orientation: landscape) {
   .hiplingo-site-brand span {
-    display: inline !important;
+    display: inline;
   }
 
   .hiplingo-site-brand {
@@ -370,7 +370,7 @@
  * with the persistent player mounted beneath the overlay.
  */
 .audio-player__settings-backdrop {
-  overflow-y: auto !important;
+  overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
@@ -381,24 +381,24 @@
     100dvh -
     max(12px, env(safe-area-inset-top)) -
     max(12px, env(safe-area-inset-bottom))
-  ) !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  );
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
   padding-bottom:
-    max(20px, calc(env(safe-area-inset-bottom) + 12px)) !important;
+    max(20px, calc(env(safe-area-inset-bottom) + 12px));
   scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width: 899px) and (orientation: landscape) {
   .audio-player__settings-panel {
-    top: max(6px, env(safe-area-inset-top)) !important;
+    top: max(6px, env(safe-area-inset-top));
     max-height: calc(
       100dvh -
       max(12px, env(safe-area-inset-top)) -
       max(12px, env(safe-area-inset-bottom))
-    ) !important;
+    );
   }
 }
 
@@ -413,7 +413,7 @@
  */
 .audio-player__settings-panel .settings-control,
 .audio-player__settings-panel .settings-control:focus-within {
-  background: var(--hiplingo-surface-control) !important;
+  background: var(--hiplingo-surface-control);
 }
 
 /* =========================================================
@@ -423,9 +423,9 @@
 .hiplingo-artist-detail-page .hiplingo-artist-detail__heading,
 .hiplingo-artist-detail-page .hiplingo-artist-detail__identity-card,
 .hiplingo-artist-detail-page .hiplingo-artist-bio {
-  border-color: rgba(255, 255, 255, 0.09) !important;
-  background: rgba(8, 9, 11, 0.34) !important;
-  background-image: none !important;
+  border-color: rgba(255, 255, 255, 0.09);
+  background: rgba(8, 9, 11, 0.34);
+  background-image: none;
   box-shadow:
     inset 0 1px rgba(255, 255, 255, 0.018),
     0 12px 28px rgba(0, 0, 0, 0.14);
@@ -514,11 +514,11 @@
 .audio-player__settings-panel
   .settings-control__waveform-actions
   .audio-player__menu-playback-button {
-  border-color: var(--settings-primary-transport-border) !important;
-  color: var(--settings-primary-transport-text) !important;
-  background: var(--settings-primary-transport-surface) !important;
+  border-color: var(--settings-primary-transport-border);
+  color: var(--settings-primary-transport-text);
+  background: var(--settings-primary-transport-surface);
   box-shadow:
-    inset 0 0 0 1px rgba(239, 139, 197, 0.06) !important;
+    inset 0 0 0 1px rgba(239, 139, 197, 0.06);
 }
 
 .audio-player__settings-panel
@@ -530,9 +530,9 @@
 .audio-player__settings-panel
   .settings-control__waveform-actions
   .audio-player__menu-playback-button[aria-pressed="true"] {
-  border-color: var(--settings-primary-transport-border) !important;
-  color: var(--settings-primary-transport-text) !important;
-  background: var(--settings-primary-transport-surface-hover) !important;
+  border-color: var(--settings-primary-transport-border);
+  color: var(--settings-primary-transport-text);
+  background: var(--settings-primary-transport-surface-hover);
 }
 
 .audio-player__settings-panel
@@ -549,22 +549,22 @@
  */
 .audio-player[data-menu-open="true"]
   .hiplingo-now-playing-dock {
-  visibility: hidden !important;
-  pointer-events: none !important;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @media (max-width: 899px) and (orientation: landscape) {
   .audio-player__settings-backdrop {
-    z-index: 4000 !important;
-    overflow: hidden !important;
+    z-index: 4000;
+    overflow: hidden;
   }
 
   .audio-player__settings-panel {
-    z-index: 4010 !important;
-    top: max(6px, env(safe-area-inset-top)) !important;
-    right: max(6px, env(safe-area-inset-right)) !important;
-    bottom: max(6px, env(safe-area-inset-bottom)) !important;
-    left: auto !important;
+    z-index: 4010;
+    top: max(6px, env(safe-area-inset-top));
+    right: max(6px, env(safe-area-inset-right));
+    bottom: max(6px, env(safe-area-inset-bottom));
+    left: auto;
     width: min(
       calc(
         100vw -
@@ -572,14 +572,14 @@
         max(12px, env(safe-area-inset-right))
       ),
       430px
-    ) !important;
-    height: auto !important;
-    max-height: none !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    );
+    height: auto;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: auto;
     overscroll-behavior: contain;
     padding-bottom:
-      max(28px, calc(env(safe-area-inset-bottom) + 18px)) !important;
+      max(28px, calc(env(safe-area-inset-bottom) + 18px));
     -webkit-overflow-scrolling: touch;
   }
 }
@@ -668,14 +668,14 @@
  */
 .hiplingo-now-playing-dock
   .hiplingo-now-playing-dock__context-link {
-  display: inline-block !important;
+  display: inline-block;
   width: auto;
-  height: auto !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  line-height: inherit !important;
+  height: auto;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  line-height: inherit;
   vertical-align: baseline;
 }
 

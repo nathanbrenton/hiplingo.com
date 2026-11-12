@@ -291,7 +291,7 @@
  * only the shared Now Playing dock and explicitly opened settings off /listen. */
 .audio-player[data-display-mode="compact"]
   > :not(.hiplingo-now-playing-dock):not(.audio-player__settings-backdrop) {
-  display: none !important;
+  display: none;
 }
 
 @media (min-width: 58.001rem) {
@@ -875,8 +875,8 @@ body {
 
 /* The removed legacy player header no longer reserves viewport space. */
 .audio-player[data-display-mode="full"] {
-  --fixed-header-height: 0px !important;
-  padding-top: 8px !important;
+  --fixed-header-height: 0px;
+  padding-top: 8px;
 }
 
 /* Player settings now open from the single Hiplingo header. */

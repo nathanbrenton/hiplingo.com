@@ -142,7 +142,7 @@ test("desktop Listen mirrors the artwork handoff model on a vertical title carou
   );
   assert.match(
     css,
-    /data-swipe-committing="true"[\s\S]*?\.listen-track-queue__title\s*\{[\s\S]*?transition:\s*none !important;/,
+    /data-swipe-committing="true"[\s\S]*?\.listen-track-queue__title\s*\{[\s\S]*?transition:\s*none(?: !important)?;/,
   );
 });
 

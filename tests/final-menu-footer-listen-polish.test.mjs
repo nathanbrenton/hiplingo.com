@@ -25,11 +25,11 @@ test("settings dialog owns short landscape and exposes the Developer card", asyn
 
   assert.match(
     contract,
-    /\.audio-player\[data-menu-open="true"\][\s\S]*?\.hiplingo-now-playing-dock\s*\{[\s\S]*?visibility:\s*hidden !important;[\s\S]*?pointer-events:\s*none !important;/,
+    /\.audio-player\[data-menu-open="true"\][\s\S]*?\.hiplingo-now-playing-dock\s*\{[\s\S]*?visibility:\s*hidden(?: !important)?;[\s\S]*?pointer-events:\s*none(?: !important)?;/,
   );
   assert.match(
     contract,
-    /@media \(max-width:\s*899px\) and \(orientation:\s*landscape\)[\s\S]*?\.audio-player__settings-panel\s*\{[\s\S]*?top:\s*max\(6px,[\s\S]*?bottom:\s*max\(6px,[\s\S]*?max-height:\s*none !important;[\s\S]*?overflow-y:\s*auto !important;/,
+    /@media \(max-width:\s*899px\) and \(orientation:\s*landscape\)[\s\S]*?\.audio-player__settings-panel\s*\{[\s\S]*?top:\s*max\(6px,[\s\S]*?bottom:\s*max\(6px,[\s\S]*?max-height:\s*none(?: !important)?;[\s\S]*?overflow-y:\s*auto(?: !important)?;/,
   );
 });
 
@@ -46,7 +46,7 @@ test("Waveform Color play-pause uses the same purple primary transport family", 
   );
   assert.match(
     contract,
-    /\.settings-control__waveform-actions[\s\S]*?\.audio-player__menu-playback-button\s*\{[\s\S]*?background:\s*var\(--settings-primary-transport-surface\) !important;/,
+    /\.settings-control__waveform-actions[\s\S]*?\.audio-player__menu-playback-button\s*\{[\s\S]*?background:\s*var\(--settings-primary-transport-surface\)(?: !important)?;/,
   );
 });
 
@@ -74,7 +74,7 @@ test("public hero and route H1 surfaces use relaxed tracking", async () => {
 
   assert.match(
     contract,
-    /:where\([\s\S]*?\.hiplingo-hero,[\s\S]*?\.hiplingo-catalog-heading,[\s\S]*?\.hiplingo-placeholder-card,[\s\S]*?\.hiplingo-release-detail__intro,[\s\S]*?\.hiplingo-artist-detail__heading[\s\S]*?\) h1\s*\{[\s\S]*?letter-spacing:\s*-0\.035em !important;/,
+    /:where\([\s\S]*?\.hiplingo-hero,[\s\S]*?\.hiplingo-catalog-heading,[\s\S]*?\.hiplingo-placeholder-card,[\s\S]*?\.hiplingo-release-detail__intro,[\s\S]*?\.hiplingo-artist-detail__heading[\s\S]*?\) h1\s*\{[\s\S]*?letter-spacing:\s*-0\.035em(?: !important)?;/,
   );
 });
 

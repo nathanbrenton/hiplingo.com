@@ -426,8 +426,8 @@ body:has(.app-menu[open])
   .waveform-panel__zoom-controls,
 .audio-player[data-menu-open="true"]
   .waveform-panel__zoom-button {
-  display: block !important;
-  visibility: visible !important;
+  display: block;
+  visibility: visible;
 }
 
 /* Place track information beside the waveform current-time readout. */

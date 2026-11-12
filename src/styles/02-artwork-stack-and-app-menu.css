@@ -205,7 +205,7 @@
     translate(-50%, -50%)
     rotate(0deg)
     scale(1);
-  transition: none !important;
+  transition: none;
 }
 
 /* Rebuild the surrounding stack without a visible rebound. */
@@ -217,7 +217,7 @@
   .artwork-stack__item--far-previous,
 .artwork-stack[data-swipe-committing="true"]
   .artwork-stack__item--far-next {
-  transition: none !important;
+  transition: none;
 }
 
 /* ---------------------------------------------------------
@@ -270,7 +270,7 @@
   .artwork-stack__item--previous,
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--far-previous {
-  transition: none !important;
+  transition: none;
 }
 
 /*
@@ -282,7 +282,7 @@
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--far-next {
   z-index: -1;
-  opacity: 0 !important;
+  opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
@@ -348,7 +348,7 @@
   .artwork-stack__item--previous,
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--current {
-  transition: none !important;
+  transition: none;
 }
 
 /* ---------------------------------------------------------
@@ -401,7 +401,7 @@
   .artwork-stack__item--current,
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--previous {
-  transition: none !important;
+  transition: none;
 }
 
 /* ---------------------------------------------------------
@@ -603,7 +603,7 @@
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--next {
   z-index: 1;
-  opacity: 0.42 !important;
+  opacity: 0.42;
   visibility: visible;
   pointer-events: auto;
   filter: brightness(0.82);
@@ -612,7 +612,7 @@
 .artwork-stack[data-swipe-direction="previous"]
   .artwork-stack__item--far-next {
   z-index: 0;
-  opacity: 0.16 !important;
+  opacity: 0.16;
   visibility: visible;
   pointer-events: none;
   filter: brightness(0.68);
@@ -665,19 +665,19 @@
  */
 .artwork-stack
   .artwork-stack__item--previous {
-  left: 50% !important;
-  right: auto !important;
-  visibility: visible !important;
+  left: 50%;
+  right: auto;
+  visibility: visible;
   opacity: calc(
     0.72 +
     (var(--artwork-previous-progress) * 0.28)
-  ) !important;
+  );
   filter: brightness(
     calc(
       0.9 +
       (var(--artwork-previous-progress) * 0.1)
     )
-  ) !important;
+  );
   transform:
     translate(
       calc(
@@ -700,19 +700,19 @@
         0.82 +
         (var(--artwork-previous-progress) * 0.18)
       )
-    ) !important;
+    );
 }
 
 /* Next artwork independently follows negative-offset progress. */
 .artwork-stack
   .artwork-stack__item--next {
-  left: 50% !important;
-  right: auto !important;
-  visibility: visible !important;
+  left: 50%;
+  right: auto;
+  visibility: visible;
   opacity: calc(
     0.72 +
     (var(--artwork-next-progress) * 0.28)
-  ) !important;
+  );
   filter: brightness(
     calc(
       0.9 +
@@ -741,7 +741,7 @@
         0.82 +
         (var(--artwork-next-progress) * 0.18)
       )
-    ) !important;
+    );
 }
 
 /*
@@ -753,7 +753,7 @@
   opacity: calc(
     1 -
     (var(--artwork-active-progress) * 0.24)
-  ) !important;
+  );
   transform:
     translate(
       calc(-50% + var(--artwork-drag-x, 0px)),
@@ -765,7 +765,7 @@
         1 -
         (var(--artwork-active-progress) * 0.14)
       )
-    ) !important;
+    );
 }
 
 /*
@@ -780,7 +780,7 @@
   .artwork-stack__item--previous,
 .artwork-stack[data-swipe-direction="next"]
   .artwork-stack__item--next {
-  transition: none !important;
+  transition: none;
 }
 
 /*
@@ -841,17 +841,17 @@
   data-commit-direction="previous"
 ]
   .artwork-stack__item--previous {
-  left: 50% !important;
-  right: auto !important;
-  z-index: 7 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  filter: none !important;
+  left: 50%;
+  right: auto;
+  z-index: 7;
+  opacity: 1;
+  visibility: visible;
+  filter: none;
   transform:
     translate(-50%, -50%)
     rotate(0deg)
-    scale(1) !important;
-  transition: none !important;
+    scale(1);
+  transition: none;
 }
 
 /*
@@ -861,16 +861,16 @@
  */
 .artwork-stack[data-swipe-committing="true"]
   .artwork-stack__item--current {
-  left: 50% !important;
-  right: auto !important;
-  z-index: 7 !important;
-  opacity: 1 !important;
-  filter: none !important;
+  left: 50%;
+  right: auto;
+  z-index: 7;
+  opacity: 1;
+  filter: none;
   transform:
     translate(-50%, -50%)
     rotate(0deg)
-    scale(1) !important;
-  transition: none !important;
+    scale(1);
+  transition: none;
 }
 
 /* The outgoing current artwork must not flash above the destination. */
@@ -882,8 +882,8 @@
   data-commit-direction="previous"
 ]
   .artwork-stack__item--current {
-  z-index: 2 !important;
-  transition: none !important;
+  z-index: 2;
+  transition: none;
 }
 
 /* Rebuild all surrounding covers without a release-time bounce. */
@@ -895,5 +895,5 @@
   .artwork-stack__item--far-previous,
 .artwork-stack[data-swipe-committing="true"]
   .artwork-stack__item--far-next {
-  transition: none !important;
+  transition: none;
 }

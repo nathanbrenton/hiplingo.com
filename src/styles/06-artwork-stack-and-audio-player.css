@@ -172,42 +172,42 @@
 
 .settings-control__waveform-actions
   .audio-player__menu-playback-button {
-  position: relative !important;
-  inset: auto !important;
-  display: grid !important;
+  position: relative;
+  inset: auto;
+  display: grid;
   width: 40px;
   min-width: 40px;
   max-width: 40px;
   height: 40px;
   min-height: 40px;
   max-height: 40px;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
   place-items: center;
-  transform: none !important;
+  transform: none;
 }
 
 .settings-control__waveform-actions
   .audio-player__menu-playback-button
   .artwork-stack__transport-icon {
-  position: static !important;
-  inset: auto !important;
+  position: static;
+  inset: auto;
   display: grid;
   width: 22px;
   height: 22px;
   margin: 0;
   place-items: center;
-  transform: none !important;
+  transform: none;
 }
 
 .settings-control__waveform-actions
   .audio-player__menu-playback-button
   .artwork-stack__transport-icon svg {
-  position: static !important;
+  position: static;
   display: block;
   width: 22px;
   height: 22px;
-  transform: none !important;
+  transform: none;
 }
 
 /*
@@ -944,7 +944,7 @@
           0.82 +
           (var(--artwork-previous-progress) * 0.18)
         )
-      ) !important;
+      );
   }
 
   /*
@@ -976,7 +976,7 @@
         82%,
         calc(82% + ((100vw - 1200px) * 0.03)),
         88%
-      ) !important;
-    left: auto !important;
+      );
+    left: auto;
   }
 }

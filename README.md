@@ -625,3 +625,19 @@ It needs Chromium: it uses a Playwright-cached browser if one exists
 (`npx playwright-core install chromium` to get one) or
 `VISUAL_CHROMIUM_PATH`. Captures live in `.visual-regression/` and are not
 committed.
+
+### `!important` in the stylesheets
+
+A cleanup verified by this suite removed 153 of 194 `!important` flags with
+no change to any element's computed style or position in any of the 168
+captured states. The 41 that remain are deliberate:
+
+- 9 are needed — removing any of them changes the artwork carousel while
+  swiping (stacking order, opacity, transform, filter) or heading
+  letter-spacing;
+- 32 apply only in states the suite does not capture (see the uncovered
+  list in the baseline's `manifest.json`), so they were left alone. Add a
+  scenario that reaches the state before removing one.
+
+Before adding a new `!important`, prefer a more specific selector or a later
+rule; if one is unavoidable, add a scenario that exercises it.

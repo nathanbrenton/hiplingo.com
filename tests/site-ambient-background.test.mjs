@@ -74,7 +74,7 @@ test("responsive ambient background reuses all three Listen background assets", 
   );
   assert.match(
     css,
-    /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.hiplingo-site-ambient-background__field\s*\{[\s\S]*?transform:\s*none !important;[\s\S]*?will-change:\s*auto;/,
+    /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.hiplingo-site-ambient-background__field\s*\{[\s\S]*?transform:\s*none(?: !important)?;[\s\S]*?will-change:\s*auto;/,
   );
 });
 

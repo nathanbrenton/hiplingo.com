@@ -43,6 +43,6 @@ test("Waveform Color card keeps one surface while a child control has focus", as
 
   assert.match(
     contract,
-    /\.audio-player__settings-panel \.settings-control,\s*\.audio-player__settings-panel \.settings-control:focus-within\s*\{[\s\S]*?background:\s*var\(--hiplingo-surface-control\) !important;/,
+    /\.audio-player__settings-panel \.settings-control,\s*\.audio-player__settings-panel \.settings-control:focus-within\s*\{[\s\S]*?background:\s*var\(--hiplingo-surface-control\)(?: !important)?;/,
   );
 });

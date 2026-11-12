@@ -73,7 +73,7 @@ test("landing hero is full-bleed and starts beneath the sticky header", async ()
 
   assert.match(
     contract,
-    /\.hiplingo-home\s*\{[\s\S]*?padding-top:\s*0 !important;/,
+    /\.hiplingo-home\s*\{[\s\S]*?padding-top:\s*0(?: !important)?;/,
   );
   assert.match(
     contract,

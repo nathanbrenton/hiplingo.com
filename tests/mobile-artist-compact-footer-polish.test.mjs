@@ -63,6 +63,6 @@ test("Artist information cards are neutral and highly translucent", async () => 
   assert.notEqual(start, -1);
   const contract = css.slice(start);
 
-  assert.match(contract, /background:\s*rgba\(8,\s*9,\s*11,\s*0\.34\) !important;/);
-  assert.match(contract, /background-image:\s*none !important;/);
+  assert.match(contract, /background:\s*rgba\(8,\s*9,\s*11,\s*0\.34\)(?: !important)?;/);
+  assert.match(contract, /background-image:\s*none(?: !important)?;/);
 });

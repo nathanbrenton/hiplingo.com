@@ -64,7 +64,7 @@
           0.82 +
           (var(--artwork-previous-progress) * 0.18)
         )
-      ) !important;
+      );
   }
 
   .artwork-stack
@@ -91,7 +91,7 @@
           0.82 +
           (var(--artwork-next-progress) * 0.18)
         )
-      ) !important;
+      );
   }
 
   .artwork-stack__item--far-previous {
@@ -109,13 +109,13 @@
   }
 
   .artwork-stack__edge-control--previous {
-    right: 88% !important;
-    left: auto !important;
+    right: 88%;
+    left: auto;
   }
 
   .artwork-stack__edge-control--next {
-    right: auto !important;
-    left: 88% !important;
+    right: auto;
+    left: 88%;
   }
 }
 
@@ -202,13 +202,13 @@
   }
 
   .artwork-stack__edge-control--previous {
-    right: 88% !important;
-    left: auto !important;
+    right: 88%;
+    left: auto;
   }
 
   .artwork-stack__edge-control--next {
-    right: auto !important;
-    left: 88% !important;
+    right: auto;
+    left: 88%;
   }
 }
 
@@ -334,7 +334,7 @@
           0.82 +
           (var(--artwork-previous-progress) * 0.18)
         )
-      ) !important;
+      );
   }
 
   .artwork-stack
@@ -361,17 +361,17 @@
           0.82 +
           (var(--artwork-next-progress) * 0.18)
         )
-      ) !important;
+      );
   }
 
   .artwork-stack__edge-control--previous {
-    right: 88% !important;
-    left: auto !important;
+    right: 88%;
+    left: auto;
   }
 
   .artwork-stack__edge-control--next {
-    right: auto !important;
-    left: 88% !important;
+    right: auto;
+    left: 88%;
   }
 }
 
