@@ -573,3 +573,55 @@ source-text assertions for new tests.
 boundaries, so import order is cascade order: later parts override earlier
 ones. The built CSS is byte-identical to the single-file version. Tests read
 the combined stylesheet through `tests/support/site-styles.mjs`.
+
+## Visual-regression suite
+
+Use this before and after any CSS change that should not alter how the site
+looks, such as removing an `!important` or merging duplicate rules.
+
+```sh
+npm run visual:baseline   # record the reference (about 10 minutes)
+# …make the CSS change…
+npm run visual:compare    # capture again, diff, write a report
+```
+
+`visual:compare` exits non-zero when anything differs and writes
+`.visual-regression/report/index.html` with side-by-side screenshots and a
+table of every changed element, property, and value. Narrow a comparison
+with `-- --only=<scenario>` or `-- --viewport=<name>`; `-- --reuse` recompares
+the last capture without capturing again. Always record the baseline unfiltered.
+
+What it captures, for each scenario in
+`scripts/visual-regression/scenarios.mjs` at each viewport listed there:
+
+- the computed styles and box of every element — the precise signal;
+- a screenshot, for a person to look at.
+
+How it stays trustworthy:
+
+- It serves the production build against `../published-media`, so the
+  baseline is only valid while published media is unchanged (it warns when
+  the catalog differs).
+- Every state is captured twice from scratch; values that differ between
+  those two runs (the audio-reactive background, the playhead) are marked
+  volatile and ignored, so remaining differences are real.
+- Randomness is seeded, animations are brought to a fixed frame, and the
+  carousel's momentary "committing" state is held by freezing the page clock.
+- A state that differs is captured once more; only differences that
+  reproduce are reported.
+- Script-driven elements (the playhead and the animated backgrounds, listed
+  in `scenarios.mjs`) are excluded, so an `!important` that only affects one
+  of those is not verified. Margin-only differences on an element that did
+  not move are ignored, because Chromium reports `auto` margins
+  inconsistently between loads.
+- A scenario that cannot reach its state fails the run; it is never skipped.
+- The report states how many `!important` declarations applied to an element
+  in at least one captured state. Only those are vouched for by a clean
+  comparison; `manifest.json` lists every declaration with its usage, so
+  check a declaration is exercised (`states > 0`) before trusting a clean
+  result for it, and add a scenario if it is not.
+
+It needs Chromium: it uses a Playwright-cached browser if one exists
+(`npx playwright-core install chromium` to get one) or
+`VISUAL_CHROMIUM_PATH`. Captures live in `.visual-regression/` and are not
+committed.

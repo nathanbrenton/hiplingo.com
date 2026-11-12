@@ -47,3 +47,6 @@ media-library/
 
 # Local source/master media; never commit or deploy
 /source-assets/
+
+# Visual-regression captures (local screenshots of published media)
+.visual-regression/

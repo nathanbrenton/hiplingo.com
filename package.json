@@ -9,22 +9,25 @@
     "test": "node --test tests/*.test.mjs",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "visual:baseline": "node scripts/visual-regression/run.mjs baseline",
+    "visual:compare": "node scripts/visual-regression/run.mjs compare"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@hiplingo/brand": "file:../packages/brand",
+    "@hiplingo/media-player": "file:../packages/media-player",
     "hls.js": "1.6.17",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "@hiplingo/media-player": "file:../packages/media-player",
-    "@hiplingo/brand": "file:../packages/brand"
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "playwright-core": "^1.65.0",
     "typescript": "^7.0.2",
     "vite": "^8.1.4"
   }
